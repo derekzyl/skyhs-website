@@ -447,14 +447,14 @@ export default function HomePage() {
                 ) : (
                   <>
                     <img
-                      src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80"
-                      alt="Dr. Julian Vance, MD Cardiologist On Call"
+                      src="/images/avatars/dr_chidi_okafor.jpg"
+                      alt="Dr. Chidi Okafor, MD Cardiologist On Call"
                       className="absolute inset-0 w-full h-full object-cover opacity-90"
                     />
 
                     <div className="relative z-10 flex items-center justify-between">
                       <span className="bg-black/60 backdrop-blur text-white text-xs px-2.5 py-1 rounded-md flex items-center gap-1.5 font-medium">
-                        <span className="w-2 h-2 rounded-full bg-status-normal" /> Dr. Vance, MD (Cardiologist)
+                        <span className="w-2 h-2 rounded-full bg-status-normal" /> Dr. Chidi Okafor, MD (Cardiologist)
                       </span>
                       <span className="bg-black/60 backdrop-blur text-white text-xs px-2 py-1 rounded-md font-mono">
                         Response: 42s
@@ -465,8 +465,8 @@ export default function HomePage() {
                     <div className="relative z-10 flex items-end justify-between pt-16">
                       <div className="w-24 sm:w-28 h-18 sm:h-20 rounded-lg bg-slate-800 border border-white/30 overflow-hidden shadow-lg relative">
                         <img
-                          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&q=80"
-                          alt="Patient Michael Hernandez preview"
+                          src="/images/avatars/patient_kelechi.jpg"
+                          alt="Patient Kelechi Adeleke preview"
                           className="w-full h-full object-cover"
                         />
                         <span className="absolute bottom-1 left-1 bg-black/70 text-[8px] sm:text-[9px] text-white px-1 rounded font-mono">
