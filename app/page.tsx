@@ -4,374 +4,1039 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import EcgWaveform from '../components/EcgWaveform';
-import { MOCK_CONSULTANTS } from '../data/mockConsultancyData';
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState<'all' | 'Cardiology' | 'Endocrinology' | 'General Health' | 'Neurology'>('all');
+  const [activeTab, setActiveTab] = useState<'ultra' | 'band' | 'suite'>('ultra');
+  const [micMuted, setMicMuted] = useState(false);
+  const [videoMuted, setVideoMuted] = useState(false);
+  const [callEnded, setCallEnded] = useState(false);
+  const [orderModalOpen, setOrderModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState({
+    name: 'Skyline VitalsWatch™ Ultra',
+    price: 399,
+    savings: 80,
+    band: 'Titanium Link (Space Gray)',
+  });
 
-  const filteredConsultants = activeTab === 'all'
-    ? MOCK_CONSULTANTS
-    : MOCK_CONSULTANTS.filter((c) => c.specialty === activeTab);
+  const openOrder = (name: string, price: number, savings: number) => {
+    setSelectedProduct({
+      name,
+      price,
+      savings,
+      band: 'Titanium Link (Space Gray)',
+    });
+    setOrderModalOpen(true);
+  };
 
   return (
-    <div className="min-h-screen flex flex-col bg-surface-canvas text-text-primary">
+    <div className="min-h-screen flex flex-col bg-surface-canvas text-text-primary font-sans antialiased selection:bg-primary-container selection:text-white overflow-x-hidden">
       <Navbar />
 
-      {/* ── 1. HERO SECTION ──────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28 bg-gradient-to-b from-white via-surface to-surface-canvas">
-        {/* Subtle Ambient Radial Glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-sky-200/40 blur-[120px] rounded-full pointer-events-none" />
+      {/* ── 1. HERO SECTION: HARDWARE FIRST + LIVE BIOMETRIC SENSOR BADGES ──────── */}
+      <section className="relative bg-gradient-to-b from-white via-surface-canvas to-surface-subtle pt-6 sm:pt-10 pb-16 sm:pb-24 border-b border-border-subtle overflow-hidden">
+        {/* Subtle Ambient Dots */}
+        <div
+          className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(#00355f 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+          }}
+        />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left Headline */}
-            <div className="lg:col-span-7 space-y-6 text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/15 text-primary text-xs font-bold tracking-wide">
-                <span className="w-2 h-2 rounded-full bg-status-normal live-pulse" />
-                <span>FDA-CLEARED BIOMETRIC TELEMETRY & 24/7 SPECIALIST NETWORK</span>
-              </div>
+          {/* Top Badge Pill */}
+          <div className="flex flex-wrap items-center gap-2 mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-primary-container text-xs font-semibold shadow-xs">
+              <span className="flex h-2 w-2 rounded-full bg-emerald-500" />
+              <span className="font-bold text-primary">NEW GENERATION</span>
+              <span className="text-blue-300">|</span>
+              <span className="truncate max-w-[240px] sm:max-w-none">
+                Skyline VitalsWatch™ Ultra & Continuous Biometric Sensor Pod
+              </span>
+            </div>
+            <span className="inline-flex items-center gap-1 text-xs text-status-normal font-semibold bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+              <span className="material-symbols-outlined text-xs">verified</span> FDA Cleared Lead II ECG
+            </span>
+          </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-text-primary leading-[1.12]">
-                Continuous Wrist Telemetry Meets{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary-container">
-                  Instant Specialist Care.
-                </span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            {/* Left Hero Content Column (6 Cols) */}
+            <div className="lg:col-span-6 space-y-6 text-left">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-extrabold text-primary leading-[1.14] tracking-tight">
+                Clinical-Grade Biometric Smartwatch.{' '}
+                <br className="hidden sm:inline" />
+                <span className="text-secondary underline decoration-blue-200 underline-offset-8">
+                  24/7 Physician-Backed
+                </span>{' '}
+                Telehealth.
               </h1>
 
-              <p className="text-base sm:text-lg text-text-secondary leading-relaxed max-w-2xl font-normal">
-                Skyline Health synchronizes continuous medical-grade wearable sensors with top hospital specialists. When your watch detects abnormal arrhythmia or hypoxia, your cardiologist sees it in real-time during your virtual encounter.
+              <p className="text-sm sm:text-base md:text-lg text-text-secondary max-w-xl leading-relaxed font-normal">
+                Continuous medical-grade ECG, SpO2, blood pressure trends, and core biometric telemetry directly on your wrist — paired with instant 1-tap encrypted video consults with board-certified physicians the second anomalies are detected.
               </p>
 
-              {/* Live Mini ECG Strip */}
-              <div className="pt-2 max-w-xl">
-                <EcgWaveform height={75} heartRate={76} rhythmText="Live VitalsWatch Sensor Stream • Lead II" />
+              {/* CTA and Pricing Cluster */}
+              <div className="pt-2 space-y-3">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <Link
+                    href="/checkout"
+                    className="inline-flex justify-center items-center gap-2 bg-primary hover:bg-primary-container text-white text-sm sm:text-base font-bold px-6 sm:px-7 py-3.5 sm:py-4 rounded-xl shadow-lg shadow-blue-900/10 hover:shadow-xl transition-all duration-150 text-center"
+                  >
+                    <span className="material-symbols-outlined text-xl">shopping_cart</span>
+                    <span>Order Skyline Watch — $399</span>
+                    <span className="text-xs bg-blue-900/60 px-2 py-0.5 rounded text-blue-200">
+                      Save $80
+                    </span>
+                  </Link>
+                  <a
+                    href="#biometric-breakdown"
+                    className="inline-flex justify-center items-center gap-2 bg-white hover:bg-surface-subtle text-primary border border-border-subtle text-sm sm:text-base font-semibold px-5 sm:px-6 py-3.5 sm:py-4 rounded-xl transition-all duration-150 shadow-sm text-center"
+                  >
+                    <span className="material-symbols-outlined text-xl text-primary">biotech</span>
+                    <span>Explore Biosensor Tech</span>
+                  </a>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-text-muted pt-1">
+                  <span className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check_circle</span>
+                    30-Day Risk-Free Trial
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check_circle</span>
+                    Includes 1-Yr Skyline Care+ Telehealth
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check_circle</span>
+                    HSA / FSA Accepted
+                  </span>
+                </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-4 pt-4">
-                <Link
-                  href="/consultancy"
-                  className="px-6 py-3.5 rounded-xl bg-primary-container hover:bg-primary text-white font-bold text-sm shadow-lg shadow-primary/25 transition-all flex items-center gap-2 group"
-                >
-                  <span className="material-symbols-outlined text-lg group-hover:scale-110 transition-transform">
-                    video_camera_front
-                  </span>
-                  Consult a Specialist Now
-                </Link>
-                <Link
-                  href="/#smartwatch"
-                  className="px-6 py-3.5 rounded-xl bg-white hover:bg-surface-subtle text-text-primary font-bold text-sm border border-border-subtle shadow-sm transition-colors flex items-center gap-2"
-                >
-                  <span className="material-symbols-outlined text-lg text-secondary">
-                    watch
-                  </span>
-                  Explore VitalsWatch Pro
-                </Link>
-              </div>
+              {/* Live Telemetry Pulse Strip Preview */}
+              <div className="pt-3">
+                <div className="p-4 rounded-xl bg-white border border-border-subtle shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-rose-50 text-status-critical flex items-center justify-center font-bold shrink-0">
+                      <span className="material-symbols-outlined text-2xl animate-pulse">favorite</span>
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-mono uppercase text-text-muted font-semibold">
+                        Active Sensor Stream
+                      </div>
+                      <div className="text-xs sm:text-sm font-bold text-text-primary flex items-center gap-2">
+                        <span>72 BPM • Sinus Rhythm</span>
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono bg-emerald-100 text-emerald-800 font-bold">
+                          SpO2 99%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
-              {/* Clinical Trust Badges */}
-              <div className="pt-6 border-t border-border-subtle flex flex-wrap items-center gap-6 text-xs text-text-muted font-medium">
-                <div className="flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-emerald-500 text-base">verified</span>
-                  Board-Certified MDs Only
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-sky-500 text-base">lock</span>
-                  HIPAA & HITRUST Certified
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-purple-500 text-base">sync</span>
-                  Epic & Cerner HL7 FHIR
+                  {/* Waveform Trace & Latency */}
+                  <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border-subtle">
+                    <div className="w-24 sm:w-28 h-7 text-status-critical">
+                      <svg className="w-full h-full" fill="none" viewBox="0 0 160 40">
+                        <path
+                          className="ecg-path"
+                          d="M0,20 L30,20 L35,8 L40,32 L45,12 L50,24 L55,20 L75,20 L80,10 L85,30 L90,14 L95,20 L160,20"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                        />
+                      </svg>
+                    </div>
+                    <span className="text-[10px] font-mono font-bold bg-blue-50 text-primary px-2 py-0.5 rounded border border-blue-200 shrink-0">
+                      12ms Latency
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Hero Visual Card */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative mx-auto max-w-md rounded-2xl overflow-hidden shadow-2xl border border-border-subtle bg-slate-900 text-white">
-                {/* Watch & Telehealth Video Encounter Simulation */}
-                <div className="relative h-64 overflow-hidden">
+            {/* Right Column: Product Image Showcase with Live Sensor Badges (6 Cols) */}
+            <div className="lg:col-span-6 relative">
+              <div className="relative bg-gradient-to-br from-slate-100 via-white to-blue-50/40 rounded-3xl p-3 sm:p-6 border border-slate-200 shadow-xl overflow-hidden">
+                {/* Image of Watch & Sensor Pod */}
+                <div className="relative rounded-2xl overflow-hidden bg-slate-900 aspect-[16/10] sm:aspect-[16/9] flex items-center justify-center">
                   <img
-                    src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80"
-                    alt="Dr. Julian Vance conducting virtual visit"
-                    className="w-full h-full object-cover"
+                    src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1000&q=80"
+                    alt="Sleek modern titanium health smartwatch with OLED display showing real-time ECG rhythm wave, pulse 72 bpm, SpO2 99%"
+                    className="w-full h-full object-cover rounded-2xl transform hover:scale-[1.02] transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-black/60" />
-                  
-                  {/* Encounter Status Overlay */}
-                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                    <div className="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-2.5 py-1 rounded-full border border-slate-700 text-[11px] font-mono">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 live-pulse" />
-                      <span className="text-emerald-400 font-bold">LIVE TELEHEALTH ENCOUNTER</span>
-                    </div>
-                    <span className="px-2 py-0.5 rounded bg-black/60 text-[10px] font-mono text-slate-300">
-                      AES-256 WebRTC
-                    </span>
-                  </div>
-
-                  <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
-                    <div>
-                      <div className="text-sm font-bold text-white">Dr. Julian Vance, MD</div>
-                      <div className="text-[11px] text-sky-300">St. Jude Heart Institute</div>
-                    </div>
-                    <div className="w-14 h-18 rounded-lg overflow-hidden border-2 border-white/60 shadow-lg">
-                      <img
-                        src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80"
-                        alt="Patient"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+                  {/* Ambient overlay pill */}
+                  <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-md text-white px-3 py-1 rounded-full text-[11px] font-mono flex items-center gap-1.5 border border-white/20">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>Continuous Lead II ECG Active</span>
                   </div>
                 </div>
 
-                {/* Floating Telemetry HUD at Bottom of Card */}
-                <div className="p-4 bg-slate-950 space-y-3">
-                  <div className="flex items-center justify-between text-xs font-mono text-slate-400">
-                    <span className="flex items-center gap-1.5 text-emerald-400">
-                      <span className="material-symbols-outlined text-sm">watch</span>
-                      Skyline VitalsWatch Pro Live Link
-                    </span>
-                    <span className="text-slate-500">Latency: 18ms</span>
-                  </div>
-
-                  {/* 3 Metric Cards */}
-                  <div className="grid grid-cols-3 gap-2">
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-center">
-                      <div className="text-[10px] uppercase font-mono text-slate-400">Pulse</div>
-                      <div className="text-base font-bold font-mono text-rose-400">104 <span className="text-[9px]">BPM</span></div>
+                {/* Live Biometric Chip Callout Overlay Badges */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3 sm:mt-4">
+                  <div className="bg-white p-2 sm:p-2.5 rounded-xl border border-border-subtle shadow-xs">
+                    <div className="text-[9px] sm:text-[10px] text-text-muted uppercase font-bold">
+                      Optical Array
                     </div>
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-center">
-                      <div className="text-[10px] uppercase font-mono text-slate-400">SpO2</div>
-                      <div className="text-base font-bold font-mono text-sky-400">98%</div>
+                    <div className="text-xs font-bold text-text-primary mt-0.5 truncate">
+                      8-Channel PPG
                     </div>
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-center">
-                      <div className="text-[10px] uppercase font-mono text-slate-400">BP</div>
-                      <div className="text-base font-bold font-mono text-emerald-400">124/82</div>
+                    <div className="text-[9px] sm:text-[10px] font-mono text-status-normal font-semibold">
+                      Medical Grade
                     </div>
                   </div>
 
-                  <div className="pt-1 flex items-center justify-between">
-                    <span className="text-xs text-slate-300">Continuous Sinus rhythm streaming to doctor</span>
-                    <Link
-                      href="/consultancy"
-                      className="text-xs font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1"
-                    >
-                      Book Visit <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                    </Link>
+                  <div className="bg-white p-2 sm:p-2.5 rounded-xl border border-border-subtle shadow-xs">
+                    <div className="text-[9px] sm:text-[10px] text-text-muted uppercase font-bold">
+                      Sync Latency
+                    </div>
+                    <div className="text-xs font-bold text-text-primary mt-0.5 truncate">
+                      Sub-12ms
+                    </div>
+                    <div className="text-[9px] sm:text-[10px] font-mono text-secondary font-semibold">
+                      Ultra WebRTC
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-2 sm:p-2.5 rounded-xl border border-border-subtle shadow-xs">
+                    <div className="text-[9px] sm:text-[10px] text-text-muted uppercase font-bold">
+                      Regulatory
+                    </div>
+                    <div className="text-xs font-bold text-text-primary mt-0.5 truncate">
+                      FDA Class II
+                    </div>
+                    <div className="text-[9px] sm:text-[10px] font-mono text-status-normal font-semibold">
+                      510(k) Cleared
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-2 sm:p-2.5 rounded-xl border border-border-subtle shadow-xs">
+                    <div className="text-[9px] sm:text-[10px] text-text-muted uppercase font-bold">
+                      Battery Life
+                    </div>
+                    <div className="text-xs font-bold text-text-primary mt-0.5 truncate">
+                      7-Day Run
+                    </div>
+                    <div className="text-[9px] sm:text-[10px] font-mono text-text-muted font-semibold">
+                      Fast Inductive
+                    </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Hardware Trust Badge Bar */}
+          <div className="mt-10 sm:mt-14 pt-8 border-t border-border-subtle/80 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 text-center">
+            <div className="bg-white p-3 sm:p-4 rounded-xl border border-border-subtle shadow-xs flex items-center justify-center gap-3">
+              <span className="material-symbols-outlined text-primary text-xl sm:text-2xl">verified_user</span>
+              <div className="text-left">
+                <div className="text-xs sm:text-sm font-bold text-text-primary">FDA Class II Cleared</div>
+                <div className="text-[10px] sm:text-[11px] text-text-muted">Cardiac & Oximetry Safety</div>
+              </div>
+            </div>
+
+            <div className="bg-white p-3 sm:p-4 rounded-xl border border-border-subtle shadow-xs flex items-center justify-center gap-3">
+              <span className="material-symbols-outlined text-status-normal text-xl sm:text-2xl">monitor_heart</span>
+              <div className="text-left">
+                <div className="text-xs sm:text-sm font-bold text-text-primary">99.4% ECG Accuracy</div>
+                <div className="text-[10px] sm:text-[11px] text-text-muted">Multi-Center Trial Validated</div>
+              </div>
+            </div>
+
+            <div className="bg-white p-3 sm:p-4 rounded-xl border border-border-subtle shadow-xs flex items-center justify-center gap-3">
+              <span className="material-symbols-outlined text-secondary text-xl sm:text-2xl">timelapse</span>
+              <div className="text-left">
+                <div className="text-xs sm:text-sm font-bold text-text-primary">500,000+ Days</div>
+                <div className="text-[10px] sm:text-[11px] text-text-muted">Active Biometric Telemetry</div>
+              </div>
+            </div>
+
+            <div className="bg-white p-3 sm:p-4 rounded-xl border border-border-subtle shadow-xs flex items-center justify-center gap-3">
+              <span className="material-symbols-outlined text-primary-container text-xl sm:text-2xl">lock</span>
+              <div className="text-left">
+                <div className="text-xs sm:text-sm font-bold text-text-primary">HIPAA / AES-256</div>
+                <div className="text-[10px] sm:text-[11px] text-text-muted">Encrypted Health Vault</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── 2. DEDICATED TELEHEALTH & SPECIALIST NETWORK SECTION ───────────────────── */}
-      <section id="specialists" className="py-20 bg-white border-y border-border-subtle">
+      {/* ── 2. PRECISION HARDWARE & SENSOR ENGINEERING DEEP-DIVE ──────────────────── */}
+      <section className="py-14 sm:py-20 bg-white border-b border-border-subtle" id="biometric-breakdown">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14 space-y-4">
-            <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-mono font-bold tracking-wider uppercase">
-              24/7 Virtual Clinical Network
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-primary">
-              Connect With Leading Sub-Specialists Who See Your Vitals in Real-Time
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/70 text-primary text-xs font-semibold mb-3">
+              <span className="material-symbols-outlined text-sm">memory</span>
+              <span>Micro-Electrochemical Architecture</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary tracking-tight">
+              Precision Hardware Engineered for Continuous Physiology
             </h2>
-            <p className="text-text-secondary text-base">
-              No more guessing or describing your symptoms. Our physicians analyze continuous Lead II ECG rhythm strips and arterial blood oxygen saturation while talking to you.
+            <p className="text-sm sm:text-base text-text-secondary mt-3">
+              Consumer wearables guess. Skyline Health measures with medical-grade multi-spectral optical diodes, dry-contact electrodes, and sub-second DSP microcontrollers.
             </p>
+          </div>
 
-            {/* Filter Tabs */}
-            <div className="flex flex-wrap justify-center gap-2 pt-4">
-              {(['all', 'Cardiology', 'Endocrinology', 'General Health', 'Neurology'] as const).map(
-                (tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
-                      activeTab === tab
-                        ? 'bg-primary text-white shadow-sm'
-                        : 'bg-surface-subtle text-text-secondary hover:bg-slate-200'
-                    }`}
-                  >
-                    {tab === 'all' ? 'All Specialties' : tab}
-                  </button>
-                )
-              )}
+          {/* Hardware Modules Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            {/* Module 1 */}
+            <div className="bg-surface-subtle p-6 rounded-2xl border border-border-subtle hover:border-primary/40 transition-all flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-blue-50 text-primary flex items-center justify-center mb-5 shadow-xs">
+                  <span className="material-symbols-outlined text-2xl">diamond</span>
+                </div>
+                <h3 className="text-lg font-bold text-text-primary mb-2">
+                  Grade 5 Aerospace Titanium & Sapphire
+                </h3>
+                <p className="text-xs text-text-secondary leading-relaxed mb-4">
+                  CNC-milled from titanium alloy with sapphire crystal lens capable of withstanding 50m water pressure (5ATM). Hypoallergenic surgical contact chassis eliminates dermal irritation during 24/7 wear.
+                </p>
+              </div>
+              <ul className="text-xs font-semibold space-y-2 text-text-muted border-t border-border-subtle pt-3">
+                <li className="flex items-center gap-2 text-primary">
+                  <span className="material-symbols-outlined text-xs">check</span> 5ATM Water Resistance (Shower & Swim)
+                </li>
+                <li className="flex items-center gap-2 text-primary">
+                  <span className="material-symbols-outlined text-xs">check</span> 42g Featherweight Ergonomics
+                </li>
+              </ul>
+            </div>
+
+            {/* Module 2 */}
+            <div className="bg-surface-subtle p-6 rounded-2xl border border-border-subtle hover:border-primary/40 transition-all flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-rose-50 text-status-critical flex items-center justify-center mb-5 shadow-xs">
+                  <span className="material-symbols-outlined text-2xl">ecg</span>
+                </div>
+                <h3 className="text-lg font-bold text-text-primary mb-2">
+                  Dual Dry-Contact Lead I/II ECG Electrodes
+                </h3>
+                <p className="text-xs text-text-secondary leading-relaxed mb-4">
+                  Built-in bezel crown and backplate gold-plated electrodes record complete medical Lead I and simulated Lead II rhythm waveforms in 30 seconds with immediate atrial fibrillation and PVC screening.
+                </p>
+              </div>
+              <ul className="text-xs font-semibold space-y-2 text-text-muted border-t border-border-subtle pt-3">
+                <li className="flex items-center gap-2 text-status-critical">
+                  <span className="material-symbols-outlined text-xs">check</span> 500Hz Sampling Resolution
+                </li>
+                <li className="flex items-center gap-2 text-status-critical">
+                  <span className="material-symbols-outlined text-xs">check</span> Exportable Diagnostic PDF to Cardiologist
+                </li>
+              </ul>
+            </div>
+
+            {/* Module 3 */}
+            <div className="bg-surface-subtle p-6 rounded-2xl border border-border-subtle hover:border-primary/40 transition-all flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-emerald-50 text-status-normal flex items-center justify-center mb-5 shadow-xs">
+                  <span className="material-symbols-outlined text-2xl">water_drop</span>
+                </div>
+                <h3 className="text-lg font-bold text-text-primary mb-2">
+                  8-Channel Multi-Spectral PPG & SpO2
+                </h3>
+                <p className="text-xs text-text-secondary leading-relaxed mb-4">
+                  Employs red, infrared, and green optical wavelength sensors to compute real-time blood oxygen saturation, pulse transit time (PTT) blood pressure approximations, and interstitial glucose trend curves.
+                </p>
+              </div>
+              <ul className="text-xs font-semibold space-y-2 text-text-muted border-t border-border-subtle pt-3">
+                <li className="flex items-center gap-2 text-status-normal">
+                  <span className="material-symbols-outlined text-xs">check</span> ±1.2% SpO2 Clinical Variance
+                </li>
+                <li className="flex items-center gap-2 text-status-normal">
+                  <span className="material-symbols-outlined text-xs">check</span> Continuous Overnight Hypoxia Alerts
+                </li>
+              </ul>
             </div>
           </div>
 
-          {/* Doctors Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredConsultants.map((doc) => (
-              <div
-                key={doc.id}
-                className="rounded-2xl border border-border-subtle bg-white hover:border-primary/40 hover:shadow-xl transition-all p-6 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="relative">
-                      <img
-                        src={doc.avatarUrl}
-                        alt={doc.name}
-                        className="w-16 h-16 rounded-xl object-cover border border-border-subtle"
-                      />
-                      {doc.isAvailableNow && (
-                        <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-status-normal border-2 border-white" />
-                      )}
+          {/* Real-time Sensor Metric Tiles */}
+          <div className="mt-10 p-5 sm:p-6 bg-surface-canvas rounded-2xl border border-border-subtle">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-text-muted mb-4">
+              Continuous Metric Capabilities Monitored 24 Hours / Day
+            </div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="bg-white p-4 rounded-xl border border-border-subtle shadow-xs">
+                <span className="material-symbols-outlined text-primary text-xl">vital_signs</span>
+                <div className="text-xs sm:text-sm font-bold mt-1">HR & HRV Variance</div>
+                <div className="text-[11px] text-text-muted mt-0.5">Beat-to-beat SDNN autonomic tracking</div>
+              </div>
+
+              <div className="bg-white p-4 rounded-xl border border-border-subtle shadow-xs">
+                <span className="material-symbols-outlined text-secondary text-xl">thermostat</span>
+                <div className="text-xs sm:text-sm font-bold mt-1">Core Temperature</div>
+                <div className="text-[11px] text-text-muted mt-0.5">Sub-surface skin micro-sensor (±0.05°C)</div>
+              </div>
+
+              <div className="bg-white p-4 rounded-xl border border-border-subtle shadow-xs">
+                <span className="material-symbols-outlined text-amber-500 text-xl">blood_pressure</span>
+                <div className="text-xs sm:text-sm font-bold mt-1">Arterial Wave Trend</div>
+                <div className="text-[11px] text-text-muted mt-0.5">Continuous pulse transit vascular tone</div>
+              </div>
+
+              <div className="bg-white p-4 rounded-xl border border-border-subtle shadow-xs">
+                <span className="material-symbols-outlined text-rose-500 text-xl">crisis_alert</span>
+                <div className="text-xs sm:text-sm font-bold mt-1">Fall & Crash Detection</div>
+                <div className="text-[11px] text-text-muted mt-0.5">High-G 6-axis accelerometer & gyro</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 3. THE CLINICAL ADVANTAGE: 24/7 SPECIALIST CONSULTATIONS ON DEMAND ────── */}
+      <section className="py-14 sm:py-20 bg-surface-subtle border-b border-border-subtle" id="clinical-advantage">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/70 text-primary text-xs font-semibold mb-3">
+              <span className="material-symbols-outlined text-sm">video_call</span>
+              <span>The Skyline Telehealth Advantage</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary tracking-tight">
+              Your Watch Detects Anomalies.<br />Our On-Demand Doctors Respond.
+            </h2>
+            <p className="text-sm sm:text-base text-text-secondary mt-3">
+              Other smartwatches simply send you scary push notifications. Skyline connects your live wrist biometric stream straight to a board-certified physician in under 90 seconds.
+            </p>
+          </div>
+
+          {/* Wrist-to-Consultant Flow Simulation Box */}
+          <div className="bg-white rounded-2xl border border-border-subtle shadow-xl overflow-hidden mb-12">
+            <div className="bg-slate-900 text-slate-200 px-4 sm:px-5 py-3.5 flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
+              <div className="flex items-center gap-3">
+                <span className="flex h-3 w-3 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-normal opacity-75" />
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-status-normal" />
+                </span>
+                <span className="text-xs sm:text-sm font-bold text-white tracking-wide">
+                  LIVE SYNCHRONIZED TELEHEALTH SESSION
+                </span>
+                <span className="text-slate-500 hidden sm:inline">|</span>
+                <span className="text-xs font-mono text-slate-300 hidden sm:inline">
+                  Watch Stream: VitalsWatch Ultra #SK-8832
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded border border-emerald-800">
+                  1-Tap Video Call Active • 12ms Telemetry
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[440px]">
+              {/* Video Stream (Patient View of Doctor) */}
+              <div className="lg:col-span-6 bg-slate-950 relative flex flex-col justify-between p-4 min-h-[280px] sm:min-h-[380px] overflow-hidden">
+                {callEnded ? (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 text-white p-6 text-center z-10">
+                    <span className="material-symbols-outlined text-5xl text-emerald-400 mb-2">
+                      check_circle
+                    </span>
+                    <h4 className="text-lg font-bold">Consultation Concluded</h4>
+                    <p className="text-xs text-slate-400 mt-1 max-w-xs">
+                      Dr. Vance has verified your rhythm strip and pushed clinical notes to your patient record.
+                    </p>
+                    <button
+                      onClick={() => setCallEnded(false)}
+                      className="mt-4 px-4 py-2 bg-primary-container text-white text-xs font-bold rounded-lg"
+                    >
+                      Re-open Demo Call
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <img
+                      src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80"
+                      alt="Dr. Julian Vance, MD Cardiologist On Call"
+                      className="absolute inset-0 w-full h-full object-cover opacity-90"
+                    />
+
+                    <div className="relative z-10 flex items-center justify-between">
+                      <span className="bg-black/60 backdrop-blur text-white text-xs px-2.5 py-1 rounded-md flex items-center gap-1.5 font-medium">
+                        <span className="w-2 h-2 rounded-full bg-status-normal" /> Dr. Vance, MD (Cardiologist)
+                      </span>
+                      <span className="bg-black/60 backdrop-blur text-white text-xs px-2 py-1 rounded-md font-mono">
+                        Response: 42s
+                      </span>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <h3 className="text-base font-extrabold text-text-primary truncate">
-                          {doc.name}
-                        </h3>
-                        <span className="material-symbols-outlined text-primary text-base">
-                          verified
+
+                    {/* Patient Self-Preview & Controls */}
+                    <div className="relative z-10 flex items-end justify-between pt-16">
+                      <div className="w-24 sm:w-28 h-18 sm:h-20 rounded-lg bg-slate-800 border border-white/30 overflow-hidden shadow-lg relative">
+                        <img
+                          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&q=80"
+                          alt="Patient Michael Hernandez preview"
+                          className="w-full h-full object-cover"
+                        />
+                        <span className="absolute bottom-1 left-1 bg-black/70 text-[8px] sm:text-[9px] text-white px-1 rounded font-mono">
+                          You (Watch)
                         </span>
                       </div>
-                      <div className="text-xs font-bold text-secondary truncate">{doc.title}</div>
-                      <div className="text-[11px] text-text-muted truncate">{doc.hospital}</div>
+
+                      <div className="bg-black/70 backdrop-blur-md rounded-full px-3 py-1.5 flex items-center gap-2 border border-slate-700">
+                        <button
+                          onClick={() => setMicMuted(!micMuted)}
+                          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                            micMuted ? 'bg-amber-600 text-white' : 'bg-slate-800 text-white hover:bg-slate-700'
+                          }`}
+                          title={micMuted ? 'Unmute Microphone' : 'Mute Microphone'}
+                        >
+                          <span className="material-symbols-outlined text-sm">
+                            {micMuted ? 'mic_off' : 'mic'}
+                          </span>
+                        </button>
+                        <button
+                          onClick={() => setVideoMuted(!videoMuted)}
+                          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                            videoMuted ? 'bg-amber-600 text-white' : 'bg-slate-800 text-white hover:bg-slate-700'
+                          }`}
+                          title={videoMuted ? 'Turn Camera On' : 'Turn Camera Off'}
+                        >
+                          <span className="material-symbols-outlined text-sm">
+                            {videoMuted ? 'videocam_off' : 'videocam'}
+                          </span>
+                        </button>
+                        <button
+                          onClick={() => setCallEnded(true)}
+                          className="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700 transition-colors"
+                          title="End Demonstration Call"
+                        >
+                          <span className="material-symbols-outlined text-sm">call_end</span>
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Telemetry Received by Clinician in Real Time */}
+              <div className="lg:col-span-6 bg-white p-4 sm:p-5 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-border-subtle space-y-4">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-primary text-xl">vital_signs</span>
+                      <span className="text-xs sm:text-sm font-bold text-text-primary">
+                        Watch Biometric Stream
+                      </span>
+                    </div>
+                    <span className="text-[10px] sm:text-xs font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold">
+                      Live Sensor Telemetry Verified
+                    </span>
+                  </div>
+
+                  {/* Live Rhythm Wave */}
+                  <div className="p-3 rounded-xl bg-slate-900 text-white">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[9px] sm:text-[10px] font-mono text-slate-400">
+                        WATCH LEAD II WAVEFORM • 25mm/s
+                      </span>
+                      <span className="text-[9px] sm:text-[10px] font-mono text-emerald-400">
+                        NORMAL SINUS • 72 BPM
+                      </span>
+                    </div>
+                    <div className="h-9 w-full flex items-center">
+                      <svg className="w-full h-8 text-emerald-400" fill="none" viewBox="0 0 400 40">
+                        <path
+                          className="ecg-path"
+                          d="M0,20 L40,20 L45,8 L50,32 L55,14 L60,24 L65,20 L120,20 L125,8 L130,32 L135,14 L140,24 L145,20 L200,20 L205,8 L210,32 L215,14 L220,24 L225,20 L280,20 L285,8 L290,32 L295,14 L300,24 L305,20 L360,20 L365,8 L370,32 L375,14 L380,24 L385,20 L400,20"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                        />
+                      </svg>
                     </div>
                   </div>
 
-                  <p className="text-xs text-text-secondary line-clamp-2 leading-relaxed mb-4">
-                    {doc.bio}
-                  </p>
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="p-2 sm:p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-center">
+                      <div className="text-[9px] sm:text-[10px] text-text-muted font-bold">PULSE</div>
+                      <div className="text-base sm:text-lg font-bold text-text-primary font-mono">
+                        72 <span className="text-[10px] font-normal">bpm</span>
+                      </div>
+                    </div>
+                    <div className="p-2 sm:p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-center">
+                      <div className="text-[9px] sm:text-[10px] text-text-muted font-bold">SpO2</div>
+                      <div className="text-base sm:text-lg font-bold text-text-primary font-mono">
+                        99 <span className="text-[10px] font-normal">%</span>
+                      </div>
+                    </div>
+                    <div className="p-2 sm:p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-center">
+                      <div className="text-[9px] sm:text-[10px] text-text-muted font-bold">BODY TEMP</div>
+                      <div className="text-base sm:text-lg font-bold text-text-primary font-mono">
+                        36.8 <span className="text-[10px] font-normal">°C</span>
+                      </div>
+                    </div>
+                  </div>
 
-                  <div className="flex items-center gap-3 text-xs text-text-muted mb-4 pb-4 border-b border-border-subtle">
-                    <div className="flex items-center gap-1 text-amber-500 font-bold">
-                      <span className="material-symbols-outlined text-sm">star</span>
-                      {doc.rating}
-                      <span className="text-text-muted font-normal">({doc.reviewCount})</span>
+                  <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl text-xs space-y-1">
+                    <div className="font-bold text-primary flex items-center gap-1">
+                      <span className="material-symbols-outlined text-sm">medical_information</span>
+                      Physician Impression & Triage Plan
                     </div>
-                    <span>•</span>
-                    <div>{doc.experienceYears} yrs exp</div>
-                    <span>•</span>
-                    <div className="text-status-normal font-semibold">
-                      {doc.isAvailableNow ? 'Available Today' : doc.nextSlot}
-                    </div>
+                    <p className="text-text-secondary text-[11px] sm:text-xs leading-relaxed">
+                      &quot;Arrhythmia warning triggered on watch at 14:02 resolved into clean sinus rhythm. ECG reveals normal PR interval. No urgent ED visit required. Refill dispatched to patient pharmacy.&quot;
+                    </p>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-2">
-                  <div>
-                    <span className="text-xs text-text-muted">Consultation Fee</span>
-                    <div className="text-lg font-extrabold text-text-primary font-mono">
-                      ${doc.fee}
-                      <span className="text-xs font-normal text-text-muted"> / visit</span>
-                    </div>
+                <div className="pt-3 border-t border-border-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                  <div className="text-[11px] text-text-muted">
+                    Encrypted via Surescripts & Epic FHIR
                   </div>
                   <Link
-                    href={`/consultancy?doctor=${doc.id}`}
-                    className="px-4 py-2 rounded-lg bg-primary-container hover:bg-primary text-white text-xs font-bold shadow-sm transition-colors flex items-center gap-1"
+                    href="/patient/records"
+                    className="w-full sm:w-auto bg-primary hover:bg-primary-container text-white text-xs font-bold px-3 py-2 rounded-lg text-center transition-colors"
                   >
-                    <span>Book Encounter</span>
-                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                    View Care Summary Record
                   </Link>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
 
-          <div className="mt-12 text-center">
+          {/* Care+ Membership Add-On Pricing Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white p-6 rounded-2xl border border-border-subtle flex flex-col justify-between shadow-xs">
+              <div>
+                <div className="text-xs font-bold uppercase tracking-wider text-text-muted mb-1">
+                  Standard Included
+                </div>
+                <h4 className="text-xl font-bold text-primary">Skyline Telemetry Basic</h4>
+                <div className="text-2xl font-extrabold text-text-primary mt-2">
+                  Free <span className="text-xs font-normal text-text-muted">with watch</span>
+                </div>
+                <p className="text-xs text-text-secondary mt-2">
+                  Full continuous biometric monitoring, PDF health report exports, abnormal heart rhythm notifications.
+                </p>
+                <ul className="text-xs space-y-2 mt-4 text-text-secondary">
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    Continuous 24/7 ECG & SpO2 logs
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    Export reports for your own physician
+                  </li>
+                </ul>
+              </div>
+              <Link
+                href="/checkout"
+                className="mt-6 w-full py-2.5 rounded-lg border border-border-subtle text-xs font-bold text-text-primary text-center hover:bg-surface-subtle transition-colors block"
+              >
+                Included by Default
+              </Link>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border-2 border-primary shadow-xl relative flex flex-col justify-between">
+              <div className="absolute -top-3 right-4 bg-secondary text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-xs">
+                Most Popular
+              </div>
+              <div>
+                <div className="text-xs font-bold uppercase tracking-wider text-secondary mb-1">
+                  Bundled Care Add-On
+                </div>
+                <h4 className="text-xl font-bold text-primary">Skyline Care+ Concierge</h4>
+                <div className="text-2xl font-extrabold text-text-primary mt-2">
+                  $29 <span className="text-xs font-normal text-text-muted">/ month (1st year free with watch)</span>
+                </div>
+                <p className="text-xs text-text-secondary mt-2">
+                  24/7 on-demand 1-tap video consults with board-certified US doctors, instant prescription routing, and rapid cardiac triage.
+                </p>
+                <ul className="text-xs space-y-2 mt-4 text-text-secondary">
+                  <li className="flex items-center gap-2 font-semibold text-primary">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    Unlimited on-demand video visits
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    &lt; 90-second average clinician pickup
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    e-Prescribe to 65,000+ pharmacies
+                  </li>
+                </ul>
+              </div>
+              <Link
+                href="/checkout"
+                className="mt-6 w-full py-2.5 rounded-lg bg-primary hover:bg-primary-container text-xs font-bold text-white text-center shadow-md transition-colors block"
+              >
+                Claim With Watch Bundle
+              </Link>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-border-subtle flex flex-col justify-between shadow-xs">
+              <div>
+                <div className="text-xs font-bold uppercase tracking-wider text-text-muted mb-1">
+                  Family & Chronic Care
+                </div>
+                <h4 className="text-xl font-bold text-primary">Skyline Care+ Family</h4>
+                <div className="text-2xl font-extrabold text-text-primary mt-2">
+                  $59 <span className="text-xs font-normal text-text-muted">/ month for up to 4 watches</span>
+                </div>
+                <p className="text-xs text-text-secondary mt-2">
+                  Shared family dashboard, senior fall escalation, remote caregiver alerts, and pediatric/geriatric specialist access.
+                </p>
+                <ul className="text-xs space-y-2 mt-4 text-text-secondary">
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    Multi-device guardian alert network
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    Dedicated primary care doctor pair
+                  </li>
+                </ul>
+              </div>
+              <Link
+                href="/checkout"
+                className="mt-6 w-full py-2.5 rounded-lg border border-border-subtle text-xs font-bold text-text-primary text-center hover:bg-surface-subtle transition-colors block"
+              >
+                Select Family Plan
+              </Link>
+            </div>
+          </div>
+
+          {/* Secondary Clinician Recruiting Banner */}
+          <div className="mt-8 bg-white rounded-xl p-4 sm:p-5 border border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-2xl">stethoscope</span>
+              </div>
+              <div>
+                <div className="text-xs sm:text-sm font-bold text-text-primary">
+                  Are you a Board-Certified Physician or Medical Specialist?
+                </div>
+                <div className="text-[11px] sm:text-xs text-text-muted">
+                  Join our on-demand clinical telemetry network. Rapid NPI verification and malpractice coverage included.
+                </div>
+              </div>
+            </div>
             <Link
-              href="/consultancy"
-              className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-container"
+              href="/apply"
+              className="w-full sm:w-auto bg-surface-subtle hover:bg-slate-200 text-primary border border-border-subtle text-xs font-bold px-4 py-2.5 rounded-xl transition-colors flex items-center justify-center gap-1 shrink-0"
             >
-              <span>Explore Complete Specialist Directory (120+ Physicians)</span>
-              <span className="material-symbols-outlined text-base">arrow_forward</span>
+              <span>Apply to Clinician Roster</span>
+              <span className="material-symbols-outlined text-xs">arrow_forward</span>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── 3. SMARTWATCH HARDWARE & SENSOR SUITE ──────────────────────────────────── */}
-      <section id="smartwatch" className="py-20 bg-surface-canvas">
+      {/* ── 4. HARDWARE LINEUP & COMPARISON MATRIX ────────────────────────────────── */}
+      <section className="py-14 sm:py-20 bg-white" id="hardware-lineup">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Watch Spec Presentation */}
-            <div className="space-y-6">
-              <span className="px-3 py-1 rounded-full bg-secondary/10 text-secondary text-xs font-mono font-bold tracking-wider uppercase">
-                Hardware & Sensor Diagnostic Hub
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <span className="text-xs font-bold uppercase tracking-wider text-secondary">
+              Choose Your Device
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary tracking-tight mt-1">
+              Skyline Health Biometric Fleet
+            </h2>
+            <p className="text-sm sm:text-base text-text-secondary mt-3">
+              Engineered for hospital-grade precision. Backed by the world’s most advanced on-demand physician network.
+            </p>
+          </div>
+
+          {/* Product Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+            {/* Product 1: PulseBand Pro */}
+            <div className="bg-surface-canvas rounded-2xl border border-border-subtle p-6 flex flex-col justify-between hover:shadow-md transition-shadow">
+              <div>
+                <div className="aspect-video bg-slate-100 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden">
+                  <span className="material-symbols-outlined text-6xl text-slate-400">watch</span>
+                  <span className="absolute top-2 left-2 bg-slate-800 text-white text-[10px] font-mono px-2 py-0.5 rounded">
+                    SLIM PROFILE
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-text-primary">Skyline PulseBand Pro</h3>
+                <p className="text-xs text-text-muted mt-1">
+                  Lightweight screenless biometric band for screen-free athletes and sleep tracking.
+                </p>
+                <div className="mt-4 flex items-baseline gap-2">
+                  <span className="text-3xl font-extrabold text-primary font-mono">$299</span>
+                  <span className="text-xs text-text-muted line-through">$349</span>
+                </div>
+                <ul className="text-xs space-y-2 mt-6 text-text-secondary border-t border-border-subtle pt-4">
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    14-Day Battery Life
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    Continuous Optical SpO2 & HRV
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    Skin Temperature Micro-Sensor
+                  </li>
+                  <li className="flex items-center gap-2 text-text-muted">
+                    <span className="material-symbols-outlined text-slate-300 text-sm">close</span>
+                    Dry-Contact ECG Bezel (Ultra Only)
+                  </li>
+                </ul>
+              </div>
+              <Link
+                href="/checkout?device=pulseband"
+                className="mt-8 w-full bg-white hover:bg-slate-100 text-primary border border-border-subtle text-xs font-bold py-3 rounded-xl text-center shadow-xs transition-colors block"
+              >
+                Order PulseBand — $299
+              </Link>
+            </div>
+
+            {/* Product 2: VitalsWatch Ultra (HERO) */}
+            <div className="bg-white rounded-2xl border-2 border-primary p-6 flex flex-col justify-between shadow-xl relative lg:-translate-y-2">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-sm flex items-center gap-1">
+                <span className="material-symbols-outlined text-xs">star</span> Flagship Clinical Device
+              </div>
+              <div>
+                <div className="aspect-video bg-blue-50/50 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden border border-blue-100">
+                  <img
+                    src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80"
+                    alt="Flagship Skyline VitalsWatch Ultra"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="text-xl font-bold text-text-primary">Skyline VitalsWatch™ Ultra</h3>
+                <p className="text-xs text-text-muted mt-1">
+                  Titanium smartwatch with live OLED ECG screen, speaker/mic, and standalone cellular telemetry.
+                </p>
+                <div className="mt-4 flex items-baseline gap-2">
+                  <span className="text-3xl font-extrabold text-primary font-mono">$399</span>
+                  <span className="text-xs text-text-muted line-through">$479</span>
+                  <span className="text-[11px] font-mono text-status-normal font-semibold">
+                    1 Yr Care+ Inc.
+                  </span>
+                </div>
+                <ul className="text-xs space-y-2 mt-6 text-text-secondary border-t border-border-subtle pt-4">
+                  <li className="flex items-center gap-2 font-semibold text-primary">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    Grade 5 Titanium + Sapphire Screen
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    30-Sec FDA Cleared Lead II ECG
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    7-Day Continuous Battery Life
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    Standalone LTE-M Emergency Call
+                  </li>
+                  <li className="flex items-center gap-2 text-status-normal font-semibold">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    1-Year Free 24/7 Doctor Consults ($348 value)
+                  </li>
+                </ul>
+              </div>
+              <Link
+                href="/checkout?device=ultra"
+                className="mt-8 w-full bg-primary hover:bg-primary-container text-white text-xs sm:text-sm font-bold py-3.5 rounded-xl text-center shadow-md transition-colors block"
+              >
+                Order VitalsWatch Ultra — $399
+              </Link>
+            </div>
+
+            {/* Product 3: Clinical Biosensor Suite */}
+            <div className="bg-surface-canvas rounded-2xl border border-border-subtle p-6 flex flex-col justify-between hover:shadow-md transition-shadow">
+              <div>
+                <div className="aspect-video bg-slate-100 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden">
+                  <span className="material-symbols-outlined text-6xl text-slate-400">hub</span>
+                  <span className="absolute top-2 left-2 bg-secondary text-white text-[10px] font-mono px-2 py-0.5 rounded">
+                    HOSPITAL RPM BUNDLE
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-text-primary">Clinical Biosensor Suite</h3>
+                <p className="text-xs text-text-muted mt-1">
+                  Complete diagnostic ecosystem: Watch Ultra + Biosensor Ring + Home Cellular Base Hub.
+                </p>
+                <div className="mt-4 flex items-baseline gap-2">
+                  <span className="text-3xl font-extrabold text-primary font-mono">$699</span>
+                  <span className="text-xs text-text-muted line-through">$849</span>
+                </div>
+                <ul className="text-xs space-y-2 mt-6 text-text-secondary border-t border-border-subtle pt-4">
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    Includes Watch + Continuous Sleep Ring
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    Continuous Nocturnal SpO2 Tracking
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    Cellular Hub for Zero-WiFi Elder Care
+                  </li>
+                  <li className="flex items-center gap-2 text-primary font-semibold">
+                    <span className="material-symbols-outlined text-status-normal text-sm">check</span>
+                    CPT 99453 / 99454 Insurance Covered
+                  </li>
+                </ul>
+              </div>
+              <Link
+                href="/checkout?device=suite"
+                className="mt-8 w-full bg-white hover:bg-slate-100 text-primary border border-border-subtle text-xs font-bold py-3 rounded-xl text-center shadow-xs transition-colors block"
+              >
+                Order Complete Suite — $699
+              </Link>
+            </div>
+          </div>
+
+          {/* Technical Hardware Specification Matrix */}
+          <div className="mt-14 sm:mt-16 bg-surface-canvas rounded-2xl border border-border-subtle overflow-hidden" id="specs">
+            <div className="p-4 sm:p-5 bg-white border-b border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <h4 className="text-sm sm:text-base font-bold text-text-primary">
+                Technical Hardware Specification Matrix
+              </h4>
+              <span className="text-xs text-text-muted font-mono">
+                All devices include FDA Class II 510(k) cleared software
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-text-primary">
-                Skyline VitalsWatch Pro: Medical Sensor Precision on Your Wrist
-              </h2>
-              <p className="text-text-secondary text-base leading-relaxed">
-                Engineered with clinical-grade accuracy to capture biometric anomalies before they escalate. Designed for continuous 24/7 telemetry with 7-day battery life and seamless cellular/Bluetooth sync.
-              </p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs min-w-[580px]">
+                <thead className="bg-surface-subtle text-text-secondary uppercase tracking-wider border-b border-border-subtle text-[11px] font-bold">
+                  <tr>
+                    <th className="py-3.5 px-4">Hardware Feature</th>
+                    <th className="py-3.5 px-4">PulseBand Pro ($299)</th>
+                    <th className="py-3.5 px-4 text-primary">VitalsWatch™ Ultra ($399)</th>
+                    <th className="py-3.5 px-4">Biosensor Suite ($699)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border-subtle">
+                  <tr>
+                    <td className="py-3 px-4 font-semibold text-text-primary">Bezel & Glass</td>
+                    <td className="py-3 px-4 text-text-secondary">Anodized Aluminum / Polymer</td>
+                    <td className="py-3 px-4 font-bold text-primary">Grade 5 Titanium + Sapphire</td>
+                    <td className="py-3 px-4 text-text-secondary">Titanium + Ceramic Pod</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 font-semibold text-text-primary">ECG Capability</td>
+                    <td className="py-3 px-4 text-text-secondary">No (PPG Pulse Only)</td>
+                    <td className="py-3 px-4 font-bold text-status-normal">Dry-Contact Lead I & II (500Hz)</td>
+                    <td className="py-3 px-4 font-bold text-status-normal">Dual Lead I/II + Continuous Vector</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 font-semibold text-text-primary">Battery Life</td>
+                    <td className="py-3 px-4 text-text-secondary">14 Days</td>
+                    <td className="py-3 px-4 font-bold text-primary">7 Days Continuous (OLED Always-On)</td>
+                    <td className="py-3 px-4 text-text-secondary">7 Days Watch / 10 Days Ring</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 font-semibold text-text-primary">LTE-M Standalone Cellular</td>
+                    <td className="py-3 px-4 text-text-muted">Requires Phone BT</td>
+                    <td className="py-3 px-4 font-bold text-status-normal">Included (No Phone Required)</td>
+                    <td className="py-3 px-4 font-bold text-status-normal">Included + LTE Standalone Base Hub</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 font-semibold text-text-primary">Doctor Telehealth Integration</td>
+                    <td className="py-3 px-4 text-text-secondary">Pay-per-visit ($49)</td>
+                    <td className="py-3 px-4 font-bold text-status-normal">1-Year Unlimited 24/7 MD Access</td>
+                    <td className="py-3 px-4 font-bold text-status-normal">2-Years Concierge Clinical Coverage</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 font-semibold text-text-primary">Water Rating</td>
+                    <td className="py-3 px-4 text-text-secondary">5ATM (50 meters)</td>
+                    <td className="py-3 px-4 text-text-secondary">5ATM (50 meters)</td>
+                    <td className="py-3 px-4 text-text-secondary">5ATM (50 meters)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              <div className="space-y-4 pt-2">
-                <div className="p-4 rounded-xl bg-white border border-border-subtle shadow-sm flex items-start gap-4">
-                  <div className="p-2.5 rounded-lg bg-emerald-500/10 text-emerald-600">
-                    <span className="material-symbols-outlined text-2xl">ecg_heart</span>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-text-primary">Lead II Single-Lead ECG</h4>
-                    <p className="text-xs text-text-secondary leading-relaxed mt-0.5">
-                      Titanium bezel electrodes record 30-second rhythm strips capable of classifying sinus tachycardia, bradycardia, and AFib.
-                    </p>
-                  </div>
+      {/* ── 5. VERIFIED LIVES IMPACTED & CLINICIAN ENDORSEMENTS ────────────────────── */}
+      <section className="py-14 sm:py-20 bg-surface-subtle border-y border-border-subtle">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <span className="text-xs font-bold uppercase tracking-wider text-secondary">
+              Verified Lives Impacted
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary tracking-tight mt-1">
+              Patient Stories & Physician Backing
+            </h2>
+            <p className="text-sm sm:text-base text-text-secondary mt-3">
+              See how continuous wrist telemetry paired with sub-90s doctor consults catches arrhythmias early and prevents hospital readmissions.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            {/* Testimonial 1 */}
+            <div className="bg-white p-6 rounded-2xl border border-border-subtle shadow-sm flex flex-col justify-between">
+              <div>
+                <div className="flex text-amber-400 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className="material-symbols-outlined text-lg">star</span>
+                  ))}
                 </div>
-
-                <div className="p-4 rounded-xl bg-white border border-border-subtle shadow-sm flex items-start gap-4">
-                  <div className="p-2.5 rounded-lg bg-sky-500/10 text-sky-600">
-                    <span className="material-symbols-outlined text-2xl">blood_pressure</span>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-text-primary">Continuous Blood Oxygen (SpO2)</h4>
-                    <p className="text-xs text-text-secondary leading-relaxed mt-0.5">
-                      Quad-wavelength reflective optical sensors monitor nocturnal oxygen dips and respiratory fluctuations in real-time.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-xl bg-white border border-border-subtle shadow-sm flex items-start gap-4">
-                  <div className="p-2.5 rounded-lg bg-purple-500/10 text-purple-600">
-                    <span className="material-symbols-outlined text-2xl">device_hub</span>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-text-primary">Direct Doctor Bridge</h4>
-                    <p className="text-xs text-text-secondary leading-relaxed mt-0.5">
-                      Instantly grant your doctor access to live sensor streams during your video consultation with end-to-end cryptographic encryption.
-                    </p>
-                  </div>
+                <p className="text-xs sm:text-sm text-text-secondary italic leading-relaxed">
+                  &quot;At 2 AM, my Skyline Watch vibrated with an asymptomatic 160 bpm rhythm alert. I pressed 1-tap call, and Dr. Vance reviewed my live ECG right on her screen. She guided me through a vagal maneuver and dispatched emergency meds before things escalated. This watch saved my life.&quot;
+                </p>
+              </div>
+              <div className="flex items-center gap-3 mt-6 pt-4 border-t border-border-subtle">
+                <img
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80"
+                  alt="Michael Hernandez patient portrait"
+                  className="w-11 h-11 rounded-full object-cover border border-border-subtle"
+                />
+                <div>
+                  <div className="text-xs sm:text-sm font-bold text-text-primary">Michael Hernandez</div>
+                  <div className="text-[11px] text-text-muted">Verified VitalsWatch™ Ultra Owner • Austin, TX</div>
                 </div>
               </div>
             </div>
 
-            {/* Smartwatch Image & Telemetry Visualization */}
-            <div className="relative flex justify-center">
-              <div className="w-full max-w-md p-6 rounded-3xl bg-slate-950 text-white shadow-2xl border border-slate-800">
-                <div className="flex items-center justify-between pb-4 border-b border-slate-800">
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-emerald-400 live-pulse" />
-                    <span className="text-xs font-mono font-bold text-emerald-400">VITALS-WATCH SENSOR ACTIVE</span>
-                  </div>
-                  <span className="text-xs font-mono text-slate-400">Firmware v2.4.1</span>
+            {/* Testimonial 2 */}
+            <div className="bg-white p-6 rounded-2xl border border-border-subtle shadow-sm flex flex-col justify-between">
+              <div>
+                <div className="flex text-amber-400 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className="material-symbols-outlined text-lg">star</span>
+                  ))}
                 </div>
-
-                <div className="py-6 flex justify-center">
-                  <div className="relative w-48 h-48 rounded-full border-4 border-emerald-500/30 flex items-center justify-center p-4 bg-slate-900 shadow-inner">
-                    <div className="text-center">
-                      <span className="material-symbols-outlined text-3xl text-rose-500 live-pulse">favorite</span>
-                      <div className="text-3xl font-extrabold font-mono text-white mt-1">78</div>
-                      <div className="text-[10px] font-mono text-slate-400">BPM • RESTING SINUS</div>
-                    </div>
-                  </div>
+                <p className="text-xs sm:text-sm text-text-secondary italic leading-relaxed">
+                  &quot;The 500Hz sampling resolution on the Skyline dry electrodes gives me clinical tracings identical to a 12-lead rhythm strip. When patients trigger a video consult, I can prescribe with complete diagnostic confidence.&quot;
+                </p>
+              </div>
+              <div className="flex items-center gap-3 mt-6 pt-4 border-t border-border-subtle">
+                <img
+                  src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100&q=80"
+                  alt="Dr. Marcus Chen Cardiologist"
+                  className="w-11 h-11 rounded-full object-cover border border-border-subtle"
+                />
+                <div>
+                  <div className="text-xs sm:text-sm font-bold text-text-primary">Dr. Marcus Chen, MD, FACC</div>
+                  <div className="text-[11px] text-text-muted">Chief of Cardiology, Pacific Metro Health</div>
                 </div>
+              </div>
+            </div>
 
-                <EcgWaveform height={80} heartRate={78} rhythmText="Real-time Lead II trace" />
-
-                <div className="mt-4 pt-4 border-t border-slate-800 grid grid-cols-2 gap-4 text-center">
-                  <div>
-                    <div className="text-[10px] font-mono text-slate-400">Battery Status</div>
-                    <div className="text-sm font-bold font-mono text-emerald-400">89% • 5 Days Left</div>
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-mono text-slate-400">Cellular / BLE Link</div>
-                    <div className="text-sm font-bold font-mono text-sky-400">5G High-Priority</div>
-                  </div>
+            {/* Testimonial 3 */}
+            <div className="bg-white p-6 rounded-2xl border border-border-subtle shadow-sm flex flex-col justify-between">
+              <div>
+                <div className="flex text-amber-400 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className="material-symbols-outlined text-lg">star</span>
+                  ))}
+                </div>
+                <p className="text-xs sm:text-sm text-text-secondary italic leading-relaxed">
+                  &quot;Standard consumer watches take SpO2 snapshots every 30 minutes. Skyline’s continuous plethysmography tracks nocturnal desaturations with hospital-grade accuracy, letting us optimize COPD therapy without sleep labs.&quot;
+                </p>
+              </div>
+              <div className="flex items-center gap-3 mt-6 pt-4 border-t border-border-subtle">
+                <img
+                  src="https://images.unsplash.com/photo-1594824813576-24e6628ef313?w=100&q=80"
+                  alt="Dr. Sarah Lin-Reynolds Pulmonologist"
+                  className="w-11 h-11 rounded-full object-cover border border-border-subtle"
+                />
+                <div>
+                  <div className="text-xs sm:text-sm font-bold text-text-primary">Dr. Sarah Lin-Reynolds, MD</div>
+                  <div className="text-[11px] text-text-muted">Lead Pulmonologist, Tri-Valley Lung Center</div>
                 </div>
               </div>
             </div>
@@ -379,40 +1044,153 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── 4. CLINICIAN ONBOARDING BANNER ────────────────────────────────────────── */}
-      <section className="py-16 bg-primary-container text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            <div className="space-y-3 text-center lg:text-left">
-              <span className="px-3 py-1 rounded-full bg-white/10 text-white text-xs font-mono font-bold">
-                PHYSICIAN CREDENTIALING OPEN
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-                Are You a Licensed Specialist? Join the Skyline Clinical Network.
-              </h2>
-              <p className="text-white/80 text-sm max-w-2xl leading-relaxed">
-                Provide remote telehealth consultations with direct biometric sensor telemetry feeds. High CPT code reimbursement (99214 + 99453), malpractice coverage, and flexible on-call scheduling.
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center gap-4">
-              <Link
-                href="/apply"
-                className="px-6 py-3.5 rounded-xl bg-white text-primary font-bold text-sm hover:bg-slate-100 transition-colors shadow-lg"
-              >
-                Apply as Specialist (4 Steps)
-              </Link>
-              <Link
-                href="/login"
-                className="px-6 py-3.5 rounded-xl border border-white/30 text-white hover:bg-white/10 font-bold text-sm transition-colors"
-              >
-                Clinician Portal Sign In
-              </Link>
-            </div>
+      {/* ── 6. HIGH-CONVERTING PURCHASE CTA BANNER ─────────────────────────────────── */}
+      <section className="py-16 sm:py-20 bg-primary text-white text-center relative overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-10 pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
+            backgroundSize: '32px 32px',
+          }}
+        />
+        <div className="max-w-4xl mx-auto px-4 relative z-10 space-y-6">
+          <span className="bg-primary-container px-3.5 py-1.5 rounded-full text-xs font-semibold text-blue-200 border border-blue-400/30">
+            Limited Spring Production Batch • Free Worldwide Express Shipping
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+            Wear the Future of Preventive Medicine.
+          </h2>
+          <p className="text-sm sm:text-base text-blue-100 max-w-2xl mx-auto leading-relaxed">
+            Order today to lock in your $399 introductory price and receive a complimentary 1-year Skyline Care+ Telemedicine membership ($348 value included free).
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 pt-4">
+            <Link
+              href="/checkout"
+              className="w-full sm:w-auto bg-white hover:bg-slate-100 text-primary text-sm sm:text-base font-bold px-8 py-4 rounded-xl shadow-xl transition-all flex items-center justify-center gap-2"
+            >
+              <span className="material-symbols-outlined text-xl">shopping_bag</span>
+              <span>Order VitalsWatch™ Ultra — $399</span>
+            </Link>
+            <a
+              href="#specs"
+              className="w-full sm:w-auto bg-primary-container hover:bg-blue-800 text-white text-sm sm:text-base font-semibold px-8 py-4 rounded-xl border border-blue-400/30 transition-all flex items-center justify-center gap-2"
+            >
+              <span className="material-symbols-outlined text-xl">tune</span>
+              <span>Compare All Models</span>
+            </a>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-blue-300 pt-3 font-mono">
+            <span>✓ 30-Day Money-Back Guarantee</span>
+            <span>✓ HSA/FSA Reimbursable</span>
+            <span>✓ 2-Year Hardware Warranty</span>
           </div>
         </div>
       </section>
 
-      <Footer />
+      {/* ── 7. COMPREHENSIVE HARDWARE & MEDICAL COMPLIANCE FOOTER ──────────────────── */}
+      <footer className="bg-slate-900 text-slate-400 py-12 sm:py-16 border-t border-slate-800 text-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          {/* Top Row: Compliance Badges Cluster */}
+          <div className="pb-8 border-b border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div>
+              <div className="text-xs sm:text-sm font-bold uppercase text-white tracking-wider mb-1.5">
+                Institutional Regulatory Standards & Clearance
+              </div>
+              <p className="text-xs text-slate-400 max-w-xl">
+                Skyline Health biometric wearables and telemetry software operate under strict US FDA Class II medical device clearance and HIPAA compliance standards.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="bg-slate-800 text-slate-200 px-3 py-1.5 rounded text-xs font-mono font-bold border border-slate-700 flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-sm text-amber-400">medication</span>
+                FDA Class II Cleared 510(k)
+              </span>
+              <span className="bg-slate-800 text-slate-200 px-3 py-1.5 rounded text-xs font-mono font-bold border border-slate-700 flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-sm text-status-normal">lock</span>
+                HIPAA & SOC 2 Type II
+              </span>
+              <span className="bg-slate-800 text-slate-200 px-3 py-1.5 rounded text-xs font-mono font-bold border border-slate-700 flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-sm text-secondary-container">water_drop</span>
+                5ATM Water Resistant
+              </span>
+            </div>
+          </div>
+
+          {/* Middle Row: Columns */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+            {/* Col 1: Brand & Emergency */}
+            <div className="col-span-2 space-y-4">
+              <div className="flex items-center gap-2 text-white">
+                <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
+                  <span className="material-symbols-outlined text-lg">watch</span>
+                </div>
+                <span className="text-base font-bold">Skyline Health</span>
+              </div>
+              <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
+                The world&apos;s premier medical-grade wearable ecosystem connecting continuous biometric hardware with instantaneous, board-certified physician care.
+              </p>
+              <div className="pt-2">
+                <button
+                  onClick={() => alert('Emergency SOS Protocol triggered. Connecting local 911 dispatcher with current GPS coordinates and live telemetry stream.')}
+                  className="inline-flex items-center gap-2 text-xs font-bold bg-red-950/60 hover:bg-red-900/60 text-red-300 border border-red-800 px-3 py-2 rounded-lg transition-colors"
+                >
+                  <span className="material-symbols-outlined text-sm text-status-critical">warning</span>
+                  Emergency SOS & Automatic Fall Dispatch
+                </button>
+              </div>
+            </div>
+
+            {/* Col 2: Hardware Products */}
+            <div className="space-y-3">
+              <h5 className="text-xs font-bold uppercase text-white tracking-wider">Hardware</h5>
+              <ul className="space-y-2 text-xs">
+                <li><a className="hover:text-white transition-colors" href="#hardware-lineup">Skyline VitalsWatch™ Ultra</a></li>
+                <li><a className="hover:text-white transition-colors" href="#hardware-lineup">Skyline PulseBand Pro</a></li>
+                <li><a className="hover:text-white transition-colors" href="#hardware-lineup">Continuous Biosensor Ring</a></li>
+                <li><Link className="hover:text-white transition-colors" href="/smartwatch">Hardware Tech Specs</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="/checkout">Order Accessories</Link></li>
+              </ul>
+            </div>
+
+            {/* Col 3: Clinical Care */}
+            <div className="space-y-3">
+              <h5 className="text-xs font-bold uppercase text-white tracking-wider">Clinical Services</h5>
+              <ul className="space-y-2 text-xs">
+                <li><Link className="hover:text-white transition-colors" href="/consultancy">Specialist Directory</Link></li>
+                <li><a className="hover:text-white transition-colors" href="#clinical-advantage">Skyline Care+ Concierge</a></li>
+                <li><Link className="hover:text-white transition-colors" href="/patient/records">Patient Health Records</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="/waiting-room/sess-01">Waiting Room Test</Link></li>
+                <li><a className="hover:text-white transition-colors" href="#specs">HSA/FSA Reimbursement</a></li>
+              </ul>
+            </div>
+
+            {/* Col 4: For Clinicians & Developers */}
+            <div className="space-y-3">
+              <h5 className="text-xs font-bold uppercase text-white tracking-wider">Clinicians & Admin</h5>
+              <ul className="space-y-2 text-xs">
+                <li><Link className="hover:text-white transition-colors" href="/apply">Join Doctor Network</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="/login">Clinician Sign In</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="/portal/dashboard">Physician Dashboard</Link></li>
+                <li><a className="hover:text-white transition-colors" href="http://localhost:3001" target="_blank" rel="noreferrer">Hospital Command Console</a></li>
+                <li><Link className="hover:text-white transition-colors" href="/portal/earnings">CPT Billing Guides</Link></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Row: Copyright & Legal Disclaimers */}
+          <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+            <div>
+              © 2025 Skyline Health Hardware Inc. All rights reserved. US Patents 9,842,109 & 11,209,481.
+            </div>
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+              <span className="hover:text-white cursor-pointer">Terms of Sale</span>
+              <span className="hover:text-white cursor-pointer">Medical Disclaimer</span>
+              <span className="hover:text-white cursor-pointer">HIPAA Compliance</span>
+              <span className="hover:text-white cursor-pointer">Privacy Policy</span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -255,13 +255,20 @@ export default function ConsultancyDiscoveryPage() {
                     Your Skyline VitalsWatch continuous sensor stream will automatically bridge into the virtual room upon entry.
                   </div>
                 </div>
-                <div className="pt-4 flex items-center justify-center gap-3">
+                <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
                   <button
                     onClick={() => setActiveBookingDoctor(null)}
-                    className="px-6 py-2.5 rounded-lg bg-primary text-white text-xs font-bold"
+                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-border-subtle hover:bg-surface-subtle text-text-primary text-xs font-bold transition-colors"
                   >
-                    Return to Specialists
+                    Close Window
                   </button>
+                  <a
+                    href="/waiting-room/sess-01"
+                    className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-primary-container hover:bg-primary text-white text-xs font-bold shadow-md transition-colors flex items-center justify-center gap-1.5"
+                  >
+                    <span className="material-symbols-outlined text-sm">meeting_room</span>
+                    <span>Enter Virtual Waiting Room</span>
+                  </a>
                 </div>
               </div>
             ) : (
