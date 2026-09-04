@@ -112,14 +112,14 @@ export default function ClinicianLoginPage() {
               Sign In to Clinician Workspace
             </h1>
             <p className="text-xs text-slate-400 mt-1">
-              Enter your institutional email or 10-digit NPI number to access active patient sessions.
+              Enter your institutional email or MDCN license number to access active patient sessions.
             </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="text-xs font-semibold text-slate-300 block mb-1">
-                Clinical Email / NPI Number
+                Clinical Email / MDCN License
               </label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-lg">

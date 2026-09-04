@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { apiGet, errorMessage } from '../../../lib/api';
+import { formatNgn } from '../../../lib/money';
 import type { AuthUser, Consultant } from '../../../lib/types';
 
 export default function ClinicianProfilePage() {
@@ -81,8 +82,8 @@ export default function ClinicianProfilePage() {
               </div>
               <div className="text-[11px] text-slate-400 font-mono mt-0.5">
                 {profile?.npi_number
-                  ? `NPI: ${profile.npi_number}`
-                  : user?.email || 'No NPI on file'}
+                  ? `MDCN: ${profile.npi_number}`
+                  : user?.email || 'No MDCN license on file'}
                 {profile?.status ? ` • Status: ${profile.status}` : ''}
               </div>
             </div>
@@ -100,11 +101,10 @@ export default function ClinicianProfilePage() {
                   Public Consultation Fee (Per Encounter)
                 </label>
                 <div className="flex items-center gap-2 max-w-xs">
-                  <span className="text-sm font-bold text-white">$</span>
                   <div className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-sm">
-                    {profile.fee.toFixed(2)}
+                    {formatNgn(profile.fee)}
                   </div>
-                  <span className="text-xs text-slate-400">USD</span>
+                  <span className="text-xs text-slate-400">NGN</span>
                 </div>
               </div>
 

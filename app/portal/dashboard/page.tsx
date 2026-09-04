@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import EcgWaveform from '../../../components/EcgWaveform';
 import { apiGet, errorMessage } from '../../../lib/api';
+import { formatNgn } from '../../../lib/money';
 import type { AuthUser, ConsultationSession } from '../../../lib/types';
 
 function formatTime(iso: string): string {
@@ -142,7 +143,7 @@ export default function ClinicianDashboardPage() {
             <span className="material-symbols-outlined text-amber-400">payments</span>
           </div>
           <div className="text-2xl font-extrabold font-mono text-white">
-            ${sessions.reduce((sum, s) => sum + (s.fee || 0), 0).toFixed(2)}
+            {formatNgn(sessions.reduce((sum, s) => sum + (s.fee || 0), 0))}
           </div>
           <div className="text-[11px] text-sky-400 font-mono">Listed encounter fees</div>
         </div>
@@ -174,7 +175,7 @@ export default function ClinicianDashboardPage() {
               </span>
             </div>
             <div className="text-xs font-mono text-sky-400 bg-sky-950/60 px-3 py-1 rounded-lg border border-sky-800">
-              {nextPatient.status.toUpperCase()} • ${nextPatient.fee.toFixed(2)}
+              {nextPatient.status.toUpperCase()} • {formatNgn(nextPatient.fee)}
             </div>
           </div>
 
@@ -269,7 +270,7 @@ export default function ClinicianDashboardPage() {
                       {p.status}
                     </td>
                     <td className="py-3.5 px-4 font-mono text-sky-400">
-                      ${p.fee.toFixed(2)}
+                      {formatNgn(p.fee)}
                     </td>
                     <td className="py-3.5 px-4 text-right whitespace-nowrap">
                       <Link

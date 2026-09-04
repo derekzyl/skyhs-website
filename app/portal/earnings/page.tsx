@@ -2,11 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { apiGet, errorMessage } from '../../../lib/api';
+import { formatNgn } from '../../../lib/money';
 import type { EarningsSummary } from '../../../lib/types';
-
-function formatMoney(n: number): string {
-  return `$${n.toFixed(2)}`;
-}
 
 function formatDate(iso: string): string {
   try {
@@ -63,7 +60,7 @@ export default function ClinicianEarningsPage() {
         <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
           <div className="text-xs font-mono uppercase text-slate-400">Total Earned</div>
           <div className="text-3xl font-extrabold font-mono text-emerald-400">
-            {loading ? '…' : formatMoney(earnings?.total_earned ?? 0)}
+            {loading ? '…' : formatNgn(earnings?.total_earned ?? 0)}
           </div>
           <div className="text-xs text-slate-400">
             {sessions.length} paid / confirmed sessions
@@ -73,7 +70,7 @@ export default function ClinicianEarningsPage() {
         <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
           <div className="text-xs font-mono uppercase text-slate-400">Pending Payout</div>
           <div className="text-3xl font-extrabold font-mono text-white">
-            {loading ? '…' : formatMoney(earnings?.pending_payout ?? 0)}
+            {loading ? '…' : formatNgn(earnings?.pending_payout ?? 0)}
           </div>
           <div className="text-xs text-sky-400 font-mono">Awaiting admin disbursement</div>
         </div>
@@ -81,7 +78,7 @@ export default function ClinicianEarningsPage() {
         <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
           <div className="text-xs font-mono uppercase text-slate-400">Paid Out</div>
           <div className="text-3xl font-extrabold font-mono text-purple-400">
-            {loading ? '…' : formatMoney(earnings?.paid_out ?? 0)}
+            {loading ? '…' : formatNgn(earnings?.paid_out ?? 0)}
           </div>
           <div className="text-xs text-slate-400">Already disbursed</div>
         </div>
@@ -125,7 +122,7 @@ export default function ClinicianEarningsPage() {
                   <td className="py-3.5 px-4">{formatDate(p.scheduled_at)}</td>
                   <td className="py-3.5 px-4 font-mono">{p.payment_status}</td>
                   <td className="py-3.5 px-4 font-mono font-bold text-white">
-                    {formatMoney(p.fee)}
+                    {formatNgn(p.fee)}
                   </td>
                   <td className="py-3.5 px-4 text-right">
                     <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 font-mono font-bold text-[10px] uppercase">

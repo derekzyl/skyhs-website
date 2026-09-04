@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import EcgWaveform from '../../components/EcgWaveform';
+import { formatNgn } from '../../lib/money';
+import { HARDWARE_PRICES } from '../../lib/pricing';
 
 export default function SmartwatchHardwarePage() {
   return (
@@ -21,7 +23,7 @@ export default function SmartwatchHardwarePage() {
             <div className="lg:col-span-7 space-y-6 text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold tracking-wider">
                 <span className="material-symbols-outlined text-sm">verified</span>
-                <span>AEROSPACE GRADE 5 TITANIUM • FDA 510(k) CLEARED SENSOR</span>
+                <span>AEROSPACE GRADE 5 TITANIUM • MEDICAL-GRADE ECG SENSOR</span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
@@ -29,7 +31,7 @@ export default function SmartwatchHardwarePage() {
               </h1>
 
               <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl font-normal">
-                Continuous medical-grade biometric surveillance on your wrist. Built from surgical titanium with multi-wavelength optical PPG, single-lead ECG electrodes, and built-in 5G eSIM connectivity.
+                Continuous medical-grade biometric surveillance on your wrist. Built from surgical titanium with multi-wavelength optical PPG, single-lead ECG electrodes, and built-in 5G eSIM connectivity. Order and ship across Nigeria.
               </p>
 
               {/* Real-time ECG Waveform */}
@@ -38,13 +40,13 @@ export default function SmartwatchHardwarePage() {
               </div>
 
               <div className="flex flex-wrap items-center gap-4 pt-4">
-                <button
-                  onClick={() => alert('Order placed! Your Skyline VitalsWatch Pro will ship via FedEx 2-Day Air.')}
+                <Link
+                  href="/checkout"
                   className="px-6 py-3.5 rounded-xl bg-primary-container hover:bg-primary text-white font-bold text-sm shadow-lg shadow-sky-950 transition-all flex items-center gap-2"
                 >
                   <span className="material-symbols-outlined text-lg">shopping_cart</span>
-                  <span>Order VitalsWatch Pro ($349)</span>
-                </button>
+                  <span>Order VitalsWatch — {formatNgn(HARDWARE_PRICES.ultra)}</span>
+                </Link>
                 <Link
                   href="/consultancy"
                   className="px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm border border-slate-700 transition-colors flex items-center gap-2"
@@ -55,11 +57,9 @@ export default function SmartwatchHardwarePage() {
               </div>
 
               <div className="pt-4 flex items-center gap-6 text-xs text-slate-400 font-mono">
-                <span>Free 2-Day Express Shipping</span>
+                <span>Paystack checkout in NGN</span>
                 <span>•</span>
-                <span>HMO & Medicare Eligible</span>
-                <span>•</span>
-                <span>30-Day Clinical Trial</span>
+                <span>Nationwide Nigeria delivery</span>
               </div>
             </div>
 

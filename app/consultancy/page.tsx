@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { apiGet, apiPost, errorMessage, getAccessToken } from '../../lib/api';
+import { formatNgn } from '../../lib/money';
 import type { Consultant, ConsultationSession, TimeSlot } from '../../lib/types';
 
 function formatSlotLabel(iso: string): string {
@@ -130,6 +131,42 @@ export default function ConsultancyDiscoveryPage() {
         chief_complaint: chiefComplaint.trim() || undefined,
         symptoms: [],
       });
+
+      const fee = Number(session.fee ?? activeBookingDoctor.fee) || 0;
+      let payEmail: string | undefined;
+      try {
+        const meRaw = await apiGet<{ data?: { email?: string }; email?: string }>('/api/v1/auth/me');
+        payEmail = meRaw?.data?.email || meRaw?.email;
+      } catch {
+        /* email optional — gateway uses authenticated user */
+      }
+
+      try {
+        const payRaw = await apiPost<Record<string, unknown>>('/api/v1/payments/initialize', {
+          amount: fee,
+          currency: 'NGN',
+          ...(payEmail ? { email: payEmail, customer_email: payEmail } : {}),
+          metadata: { session_id: session.id },
+        });
+        const nested =
+          payRaw?.data && typeof payRaw.data === 'object'
+            ? (payRaw.data as Record<string, unknown>)
+            : null;
+        const authUrl =
+          (typeof payRaw?.authorization_url === 'string' && payRaw.authorization_url) ||
+          (typeof nested?.authorization_url === 'string' && nested.authorization_url) ||
+          (typeof payRaw?.redirect_url === 'string' && payRaw.redirect_url) ||
+          (typeof nested?.redirect_url === 'string' && nested.redirect_url) ||
+          null;
+        if (authUrl) {
+          window.location.href = authUrl;
+          return;
+        }
+      } catch {
+        /* fall through to manual confirm-payment pilot path */
+      }
+
+      await apiPost(`/api/v1/consultancy/sessions/${session.id}/confirm-payment`);
       setBookedSession(session);
       setBookingSuccess(true);
     } catch (err) {
@@ -317,7 +354,7 @@ export default function ConsultancyDiscoveryPage() {
                   <div>
                     <span className="text-[10px] uppercase font-mono text-text-muted">Fee</span>
                     <div className="text-lg font-extrabold text-text-primary font-mono">
-                      ${doc.fee}
+                      {formatNgn(doc.fee)}
                       <span className="text-xs font-normal text-text-muted"> / visit</span>
                     </div>
                   </div>
@@ -486,7 +523,7 @@ export default function ConsultancyDiscoveryPage() {
                   <div>
                     <span className="text-[10px] text-text-muted">Total Encounter Fee</span>
                     <div className="text-lg font-bold text-text-primary font-mono">
-                      ${activeBookingDoctor.fee.toFixed(2)}
+                      {formatNgn(activeBookingDoctor.fee)}
                     </div>
                   </div>
                   <button

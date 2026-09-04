@@ -5,6 +5,7 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Link from 'next/link';
 import { apiPost, errorMessage, getAccessToken } from '../../lib/api';
+import { isValidNgPhone } from '../../lib/phone';
 
 export default function ClinicianApplyPage() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -24,14 +25,19 @@ export default function ClinicianApplyPage() {
     deaNumber: '',
     specialty: 'Cardiology',
     subSpecialty: '',
-    routingNumber: '',
-    accountNumber: '',
+    bankName: '',
+    nuban: '',
     agreedToProtocols: true,
     fee: '140',
     bio: '',
   });
 
   const handleNext = async () => {
+    if (currentStep === 1 && formData.phone && !isValidNgPhone(formData.phone)) {
+      setSubmitError('Enter a valid Nigerian mobile number (+234… or 0XXXXXXXXXX).');
+      return;
+    }
+    setSubmitError(null);
     if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
       return;
@@ -110,7 +116,7 @@ export default function ClinicianApplyPage() {
         <div className="max-w-4xl mx-auto mb-10">
           <div className="grid grid-cols-4 gap-2 text-center">
             {[
-              { num: 1, title: 'Identity & NPI' },
+              { num: 1, title: 'Identity & MDCN' },
               { num: 2, title: 'State Licenses' },
               { num: 3, title: 'Clinical Protocols' },
               { num: 4, title: 'Payout & EHR' },
@@ -145,7 +151,7 @@ export default function ClinicianApplyPage() {
                 Credentialing Packet Submitted!
               </h3>
               <p className="text-xs text-text-secondary mt-2 leading-relaxed">
-                Thank you, <span className="font-bold">{formData.fullName}</span>. Your NPI ({formData.npiNumber}) and CA Medical Board license have been cross-checked with the NPPES & FSMB databases.
+                Thank you, <span className="font-bold">{formData.fullName}</span>. Your MDCN license ({formData.npiNumber}) has been submitted for Skyline clinician verification.
               </p>
             </div>
 
@@ -183,22 +189,22 @@ export default function ClinicianApplyPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
             {/* Form Section */}
             <div className="lg:col-span-8 bg-white rounded-2xl border border-border-subtle p-6 sm:p-8 shadow-sm">
-              {/* Step 1: Identity & NPI */}
+              {/* Step 1: Identity & MDCN */}
               {currentStep === 1 && (
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-lg font-bold text-text-primary">
-                      1. Professional Identity & NPI Registry Check
+                      1. Professional Identity & MDCN License Check
                     </h3>
                     <p className="text-xs text-text-muted mt-0.5">
-                      Verify your individual Type 1 NPI number. We automatically pull your specialty taxonomies and primary practice location.
+                      Enter your Medical and Dental Council of Nigeria (MDCN) folio / license number for clinician verification.
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                     <div>
                       <label className="text-xs font-bold text-text-secondary block mb-1">
-                        10-Digit NPI Number
+                        MDCN License / Folio Number
                       </label>
                       <input
                         type="text"
@@ -231,12 +237,13 @@ export default function ClinicianApplyPage() {
                     </div>
                     <div>
                       <label className="text-xs font-bold text-text-secondary block mb-1">
-                        Direct Mobile / Pager Phone
+                        Mobile Phone (+234)
                       </label>
                       <input
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        placeholder="+234 801 234 5678"
                         className="w-full p-2.5 rounded-lg border border-border-subtle text-xs font-mono"
                       />
                     </div>
@@ -398,23 +405,26 @@ export default function ClinicianApplyPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                     <div>
                       <label className="text-xs font-bold text-text-secondary block mb-1">
-                        Routing Number (ABA)
+                        Bank Name
                       </label>
                       <input
                         type="text"
-                        value={formData.routingNumber}
-                        onChange={(e) => setFormData({ ...formData, routingNumber: e.target.value })}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs font-mono"
+                        value={formData.bankName}
+                        onChange={(e) => setFormData({ ...formData, bankName: e.target.value })}
+                        placeholder="e.g. Access Bank, GTBank"
+                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs"
                       />
                     </div>
                     <div>
                       <label className="text-xs font-bold text-text-secondary block mb-1">
-                        Checking Account Number
+                        Account Number (NUBAN)
                       </label>
                       <input
                         type="text"
-                        value={formData.accountNumber}
-                        onChange={(e) => setFormData({ ...formData, accountNumber: e.target.value })}
+                        value={formData.nuban}
+                        onChange={(e) => setFormData({ ...formData, nuban: e.target.value })}
+                        placeholder="10-digit NUBAN"
+                        maxLength={10}
                         className="w-full p-2.5 rounded-lg border border-border-subtle text-xs font-mono"
                       />
                     </div>
@@ -423,7 +433,8 @@ export default function ClinicianApplyPage() {
                   <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-900 flex items-center gap-2">
                     <span className="material-symbols-outlined text-base text-emerald-600">lock</span>
                     <span>
-                      Bank credentials are encrypted via Plaid institutional bridge with SOC-2 Type II verification.
+                      Nigerian bank details stay on this form for now (local state). Payout wiring
+                      will use NUBAN + bank name when disbursements go live.
                     </span>
                   </div>
                 </div>

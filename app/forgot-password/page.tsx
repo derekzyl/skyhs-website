@@ -35,7 +35,7 @@ export default function ClinicianForgotPasswordPage() {
             Reset Clinician Password
           </h1>
           <p className="text-xs text-slate-400">
-            Enter your institutional email or 10-digit NPI number to receive a secure recovery link.
+            Enter your institutional email or MDCN license number to receive a secure recovery link.
           </p>
         </div>
 
@@ -61,7 +61,7 @@ export default function ClinicianForgotPasswordPage() {
           <form onSubmit={handleSubmit} className="space-y-4 text-xs">
             <div>
               <label className="text-slate-300 font-semibold block mb-1">
-                Institutional Email or NPI
+                Institutional Email or MDCN License
               </label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-lg">

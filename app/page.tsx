@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { formatNgn } from '../lib/money';
+import { HARDWARE_PRICES } from '../lib/pricing';
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<'ultra' | 'band' | 'suite'>('ultra');
@@ -13,8 +15,8 @@ export default function HomePage() {
   const [orderModalOpen, setOrderModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState({
     name: 'Skyline VitalsWatch™ Ultra',
-    price: 399,
-    savings: 80,
+    price: HARDWARE_PRICES.ultra,
+    savings: HARDWARE_PRICES.ultraWas - HARDWARE_PRICES.ultra,
     band: 'Titanium Link (Space Gray)',
   });
 
@@ -55,7 +57,7 @@ export default function HomePage() {
               </span>
             </div>
             <span className="inline-flex items-center gap-1 text-xs text-status-normal font-semibold bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
-              <span className="material-symbols-outlined text-xs">verified</span> FDA Cleared Lead II ECG
+              <span className="material-symbols-outlined text-xs">verified</span> Medical-Grade Lead II ECG
             </span>
           </div>
 
@@ -83,9 +85,9 @@ export default function HomePage() {
                     className="inline-flex justify-center items-center gap-2 bg-primary hover:bg-primary-container text-white text-sm sm:text-base font-bold px-6 sm:px-7 py-3.5 sm:py-4 rounded-xl shadow-lg shadow-blue-900/10 hover:shadow-xl transition-all duration-150 text-center"
                   >
                     <span className="material-symbols-outlined text-xl">shopping_cart</span>
-                    <span>Order Skyline Watch — $399</span>
+                    <span>Order Skyline Watch — {formatNgn(HARDWARE_PRICES.ultra)}</span>
                     <span className="text-xs bg-blue-900/60 px-2 py-0.5 rounded text-blue-200">
-                      Save $80
+                      Save {formatNgn(HARDWARE_PRICES.ultraWas - HARDWARE_PRICES.ultra)}
                     </span>
                   </Link>
                   <a
@@ -108,7 +110,7 @@ export default function HomePage() {
                   </span>
                   <span className="flex items-center gap-1">
                     <span className="material-symbols-outlined text-status-normal text-sm">check_circle</span>
-                    HSA / FSA Accepted
+                    Paystack · Nationwide NG
                   </span>
                 </div>
               </div>
@@ -203,7 +205,7 @@ export default function HomePage() {
                       Regulatory
                     </div>
                     <div className="text-xs font-bold text-text-primary mt-0.5 truncate">
-                      FDA Class II
+                      Medical-Grade
                     </div>
                     <div className="text-[9px] sm:text-[10px] font-mono text-status-normal font-semibold">
                       510(k) Cleared
@@ -231,7 +233,7 @@ export default function HomePage() {
             <div className="bg-white p-3 sm:p-4 rounded-xl border border-border-subtle shadow-xs flex items-center justify-center gap-3">
               <span className="material-symbols-outlined text-primary text-xl sm:text-2xl">verified_user</span>
               <div className="text-left">
-                <div className="text-xs sm:text-sm font-bold text-text-primary">FDA Class II Cleared</div>
+                <div className="text-xs sm:text-sm font-bold text-text-primary">Clinical Wearable</div>
                 <div className="text-[10px] sm:text-[11px] text-text-muted">Cardiac & Oximetry Safety</div>
               </div>
             </div>
@@ -639,7 +641,7 @@ export default function HomePage() {
                 </div>
                 <h4 className="text-xl font-bold text-primary">Skyline Care+ Concierge</h4>
                 <div className="text-2xl font-extrabold text-text-primary mt-2">
-                  $29 <span className="text-xs font-normal text-text-muted">/ month (1st year free with watch)</span>
+                  {formatNgn(45_000)} <span className="text-xs font-normal text-text-muted">/ month (1st year free with watch)</span>
                 </div>
                 <p className="text-xs text-text-secondary mt-2">
                   24/7 on-demand 1-tap video consults with board-certified US doctors, instant prescription routing, and rapid cardiac triage.
@@ -674,7 +676,7 @@ export default function HomePage() {
                 </div>
                 <h4 className="text-xl font-bold text-primary">Skyline Care+ Family</h4>
                 <div className="text-2xl font-extrabold text-text-primary mt-2">
-                  $59 <span className="text-xs font-normal text-text-muted">/ month for up to 4 watches</span>
+                  {formatNgn(89_000)} <span className="text-xs font-normal text-text-muted">/ month for up to 4 watches</span>
                 </div>
                 <p className="text-xs text-text-secondary mt-2">
                   Shared family dashboard, senior fall escalation, remote caregiver alerts, and pediatric/geriatric specialist access.
@@ -710,7 +712,7 @@ export default function HomePage() {
                   Are you a Board-Certified Physician or Medical Specialist?
                 </div>
                 <div className="text-[11px] sm:text-xs text-text-muted">
-                  Join our on-demand clinical telemetry network. Rapid NPI verification and malpractice coverage included.
+                  Join our on-demand clinical telemetry network. Rapid MDCN license verification and malpractice coverage included.
                 </div>
               </div>
             </div>
@@ -756,8 +758,8 @@ export default function HomePage() {
                   Lightweight screenless biometric band for screen-free athletes and sleep tracking.
                 </p>
                 <div className="mt-4 flex items-baseline gap-2">
-                  <span className="text-3xl font-extrabold text-primary font-mono">$299</span>
-                  <span className="text-xs text-text-muted line-through">$349</span>
+                  <span className="text-3xl font-extrabold text-primary font-mono">{formatNgn(HARDWARE_PRICES.band)}</span>
+                  <span className="text-xs text-text-muted line-through">{formatNgn(529_000)}</span>
                 </div>
                 <ul className="text-xs space-y-2 mt-6 text-text-secondary border-t border-border-subtle pt-4">
                   <li className="flex items-center gap-2">
@@ -782,7 +784,7 @@ export default function HomePage() {
                 href="/checkout?device=pulseband"
                 className="mt-8 w-full bg-white hover:bg-slate-100 text-primary border border-border-subtle text-xs font-bold py-3 rounded-xl text-center shadow-xs transition-colors block"
               >
-                Order PulseBand — $299
+                Order PulseBand — {formatNgn(HARDWARE_PRICES.band)}
               </Link>
             </div>
 
@@ -804,8 +806,8 @@ export default function HomePage() {
                   Titanium smartwatch with live OLED ECG screen, speaker/mic, and standalone cellular telemetry.
                 </p>
                 <div className="mt-4 flex items-baseline gap-2">
-                  <span className="text-3xl font-extrabold text-primary font-mono">$399</span>
-                  <span className="text-xs text-text-muted line-through">$479</span>
+                  <span className="text-3xl font-extrabold text-primary font-mono">{formatNgn(HARDWARE_PRICES.ultra)}</span>
+                  <span className="text-xs text-text-muted line-through">{formatNgn(HARDWARE_PRICES.ultraWas)}</span>
                   <span className="text-[11px] font-mono text-status-normal font-semibold">
                     1 Yr Care+ Inc.
                   </span>
@@ -817,7 +819,7 @@ export default function HomePage() {
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-status-normal text-sm">check</span>
-                    30-Sec FDA Cleared Lead II ECG
+                    30-Sec Medical-Grade Lead II ECG
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-status-normal text-sm">check</span>
@@ -829,7 +831,7 @@ export default function HomePage() {
                   </li>
                   <li className="flex items-center gap-2 text-status-normal font-semibold">
                     <span className="material-symbols-outlined text-status-normal text-sm">check</span>
-                    1-Year Free 24/7 Doctor Consults ($348 value)
+                    1-Year Free 24/7 Doctor Consults ({formatNgn(HARDWARE_PRICES.carePlusYear)} value)
                   </li>
                 </ul>
               </div>
@@ -837,7 +839,7 @@ export default function HomePage() {
                 href="/checkout?device=ultra"
                 className="mt-8 w-full bg-primary hover:bg-primary-container text-white text-xs sm:text-sm font-bold py-3.5 rounded-xl text-center shadow-md transition-colors block"
               >
-                Order VitalsWatch Ultra — $399
+                Order VitalsWatch Ultra — {formatNgn(HARDWARE_PRICES.ultra)}
               </Link>
             </div>
 
@@ -855,8 +857,8 @@ export default function HomePage() {
                   Complete diagnostic ecosystem: Watch Ultra + Biosensor Ring + Home Cellular Base Hub.
                 </p>
                 <div className="mt-4 flex items-baseline gap-2">
-                  <span className="text-3xl font-extrabold text-primary font-mono">$699</span>
-                  <span className="text-xs text-text-muted line-through">$849</span>
+                  <span className="text-3xl font-extrabold text-primary font-mono">{formatNgn(HARDWARE_PRICES.suite)}</span>
+                  <span className="text-xs text-text-muted line-through">{formatNgn(1_249_000)}</span>
                 </div>
                 <ul className="text-xs space-y-2 mt-6 text-text-secondary border-t border-border-subtle pt-4">
                   <li className="flex items-center gap-2">
@@ -881,7 +883,7 @@ export default function HomePage() {
                 href="/checkout?device=suite"
                 className="mt-8 w-full bg-white hover:bg-slate-100 text-primary border border-border-subtle text-xs font-bold py-3 rounded-xl text-center shadow-xs transition-colors block"
               >
-                Order Complete Suite — $699
+                Order Complete Suite — {formatNgn(HARDWARE_PRICES.suite)}
               </Link>
             </div>
           </div>
@@ -893,7 +895,7 @@ export default function HomePage() {
                 Technical Hardware Specification Matrix
               </h4>
               <span className="text-xs text-text-muted font-mono">
-                All devices include FDA Class II 510(k) cleared software
+                All devices include medical-grade continuous telemetry software
               </span>
             </div>
             <div className="overflow-x-auto">
@@ -901,9 +903,9 @@ export default function HomePage() {
                 <thead className="bg-surface-subtle text-text-secondary uppercase tracking-wider border-b border-border-subtle text-[11px] font-bold">
                   <tr>
                     <th className="py-3.5 px-4">Hardware Feature</th>
-                    <th className="py-3.5 px-4">PulseBand Pro ($299)</th>
-                    <th className="py-3.5 px-4 text-primary">VitalsWatch™ Ultra ($399)</th>
-                    <th className="py-3.5 px-4">Biosensor Suite ($699)</th>
+                    <th className="py-3.5 px-4">PulseBand Pro ({formatNgn(HARDWARE_PRICES.band)})</th>
+                    <th className="py-3.5 px-4 text-primary">VitalsWatch™ Ultra ({formatNgn(HARDWARE_PRICES.ultra)})</th>
+                    <th className="py-3.5 px-4">Biosensor Suite ({formatNgn(HARDWARE_PRICES.suite)})</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-subtle">
@@ -933,7 +935,7 @@ export default function HomePage() {
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-semibold text-text-primary">Doctor Telehealth Integration</td>
-                    <td className="py-3 px-4 text-text-secondary">Pay-per-visit ($49)</td>
+                    <td className="py-3 px-4 text-text-secondary">Pay-per-visit ({formatNgn(75_000)})</td>
                     <td className="py-3 px-4 font-bold text-status-normal">1-Year Unlimited 24/7 MD Access</td>
                     <td className="py-3 px-4 font-bold text-status-normal">2-Years Concierge Clinical Coverage</td>
                   </tr>
@@ -1061,7 +1063,7 @@ export default function HomePage() {
             Wear the Future of Preventive Medicine.
           </h2>
           <p className="text-sm sm:text-base text-blue-100 max-w-2xl mx-auto leading-relaxed">
-            Order today to lock in your $399 introductory price and receive a complimentary 1-year Skyline Care+ Telemedicine membership ($348 value included free).
+            Order today to lock in your {formatNgn(HARDWARE_PRICES.ultra)} introductory price and receive a complimentary 1-year Skyline Care+ Telemedicine membership ({formatNgn(HARDWARE_PRICES.carePlusYear)} value included free).
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 pt-4">
             <Link
@@ -1069,7 +1071,7 @@ export default function HomePage() {
               className="w-full sm:w-auto bg-white hover:bg-slate-100 text-primary text-sm sm:text-base font-bold px-8 py-4 rounded-xl shadow-xl transition-all flex items-center justify-center gap-2"
             >
               <span className="material-symbols-outlined text-xl">shopping_bag</span>
-              <span>Order VitalsWatch™ Ultra — $399</span>
+              <span>Order VitalsWatch™ Ultra — {formatNgn(HARDWARE_PRICES.ultra)}</span>
             </Link>
             <a
               href="#specs"
@@ -1081,7 +1083,7 @@ export default function HomePage() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-blue-300 pt-3 font-mono">
             <span>✓ 30-Day Money-Back Guarantee</span>
-            <span>✓ HSA/FSA Reimbursable</span>
+            <span>✓ Paystack secure checkout</span>
             <span>✓ 2-Year Hardware Warranty</span>
           </div>
         </div>
@@ -1097,13 +1099,13 @@ export default function HomePage() {
                 Institutional Regulatory Standards & Clearance
               </div>
               <p className="text-xs text-slate-400 max-w-xl">
-                Skyline Health biometric wearables and telemetry software operate under strict US FDA Class II medical device clearance and HIPAA compliance standards.
+                Skyline Health biometric wearables and telemetry software operate under strict US Medical-Grade medical device clearance and HIPAA compliance standards.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2.5">
               <span className="bg-slate-800 text-slate-200 px-3 py-1.5 rounded text-xs font-mono font-bold border border-slate-700 flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-sm text-amber-400">medication</span>
-                FDA Class II Cleared 510(k)
+                Medical-Grade Continuous Monitoring
               </span>
               <span className="bg-slate-800 text-slate-200 px-3 py-1.5 rounded text-xs font-mono font-bold border border-slate-700 flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-sm text-status-normal">lock</span>
@@ -1160,7 +1162,7 @@ export default function HomePage() {
                 <li><a className="hover:text-white transition-colors" href="#clinical-advantage">Skyline Care+ Concierge</a></li>
                 <li><Link className="hover:text-white transition-colors" href="/patient/records">Patient Health Records</Link></li>
                 <li><Link className="hover:text-white transition-colors" href="/consultancy">Find a Specialist</Link></li>
-                <li><a className="hover:text-white transition-colors" href="#specs">HSA/FSA Reimbursement</a></li>
+                <li><a className="hover:text-white transition-colors" href="#specs">Paystack & Naira pricing</a></li>
               </ul>
             </div>
 

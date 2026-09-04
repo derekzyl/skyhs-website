@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { formatNgn } from '../lib/money';
+import { HARDWARE_PRICES } from '../lib/pricing';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -18,14 +20,14 @@ export default function Navbar() {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
           <span className="font-bold tracking-wider uppercase text-[10px] text-sky-200">
-            FDA Class II Clearance Granted:
+            Now shipping in Nigeria:
           </span>
         </div>
         <span className="hidden sm:inline text-sky-100 text-[11px]">
           Skyline VitalsWatch Ultra includes 1 Year Complimentary 24/7 MD Consultation Access
         </span>
         <span className="bg-primary-container/90 px-2 py-0.5 rounded text-[10px] font-mono font-bold border border-sky-400/30 text-white">
-          HSA / FSA ELIGIBLE
+          PAYSTACK · NGN
         </span>
       </div>
 
@@ -89,7 +91,7 @@ export default function Navbar() {
                         FLAGSHIP
                       </span>
                     </div>
-                    <div className="text-[11px] text-text-muted mt-0.5">Grade 5 Titanium • Lead II ECG • $399</div>
+                    <div className="text-[11px] text-text-muted mt-0.5">Grade 5 Titanium • Lead II ECG • {formatNgn(HARDWARE_PRICES.ultra)}</div>
                   </Link>
 
                   <Link
@@ -98,7 +100,7 @@ export default function Navbar() {
                     className="block p-2.5 rounded-lg hover:bg-surface-subtle transition-colors"
                   >
                     <div className="font-bold text-xs text-text-primary">PulseBand Pro</div>
-                    <div className="text-[11px] text-text-muted mt-0.5">Continuous Optical SpO2 • $299</div>
+                    <div className="text-[11px] text-text-muted mt-0.5">Continuous Optical SpO2 • {formatNgn(HARDWARE_PRICES.band)}</div>
                   </Link>
 
                   <Link
@@ -107,7 +109,7 @@ export default function Navbar() {
                     className="block p-2.5 rounded-lg hover:bg-surface-subtle transition-colors"
                   >
                     <div className="font-bold text-xs text-text-primary">Clinical Biosensor Suite</div>
-                    <div className="text-[11px] text-text-muted mt-0.5">Watch + Ring + Cellular Base Hub • $699</div>
+                    <div className="text-[11px] text-text-muted mt-0.5">Watch + Ring + Cellular Base Hub • {formatNgn(HARDWARE_PRICES.suite)}</div>
                   </Link>
 
                   <div className="mt-1 pt-1 border-t border-border-subtle">
@@ -176,7 +178,7 @@ export default function Navbar() {
               href="/checkout"
               className="hidden sm:inline-flex bg-primary hover:bg-primary-container text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm hover:shadow transition-all duration-150 items-center gap-1.5 shrink-0"
             >
-              <span>Order Watch — $399</span>
+              <span>Order Watch — {formatNgn(HARDWARE_PRICES.ultra)}</span>
               <span className="material-symbols-outlined text-base">arrow_forward</span>
             </Link>
 
@@ -204,7 +206,7 @@ export default function Navbar() {
                 className="py-2.5 px-3 text-center text-xs font-bold text-white bg-primary rounded-xl flex items-center justify-center gap-1.5 shadow-sm"
               >
                 <span className="material-symbols-outlined text-sm">shopping_cart</span>
-                Order Watch ($399)
+                Order Watch ({formatNgn(HARDWARE_PRICES.ultra)})
               </Link>
               <Link
                 href="/consultancy"
@@ -230,7 +232,7 @@ export default function Navbar() {
                   <span className="material-symbols-outlined text-base text-primary">watch</span>
                   Skyline VitalsWatch™ Ultra
                 </span>
-                <span className="text-xs font-bold text-primary font-mono">$399</span>
+                <span className="text-xs font-bold text-primary font-mono">{formatNgn(HARDWARE_PRICES.ultra)}</span>
               </Link>
               <Link
                 href="/#biometric-breakdown"
