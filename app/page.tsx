@@ -13,7 +13,12 @@ export default function HomePage() {
   const [videoMuted, setVideoMuted] = useState(false);
   const [callEnded, setCallEnded] = useState(false);
   const [orderModalOpen, setOrderModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState({
+  const [selectedProduct, setSelectedProduct] = useState<{
+    name: string;
+    price: number;
+    savings: number;
+    band: string;
+  }>({
     name: 'Skyline VitalsWatch™ Ultra',
     price: HARDWARE_PRICES.ultra,
     savings: HARDWARE_PRICES.ultraWas - HARDWARE_PRICES.ultra,
