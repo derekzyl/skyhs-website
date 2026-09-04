@@ -61,8 +61,8 @@ export default function VirtualConsultationRoomPage() {
         {/* Remote Patient Stream Area */}
         <div className="relative flex-1 min-h-[360px] sm:min-h-[460px] rounded-2xl overflow-hidden bg-black border border-slate-800 shadow-2xl flex items-center justify-center">
           <img
-            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=1000&q=80"
-            alt="Patient Eleanor Vance-Kovacs"
+            src="/images/avatars/patient_zainab.jpg"
+            alt="Patient Zainab Balogun"
             className="w-full h-full object-cover"
           />
 
@@ -72,8 +72,8 @@ export default function VirtualConsultationRoomPage() {
           {/* Top Patient Label */}
           <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
             <div className="bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700 text-xs">
-              <span className="font-bold text-white">Eleanor Vance-Kovacs</span>
-              <span className="text-slate-400 text-[11px] ml-2">64 F • MRN #SK-94021</span>
+              <span className="font-bold text-white">Zainab Balogun</span>
+              <span className="text-slate-400 text-[11px] ml-2">38 F • MRN #SK-94021</span>
             </div>
           </div>
 
@@ -86,13 +86,13 @@ export default function VirtualConsultationRoomPage() {
               </div>
             ) : (
               <img
-                src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&q=80"
-                alt="Dr. Julian Vance"
+                src="/images/avatars/dr_chidi_okafor.jpg"
+                alt="Dr. Chidi Okafor"
                 className="w-full h-full object-cover"
               />
             )}
             <div className="absolute bottom-1 left-1 bg-black/70 px-1.5 py-0.5 rounded text-[9px] font-mono text-white">
-              You (Dr. Vance)
+              You (Dr. Okafor)
             </div>
           </div>
 

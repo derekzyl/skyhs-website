@@ -11,13 +11,13 @@ export default function PatientLongitudinalRecordPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
         <div className="flex items-start sm:items-center gap-4">
           <img
-            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80"
-            alt="Eleanor Vance-Kovacs"
+            src="/images/avatars/patient_zainab.jpg"
+            alt="Zainab Balogun"
             className="w-16 h-16 rounded-2xl object-cover border-2 border-sky-500/50 shadow-md"
           />
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-xl sm:text-2xl font-bold text-white">Eleanor Vance-Kovacs</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-white">Zainab Balogun</h1>
               <span className="px-2.5 py-0.5 rounded bg-sky-950 border border-sky-800 text-sky-400 font-mono text-xs font-bold">
                 MRN #SK-94021
               </span>
@@ -54,7 +54,7 @@ export default function PatientLongitudinalRecordPage() {
           </h3>
           <span className="text-xs font-mono text-slate-400">Streamed via VitalsWatch Cellular eSIM</span>
         </div>
-        <EcgWaveform height={85} heartRate={104} rhythmText="Eleanor Vance-Kovacs • Continuous Rhythm" />
+        <EcgWaveform height={85} heartRate={104} rhythmText="Zainab Balogun • Continuous Rhythm" />
       </div>
 
       {/* ── 30-DAY RESTING HR & BIOMETRIC TRENDS ──────────────────────────────────── */}
@@ -150,7 +150,7 @@ export default function PatientLongitudinalRecordPage() {
                 <span className="font-bold text-white">Cardiology Routine Consult</span>
                 <span className="text-[10px] font-mono text-slate-400">Sept 28, 2026</span>
               </div>
-              <div className="text-[11px] text-slate-400">Provider: Dr. Julian Vance, MD</div>
+              <div className="text-[11px] text-slate-400">Provider: Dr. Chidi Okafor, MD</div>
               <p className="text-slate-300 text-[11px] leading-relaxed pt-1">
                 Prescribed baseline ambulatory ECG monitoring. Advised patient to hydrate and record symptom logs upon exertion.
               </p>

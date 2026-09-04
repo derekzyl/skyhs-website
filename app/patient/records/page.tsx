@@ -14,10 +14,10 @@ export default function PatientRecordsPage() {
     {
       id: 'enc-101',
       date: 'Oct 24, 2025 • 02:45 PM',
-      doctor: 'Dr. Julian Vance, MD',
+      doctor: 'Dr. Chidi Okafor, MD, FACC',
       specialty: 'Cardiology Lead',
       hospital: 'Cleveland Clinic Heart & Vascular Institute',
-      avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100&q=80',
+      avatar: '/images/avatars/dr_chidi_okafor.jpg',
       reason: 'Asymptomatic Exertional Arrhythmia Trigger (160 BPM)',
       diagnosis: 'Episodic Sinus Tachycardia (ICD-10: R00.0) • Benign Dehydration',
       prescription: 'Metoprolol Succinate 25mg ER Tablet',
@@ -26,10 +26,10 @@ export default function PatientRecordsPage() {
     {
       id: 'enc-102',
       date: 'Sep 12, 2025 • 10:15 AM',
-      doctor: 'Dr. Sarah Lin-Reynolds, MD',
-      specialty: 'Pulmonology',
+      doctor: 'Dr. Aminat Adeyemi, MD, FWACP',
+      specialty: 'Endocrinology',
       hospital: 'Johns Hopkins Medicine',
-      avatar: 'https://images.unsplash.com/photo-1594824813576-24e6628ef313?w=100&q=80',
+      avatar: '/images/avatars/dr_aminat_adeyemi.jpg',
       reason: 'Nocturnal SpO2 Desaturation Alert (89% at 03:14 AM)',
       diagnosis: 'Mild Positional Obstructive Hypopnea (ICD-10: G47.33)',
       prescription: 'Nasal Fluticasone Propionate 50mcg Spray',
@@ -53,20 +53,20 @@ export default function PatientRecordsPage() {
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 overflow-hidden flex items-center justify-center shrink-0">
                 <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&q=80"
-                  alt="Michael Hernandez"
+                  src="/images/avatars/patient_kelechi.jpg"
+                  alt="Kelechi Adeleke"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Michael Hernandez</h1>
+                  <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Kelechi Adeleke</h1>
                   <span className="px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 font-mono text-[10px] font-bold">
                     CARE+ ACTIVE
                   </span>
                 </div>
                 <div className="text-xs text-sky-200 mt-0.5">
-                  MRN #SK-88329 • 42 M • Primary Physician: Dr. Julian Vance, MD
+                  MRN #SK-88329 • 42 M • Primary Physician: Dr. Chidi Okafor, MD
                 </div>
               </div>
             </div>
@@ -299,9 +299,9 @@ export default function PatientRecordsPage() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs pt-2 border-t border-border-subtle">
-                <div>
-                  <span className="text-text-muted block text-[10px]">PRESCRIBING PHYSICIAN</span>
-                  <span className="font-bold text-text-primary">Dr. Julian Vance, MD (NPI #1892014820)</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-text-muted">Prescribing Provider:</span>
+                  <span className="font-bold text-text-primary">Dr. Chidi Okafor, MD (NPI #1892049102)</span>
                 </div>
                 <div>
                   <span className="text-text-muted block text-[10px]">FULFILLMENT PHARMACY</span>

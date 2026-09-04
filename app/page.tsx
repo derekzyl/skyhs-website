@@ -980,12 +980,12 @@ export default function HomePage() {
               </div>
               <div className="flex items-center gap-3 mt-6 pt-4 border-t border-border-subtle">
                 <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80"
-                  alt="Michael Hernandez patient portrait"
+                  src="/images/avatars/patient_kelechi.jpg"
+                  alt="Kelechi Adeleke patient portrait"
                   className="w-11 h-11 rounded-full object-cover border border-border-subtle"
                 />
                 <div>
-                  <div className="text-xs sm:text-sm font-bold text-text-primary">Michael Hernandez</div>
+                  <div className="text-xs sm:text-sm font-bold text-text-primary">Kelechi Adeleke</div>
                   <div className="text-[11px] text-text-muted">Verified VitalsWatch™ Ultra Owner • Austin, TX</div>
                 </div>
               </div>
@@ -1005,12 +1005,12 @@ export default function HomePage() {
               </div>
               <div className="flex items-center gap-3 mt-6 pt-4 border-t border-border-subtle">
                 <img
-                  src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100&q=80"
-                  alt="Dr. Marcus Chen Cardiologist"
+                  src="/images/avatars/dr_chidi_okafor.jpg"
+                  alt="Dr. Chidi Okafor Cardiologist"
                   className="w-11 h-11 rounded-full object-cover border border-border-subtle"
                 />
                 <div>
-                  <div className="text-xs sm:text-sm font-bold text-text-primary">Dr. Marcus Chen, MD, FACC</div>
+                  <div className="text-xs sm:text-sm font-bold text-text-primary">Dr. Chidi Okafor, MD, FACC</div>
                   <div className="text-[11px] text-text-muted">Chief of Cardiology, Pacific Metro Health</div>
                 </div>
               </div>
@@ -1030,13 +1030,13 @@ export default function HomePage() {
               </div>
               <div className="flex items-center gap-3 mt-6 pt-4 border-t border-border-subtle">
                 <img
-                  src="https://images.unsplash.com/photo-1594824813576-24e6628ef313?w=100&q=80"
-                  alt="Dr. Sarah Lin-Reynolds Pulmonologist"
+                  src="/images/avatars/dr_folake_bello.jpg"
+                  alt="Dr. Folake Bello Senior Physician"
                   className="w-11 h-11 rounded-full object-cover border border-border-subtle"
                 />
                 <div>
-                  <div className="text-xs sm:text-sm font-bold text-text-primary">Dr. Sarah Lin-Reynolds, MD</div>
-                  <div className="text-[11px] text-text-muted">Lead Pulmonologist, Tri-Valley Lung Center</div>
+                  <div className="text-xs sm:text-sm font-bold text-text-primary">Dr. Folake Bello, MD, PhD</div>
+                  <div className="text-[11px] text-text-muted">Senior Specialist, Tri-Valley Health Center</div>
                 </div>
               </div>
             </div>

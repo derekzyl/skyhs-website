@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 export default function PortalNavbar() {
@@ -24,8 +25,14 @@ export default function PortalNavbar() {
         {/* Left: Brand & Portal Badge */}
         <div className="flex items-center gap-4 sm:gap-6">
           <Link href="/portal/dashboard" className="flex items-center gap-2.5 sm:gap-3">
-            <div className="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center text-white shadow-md shrink-0">
-              <span className="material-symbols-outlined text-xl">vital_signs</span>
+            <div className="w-9 h-9 rounded-xl bg-slate-800 overflow-hidden flex items-center justify-center p-1 shadow-md shrink-0">
+              <Image
+                src="/logo.png"
+                alt="Skyline Health"
+                width={36}
+                height={36}
+                className="w-full h-full object-contain"
+              />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
@@ -103,13 +110,13 @@ export default function PortalNavbar() {
           >
             <div className="w-8 h-8 rounded-full overflow-hidden border border-slate-700 shrink-0">
               <img
-                src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100&q=80"
-                alt="Dr. Julian Vance"
+                src="/images/avatars/dr_chidi_okafor.jpg"
+                alt="Dr. Chidi Okafor"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="hidden xl:block text-left">
-              <div className="text-xs font-bold leading-none text-white">Dr. Julian Vance</div>
+              <div className="text-xs font-bold leading-none text-white">Dr. Chidi Okafor</div>
               <div className="text-[10px] text-slate-400 leading-tight">Cardiology Lead</div>
             </div>
           </Link>

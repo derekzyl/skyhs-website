@@ -2,12 +2,13 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import EcgWaveform from '../../components/EcgWaveform';
 
 export default function ClinicianLoginPage() {
   const router = useRouter();
-  const [identifier, setIdentifier] = useState('dr.vance@telehealth.org');
+  const [identifier, setIdentifier] = useState('dr.okafor@skylinehealth.org');
   const [password, setPassword] = useState('••••••••••••');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,8 +29,14 @@ export default function ClinicianLoginPage() {
         {/* Brand */}
         <div className="relative z-10">
           <Link href="/" className="inline-flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center text-white shadow-lg">
-              <span className="material-symbols-outlined text-2xl">vital_signs</span>
+            <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center overflow-hidden p-1 shadow-lg">
+              <Image
+                src="/logo.png"
+                alt="Skyline Health"
+                width={40}
+                height={40}
+                className="w-full h-full object-contain"
+              />
             </div>
             <div>
               <span className="text-lg font-extrabold tracking-tight text-white flex items-center gap-1">

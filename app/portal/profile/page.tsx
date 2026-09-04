@@ -21,14 +21,14 @@ export default function ClinicianProfilePage() {
         <div className="flex items-center gap-5 pb-6 border-b border-slate-800">
           <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-sky-500/40">
             <img
-              src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&q=80"
-              alt="Dr. Julian Vance"
+              src="/images/avatars/dr_chidi_okafor.jpg"
+              alt="Dr. Chidi Okafor"
               className="w-full h-full object-cover"
             />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold text-white">Dr. Julian Vance, MD</h2>
+              <h2 className="text-lg font-bold text-white">Dr. Chidi Okafor, MD, FACC</h2>
               <span className="material-symbols-outlined text-sky-400 text-lg">verified</span>
             </div>
             <div className="text-xs text-sky-400 font-semibold">Chief of Telecardiology</div>

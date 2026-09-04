@@ -2,9 +2,53 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://skylinehealth.org'),
   title: 'Skyline Health | Medical-Grade Continuous Biometric Telehealth Platform',
   description:
     'Continuous wrist-based biometric telemetry streaming, 24/7 specialist telehealth consultations, real-time Lead II ECG, and institutional EHR integration.',
+  keywords: [
+    'telehealth',
+    'wearable ECG',
+    'biometric monitoring',
+    'remote patient monitoring',
+    'telecardiology',
+    'Skyline Health',
+    'continuous telemetry',
+  ],
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.png', type: 'image/png' },
+      { url: '/icon.png', type: 'image/png' },
+    ],
+    apple: [{ url: '/logo.png' }],
+    shortcut: ['/favicon.ico'],
+  },
+  openGraph: {
+    title: 'Skyline Health | Medical-Grade Continuous Biometric Telehealth Platform',
+    description:
+      'Continuous wrist-based biometric telemetry streaming, 24/7 specialist telehealth consultations, real-time Lead II ECG, and institutional EHR integration.',
+    url: 'https://skylinehealth.org',
+    siteName: 'Skyline Health',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Skyline Health Continuous Telehealth Platform',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Skyline Health | Medical-Grade Continuous Biometric Telehealth Platform',
+    description:
+      'Continuous wrist-based biometric telemetry streaming, 24/7 specialist telehealth consultations, real-time Lead II ECG, and institutional EHR integration.',
+    images: ['/og-image.jpg'],
+    creator: '@SkylineHealth',
+  },
 };
 
 export default function RootLayout({

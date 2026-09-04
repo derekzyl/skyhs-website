@@ -65,13 +65,13 @@ export default function PatientWebWaitingRoomPage() {
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full overflow-hidden border border-white/20">
               <img
-                src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100&q=80"
-                alt="Dr. Julian Vance"
+                src="/images/avatars/dr_chidi_okafor.jpg"
+                alt="Dr. Chidi Okafor"
                 className="w-full h-full object-cover"
               />
             </div>
             <div>
-              <span className="font-bold text-white block">Dr. Julian Vance, MD</span>
+              <span className="font-bold text-white block">Dr. Chidi Okafor, MD</span>
               <span className="text-[11px] text-slate-400">
                 {doctorJoined
                   ? 'Doctor has entered the session. Click below to join!'
@@ -103,7 +103,7 @@ export default function PatientWebWaitingRoomPage() {
             <div className="relative h-60 rounded-xl overflow-hidden bg-black border border-slate-800 flex items-center justify-center">
               {cameraEnabled ? (
                 <img
-                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80"
+                  src="/images/avatars/patient_zainab.jpg"
                   alt="Patient Self View"
                   className="w-full h-full object-cover"
                 />

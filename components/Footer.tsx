@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
@@ -17,8 +18,14 @@ export default function Footer() {
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center text-white">
-                <span className="material-symbols-outlined text-xl">vital_signs</span>
+              <div className="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center overflow-hidden p-1 shadow-md">
+                <Image
+                  src="/logo.png"
+                  alt="Skyline Health Logo"
+                  width={36}
+                  height={36}
+                  className="w-full h-full object-contain"
+                />
               </div>
               <span className="text-lg font-extrabold tracking-tight text-white">
                 SKYLINE <span className="text-secondary-container font-medium">HEALTH</span>
