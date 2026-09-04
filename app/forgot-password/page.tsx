@@ -2,14 +2,26 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { apiPost, errorMessage } from '../../lib/api';
 
 export default function ClinicianForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setError(null);
+    setLoading(true);
+    try {
+      await apiPost('/api/v1/auth/forgot-password', { email: email.trim() }, { auth: false });
+      setSubmitted(true);
+    } catch (err) {
+      setError(errorMessage(err, 'Could not send recovery link.'));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -66,11 +78,18 @@ export default function ClinicianForgotPasswordPage() {
               </div>
             </div>
 
+            {error && (
+              <p className="text-xs text-rose-400 bg-rose-950/40 border border-rose-800/50 rounded-xl px-3 py-2">
+                {error}
+              </p>
+            )}
+
             <button
               type="submit"
+              disabled={loading}
               className="w-full py-3.5 rounded-xl bg-primary hover:bg-primary-container text-white font-bold text-xs shadow-lg shadow-sky-950 transition-all flex items-center justify-center gap-2"
             >
-              <span>Send Recovery Link</span>
+              <span>{loading ? 'Sending…' : 'Send Recovery Link'}</span>
               <span className="material-symbols-outlined text-sm">arrow_forward</span>
             </button>
           </form>

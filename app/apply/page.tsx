@@ -4,33 +4,68 @@ import React, { useState } from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Link from 'next/link';
+import { apiPost, errorMessage, getAccessToken } from '../../lib/api';
 
 export default function ClinicianApplyPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Form State
   const [formData, setFormData] = useState({
-    fullName: 'Dr. Julian Vance, MD',
-    npiNumber: '1892049102',
-    email: 'dr.vance@telehealth.org',
-    phone: '+1 (555) 234-5678',
-    medicalSchool: 'Harvard Medical School',
-    primaryState: 'California (CA)',
-    licenseNumber: 'A149021',
-    deaNumber: 'BV8492019',
+    fullName: '',
+    npiNumber: '',
+    email: '',
+    phone: '',
+    medicalSchool: '',
+    primaryState: '',
+    licenseNumber: '',
+    deaNumber: '',
     specialty: 'Cardiology',
-    subSpecialty: 'Electrophysiology',
-    routingNumber: '121000358',
-    accountNumber: '••••••••4819',
+    subSpecialty: '',
+    routingNumber: '',
+    accountNumber: '',
     agreedToProtocols: true,
+    fee: '140',
+    bio: '',
   });
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
-    } else {
+      return;
+    }
+    setSubmitError(null);
+    if (!getAccessToken()) {
+      setSubmitError('Please sign in before submitting a credentialing application.');
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await apiPost('/api/v1/consultancy/consultants/apply', {
+        display_name: formData.fullName || 'Consultant',
+        title: 'Consultant',
+        specialty: formData.specialty,
+        sub_specialty: formData.subSpecialty || undefined,
+        hospital: formData.primaryState || undefined,
+        bio: formData.bio || undefined,
+        npi_number: formData.npiNumber || undefined,
+        fee: parseFloat(formData.fee) || 0,
+        experience_years: 0,
+        languages: ['English'],
+        credentials: [
+          formData.medicalSchool,
+          formData.licenseNumber ? `License ${formData.licenseNumber}` : '',
+          formData.deaNumber ? `DEA ${formData.deaNumber}` : '',
+        ].filter(Boolean),
+        accepts_telemetry: formData.agreedToProtocols,
+      });
       setIsSubmitted(true);
+    } catch (err) {
+      setSubmitError(errorMessage(err, 'Application submission failed.'));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -395,23 +430,44 @@ export default function ClinicianApplyPage() {
               )}
 
               {/* Wizard Navigation Buttons */}
-              <div className="pt-6 mt-6 border-t border-border-subtle flex items-center justify-between">
-                {currentStep > 1 ? (
-                  <button
-                    onClick={handleBack}
-                    className="px-4 py-2 rounded-lg border border-border-subtle text-xs font-bold text-text-secondary hover:bg-surface-subtle"
-                  >
-                    Back
-                  </button>
-                ) : <div />}
+              <div className="pt-6 mt-6 border-t border-border-subtle space-y-3">
+                {submitError && (
+                  <p className="text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
+                    {submitError}{' '}
+                    {!getAccessToken() && (
+                      <Link href="/login" className="font-bold underline">
+                        Sign in
+                      </Link>
+                    )}
+                  </p>
+                )}
+                <div className="flex items-center justify-between">
+                  {currentStep > 1 ? (
+                    <button
+                      onClick={handleBack}
+                      className="px-4 py-2 rounded-lg border border-border-subtle text-xs font-bold text-text-secondary hover:bg-surface-subtle"
+                    >
+                      Back
+                    </button>
+                  ) : (
+                    <div />
+                  )}
 
-                <button
-                  onClick={handleNext}
-                  className="px-6 py-2.5 rounded-lg bg-primary-container hover:bg-primary text-white text-xs font-bold shadow-md transition-colors flex items-center gap-1.5"
-                >
-                  <span>{currentStep === 4 ? 'Complete Credentialing' : 'Continue to Next Step'}</span>
-                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                </button>
+                  <button
+                    onClick={handleNext}
+                    disabled={submitting}
+                    className="px-6 py-2.5 rounded-lg bg-primary-container hover:bg-primary text-white text-xs font-bold shadow-md transition-colors flex items-center gap-1.5 disabled:opacity-60"
+                  >
+                    <span>
+                      {submitting
+                        ? 'Submitting…'
+                        : currentStep === 4
+                          ? 'Complete Credentialing'
+                          : 'Continue to Next Step'}
+                    </span>
+                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                  </button>
+                </div>
               </div>
             </div>
 

@@ -1,29 +1,67 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import EcgWaveform from '../../../components/EcgWaveform';
+import { apiGet, apiPost, errorMessage, getAccessToken } from '../../../lib/api';
+import type { ConsultationSession } from '../../../lib/types';
 
 export default function PatientWebWaitingRoomPage() {
+  const params = useParams();
+  const router = useRouter();
+  const sessionId = (params?.id as string) || '';
+
+  const [session, setSession] = useState<ConsultationSession | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [micEnabled, setMicEnabled] = useState(true);
   const [cameraEnabled, setCameraEnabled] = useState(true);
-  const [countdown, setCountdown] = useState(45);
-  const [doctorJoined, setDoctorJoined] = useState(false);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          setDoctorJoined(true);
-          return 0;
+    if (!sessionId) return;
+    let cancelled = false;
+
+    const poll = async () => {
+      try {
+        if (!getAccessToken()) {
+          setError('Sign in to join the waiting room.');
+          return;
         }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+        const sess = await apiGet<ConsultationSession>(
+          `/api/v1/consultancy/sessions/${sessionId}`
+        );
+        if (cancelled) return;
+        setSession(sess);
+        setError(null);
+
+        if (sess.status === 'upcoming') {
+          await apiPost(`/api/v1/consultancy/sessions/${sessionId}/waiting`).catch(
+            () => null
+          );
+        }
+
+        if (sess.status === 'live') {
+          router.replace(`/portal/consultation/${sessionId}`);
+        }
+      } catch (err) {
+        if (!cancelled) setError(errorMessage(err, 'Failed to load session.'));
+      }
+    };
+
+    void poll();
+    const id = setInterval(() => {
+      void poll();
+    }, 4000);
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+    };
+  }, [sessionId, router]);
+
+  const ready = session?.status === 'live';
+  const doctorName = session?.consultant_name || 'Your clinician';
 
   return (
     <div className="min-h-screen flex flex-col bg-surface-canvas text-text-primary font-sans">
@@ -34,30 +72,41 @@ export default function PatientWebWaitingRoomPage() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono font-bold tracking-wider mb-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 live-pulse" />
-              <span>TELEHEALTH WAITING ROOM • WEBRTC SECURED</span>
+              <span>TELEHEALTH WAITING ROOM</span>
             </div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
               Virtual Pre-Call Diagnostic & Sensor Check
             </h1>
             <p className="text-xs text-slate-400 mt-0.5">
-              Encounter with <span className="text-white font-bold">Dr. Julian Vance, MD</span> (Cardiology)
+              Encounter with <span className="text-white font-bold">{doctorName}</span>
+              {session?.specialty ? ` (${session.specialty})` : ''}
             </p>
           </div>
 
           <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs font-mono">
-            <div className="text-slate-400 text-[10px] uppercase">Estimated Wait</div>
-            <div className="text-base font-bold text-sky-400">
-              {doctorJoined ? 'Doctor is ready!' : `~00:${countdown.toString().padStart(2, '0')}`}
+            <div className="text-slate-400 text-[10px] uppercase">Session Status</div>
+            <div className="text-base font-bold text-sky-400 uppercase">
+              {session?.status || 'loading…'}
             </div>
           </div>
         </div>
       </div>
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-6">
-        {/* Doctor Status Banner */}
+        {error && (
+          <p className="text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3">
+            {error}{' '}
+            {!getAccessToken() && (
+              <Link href="/login" className="font-bold underline">
+                Sign in
+              </Link>
+            )}
+          </p>
+        )}
+
         <div
           className={`p-4 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs ${
-            doctorJoined
+            ready
               ? 'bg-emerald-950/80 border-emerald-500/40 text-emerald-300'
               : 'bg-slate-900 border-slate-800 text-slate-300'
           }`}
@@ -65,58 +114,51 @@ export default function PatientWebWaitingRoomPage() {
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full overflow-hidden border border-white/20">
               <img
-                src="/images/avatars/dr_chidi_okafor.jpg"
-                alt="Dr. Chidi Okafor"
+                src={session?.consultant_avatar || '/images/avatars/dr_chidi_okafor.jpg'}
+                alt={doctorName}
                 className="w-full h-full object-cover"
               />
             </div>
             <div>
-              <span className="font-bold text-white block">Dr. Chidi Okafor, MD</span>
+              <span className="font-bold text-white block">{doctorName}</span>
               <span className="text-[11px] text-slate-400">
-                {doctorJoined
-                  ? 'Doctor has entered the session. Click below to join!'
-                  : 'Reviewing your past 24-hour ambulatory ECG baseline...'}
+                {ready
+                  ? 'Clinician has started the session. Join the chat now.'
+                  : 'Waiting for clinician to start the encounter…'}
               </span>
             </div>
           </div>
 
-          {doctorJoined && (
+          {ready && (
             <Link
-              href="/portal/consultation/sess-01"
+              href={`/portal/consultation/${sessionId}`}
               className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-md flex items-center justify-center gap-2"
             >
-              <span className="material-symbols-outlined text-base">videocam</span>
-              <span>Admit to Encounter Now</span>
+              <span className="material-symbols-outlined text-base">chat</span>
+              <span>Join Consultation Chat</span>
             </Link>
           )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-          {/* Left: Interactive Video Preview & Controls */}
           <div className="md:col-span-7 bg-slate-900 rounded-2xl border border-slate-800 p-5 space-y-4">
             <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
               <span className="material-symbols-outlined text-sky-400 text-base">videocam</span>
               Self Camera & Audio Check
             </h3>
 
-            {/* Video Box */}
             <div className="relative h-60 rounded-xl overflow-hidden bg-black border border-slate-800 flex items-center justify-center">
               {cameraEnabled ? (
-                <img
-                  src="/images/avatars/patient_zainab.jpg"
-                  alt="Patient Self View"
-                  className="w-full h-full object-cover"
-                />
+                <div className="text-center text-slate-400 space-y-1">
+                  <span className="material-symbols-outlined text-4xl">videocam</span>
+                  <div className="text-xs">Camera preview (local check only)</div>
+                </div>
               ) : (
                 <div className="text-center text-slate-500 space-y-1">
                   <span className="material-symbols-outlined text-4xl">videocam_off</span>
                   <div className="text-xs">Camera is disabled</div>
                 </div>
               )}
-
-              <div className="absolute top-3 left-3 bg-black/70 px-2 py-0.5 rounded text-[10px] font-mono text-white">
-                1080p WebRTC
-              </div>
 
               <div className="absolute bottom-3 left-3 right-3 flex items-center justify-center gap-3">
                 <button
@@ -126,13 +168,11 @@ export default function PatientWebWaitingRoomPage() {
                       ? 'bg-slate-800/80 border-slate-600 text-white hover:bg-slate-700'
                       : 'bg-rose-900/90 border-rose-600 text-rose-300'
                   }`}
-                  title="Toggle Microphone"
                 >
                   <span className="material-symbols-outlined text-lg">
                     {micEnabled ? 'mic' : 'mic_off'}
                   </span>
                 </button>
-
                 <button
                   onClick={() => setCameraEnabled(!cameraEnabled)}
                   className={`p-2.5 rounded-full border transition-all ${
@@ -140,7 +180,6 @@ export default function PatientWebWaitingRoomPage() {
                       ? 'bg-slate-800/80 border-slate-600 text-white hover:bg-slate-700'
                       : 'bg-rose-900/90 border-rose-600 text-rose-300'
                   }`}
-                  title="Toggle Camera"
                 >
                   <span className="material-symbols-outlined text-lg">
                     {cameraEnabled ? 'videocam' : 'videocam_off'}
@@ -150,11 +189,10 @@ export default function PatientWebWaitingRoomPage() {
             </div>
 
             <div className="text-[11px] text-slate-400 text-center font-mono">
-              Microphone status: {micEnabled ? 'Active (Input levels normal)' : 'Muted'}
+              Microphone status: {micEnabled ? 'Active' : 'Muted'}
             </div>
           </div>
 
-          {/* Right: Watch Sensor Bridge Diagnostic */}
           <div className="md:col-span-5 space-y-4">
             <div className="bg-slate-900 rounded-2xl border border-slate-800 p-5 space-y-4">
               <div className="flex items-center justify-between">
@@ -163,27 +201,18 @@ export default function PatientWebWaitingRoomPage() {
                   VitalsWatch Live Bridge
                 </h3>
                 <span className="px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800/60 text-emerald-400 font-mono text-[10px] font-bold">
-                  CONNECTED
+                  READY
                 </span>
               </div>
 
-              {/* Waveform */}
-              <EcgWaveform height={70} heartRate={104} rhythmText="Real-time Lead II trace" />
-
-              <div className="grid grid-cols-2 gap-2 text-center text-xs font-mono">
-                <div className="p-2.5 rounded-xl bg-slate-950 border border-slate-800">
-                  <span className="text-slate-500 text-[9px] uppercase block">Heart Rate</span>
-                  <span className="text-sm font-bold text-rose-400">104 BPM</span>
-                </div>
-                <div className="p-2.5 rounded-xl bg-slate-950 border border-slate-800">
-                  <span className="text-slate-500 text-[9px] uppercase block">SpO2 Level</span>
-                  <span className="text-sm font-bold text-sky-400">98% Sat</span>
-                </div>
-              </div>
+              <EcgWaveform height={70} heartRate={72} rhythmText="Sensor check preview" />
 
               <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-[11px] text-slate-400 space-y-1">
-                <div className="text-white font-bold">Telemetry Bridge Ready</div>
-                <div>Your continuous sensor feed will sync automatically when doctor admits you.</div>
+                <div className="text-white font-bold">Polling session status</div>
+                <div>
+                  You will be redirected to the consultation chat when the clinician starts the
+                  encounter.
+                </div>
               </div>
             </div>
           </div>

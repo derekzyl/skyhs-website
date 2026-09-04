@@ -5,19 +5,27 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import EcgWaveform from '../../components/EcgWaveform';
+import { errorMessage, login } from '../../lib/api';
 
 export default function ClinicianLoginPage() {
   const router = useRouter();
-  const [identifier, setIdentifier] = useState('dr.okafor@skylinehealth.org');
-  const [password, setPassword] = useState('••••••••••••');
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     setIsLoading(true);
-    setTimeout(() => {
+    try {
+      await login(identifier.trim(), password);
       router.push('/portal/dashboard');
-    }, 600);
+    } catch (err) {
+      setError(errorMessage(err, 'Login failed. Check your email and password.'));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -155,6 +163,12 @@ export default function ClinicianLoginPage() {
               <span className="material-symbols-outlined text-base text-sky-400">key</span>
               <span>2FA Authenticator token will be prompted upon institutional SSO handoff.</span>
             </div>
+
+            {error && (
+              <p className="text-xs text-rose-400 bg-rose-950/40 border border-rose-800/50 rounded-xl px-3 py-2">
+                {error}
+              </p>
+            )}
 
             <button
               type="submit"
