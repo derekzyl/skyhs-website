@@ -1159,7 +1159,7 @@ export default function HomePage() {
                 <li><Link className="hover:text-white transition-colors" href="/consultancy">Specialist Directory</Link></li>
                 <li><a className="hover:text-white transition-colors" href="#clinical-advantage">Skyline Care+ Concierge</a></li>
                 <li><Link className="hover:text-white transition-colors" href="/patient/records">Patient Health Records</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="/waiting-room/sess-01">Waiting Room Test</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="/consultancy">Find a Specialist</Link></li>
                 <li><a className="hover:text-white transition-colors" href="#specs">HSA/FSA Reimbursement</a></li>
               </ul>
             </div>

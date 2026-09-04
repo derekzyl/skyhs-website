@@ -20,15 +20,19 @@ export default function PatientWebWaitingRoomPage() {
   const [cameraEnabled, setCameraEnabled] = useState(true);
 
   useEffect(() => {
+    if (!getAccessToken()) {
+      router.replace('/login');
+      return;
+    }
+  }, [router]);
+
+  useEffect(() => {
     if (!sessionId) return;
+    if (!getAccessToken()) return;
     let cancelled = false;
 
     const poll = async () => {
       try {
-        if (!getAccessToken()) {
-          setError('Sign in to join the waiting room.');
-          return;
-        }
         const sess = await apiGet<ConsultationSession>(
           `/api/v1/consultancy/sessions/${sessionId}`
         );
@@ -42,7 +46,7 @@ export default function PatientWebWaitingRoomPage() {
           );
         }
 
-        if (sess.status === 'live') {
+        if (sess.status === 'live' || sess.status === 'in_progress') {
           router.replace(`/portal/consultation/${sessionId}`);
         }
       } catch (err) {

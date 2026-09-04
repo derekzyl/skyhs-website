@@ -51,6 +51,12 @@ export interface AvailabilitySlot {
   is_active: boolean;
 }
 
+export interface TimeSlot {
+  start: string;
+  end: string;
+  available: boolean;
+}
+
 export interface ChatMessage {
   id: string;
   session_id: string;

@@ -5,22 +5,10 @@ import { useRouter } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { apiGet, apiPost, errorMessage, getAccessToken } from '../../lib/api';
-import type { Consultant, ConsultationSession } from '../../lib/types';
+import type { Consultant, ConsultationSession, TimeSlot } from '../../lib/types';
 
-function buildScheduledAt(dayOffset: number, slotLabel: string): string {
-  const m = slotLabel.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  d.setDate(d.getDate() + dayOffset);
-  if (m) {
-    let hour = parseInt(m[1], 10);
-    const minute = parseInt(m[2], 10);
-    const ampm = m[3].toUpperCase();
-    if (ampm === 'PM' && hour < 12) hour += 12;
-    if (ampm === 'AM' && hour === 12) hour = 0;
-    d.setHours(hour, minute, 0, 0);
-  }
-  return d.toISOString();
+function formatSlotLabel(iso: string): string {
+  return new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 }
 
 export default function ConsultancyDiscoveryPage() {
@@ -38,7 +26,9 @@ export default function ConsultancyDiscoveryPage() {
   const [bookingError, setBookingError] = useState<string | null>(null);
 
   const [dayOffset, setDayOffset] = useState(0);
-  const [bookingSlot, setBookingSlot] = useState('02:45 PM');
+  const [slots, setSlots] = useState<TimeSlot[]>([]);
+  const [slotsLoading, setSlotsLoading] = useState(false);
+  const [selectedSlotStart, setSelectedSlotStart] = useState<string | null>(null);
   const [chiefComplaint, setChiefComplaint] = useState('');
   const [telemetryConsent, setTelemetryConsent] = useState(true);
 
@@ -77,6 +67,41 @@ export default function ConsultancyDiscoveryPage() {
     return () => clearTimeout(t);
   }, [loadConsultants]);
 
+  useEffect(() => {
+    if (!activeBookingDoctor) {
+      setSlots([]);
+      setSelectedSlotStart(null);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      setSlotsLoading(true);
+      setSelectedSlotStart(null);
+      try {
+        const d = new Date();
+        d.setDate(d.getDate() + dayOffset);
+        const date = d.toISOString().slice(0, 10);
+        const data = await apiGet<TimeSlot[]>(
+          `/api/v1/consultancy/consultants/${activeBookingDoctor.id}/slots?date=${date}`
+        );
+        if (cancelled) return;
+        const available = (data || []).filter((s) => s.available);
+        setSlots(available);
+        setSelectedSlotStart(available[0]?.start || null);
+      } catch {
+        if (!cancelled) {
+          setSlots([]);
+          setSelectedSlotStart(null);
+        }
+      } finally {
+        if (!cancelled) setSlotsLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [activeBookingDoctor, dayOffset]);
+
   const filteredDoctors = useMemo(() => {
     return consultants.filter((doc) => {
       const matchesAvailable = !availableOnly || doc.is_available_now;
@@ -86,14 +111,22 @@ export default function ConsultancyDiscoveryPage() {
 
   const handleConfirmBooking = async () => {
     if (!activeBookingDoctor) return;
+    if (!getAccessToken()) {
+      router.push('/login');
+      return;
+    }
+    if (!selectedSlotStart) {
+      setBookingError('Select an available time slot.');
+      return;
+    }
     setBookingError(null);
     setBookingBusy(true);
     try {
       const session = await apiPost<ConsultationSession>('/api/v1/consultancy/sessions', {
         consultant_id: activeBookingDoctor.id,
-        scheduled_at: buildScheduledAt(dayOffset, bookingSlot),
+        scheduled_at: selectedSlotStart,
         duration_minutes: 30,
-        session_type: telemetryConsent ? 'chat' : 'chat',
+        session_type: 'chat',
         chief_complaint: chiefComplaint.trim() || undefined,
         symptoms: [],
       });
@@ -387,18 +420,28 @@ export default function ConsultancyDiscoveryPage() {
                   <label className="text-xs font-bold text-text-secondary block mb-1.5">
                     Available Clinical Windows
                   </label>
+                  {slotsLoading && (
+                    <p className="text-xs text-text-muted">Loading slots…</p>
+                  )}
+                  {!slotsLoading && slots.length === 0 && (
+                    <p className="text-xs text-text-muted">
+                      No open slots for this day. Try another date or ask the clinician to set
+                      availability.
+                    </p>
+                  )}
                   <div className="grid grid-cols-3 gap-2">
-                    {['02:45 PM', '03:15 PM', '04:30 PM', '05:00 PM', '06:15 PM'].map((slot) => (
+                    {slots.map((slot) => (
                       <button
-                        key={slot}
-                        onClick={() => setBookingSlot(slot)}
+                        key={slot.start}
+                        type="button"
+                        onClick={() => setSelectedSlotStart(slot.start)}
                         className={`p-2 rounded-lg text-xs font-semibold border transition-all ${
-                          bookingSlot === slot
+                          selectedSlotStart === slot.start
                             ? 'bg-primary-container text-white border-primary-container font-bold'
                             : 'border-border-subtle hover:bg-surface-subtle'
                         }`}
                       >
-                        {slot}
+                        {formatSlotLabel(slot.start)}
                       </button>
                     ))}
                   </div>
@@ -448,7 +491,7 @@ export default function ConsultancyDiscoveryPage() {
                   </div>
                   <button
                     onClick={handleConfirmBooking}
-                    disabled={bookingBusy}
+                    disabled={bookingBusy || !selectedSlotStart}
                     className="px-6 py-2.5 rounded-lg bg-primary-container hover:bg-primary text-white text-xs font-bold shadow-md transition-colors disabled:opacity-60"
                   >
                     {bookingBusy ? 'Reserving…' : 'Confirm & Reserve Slot'}
