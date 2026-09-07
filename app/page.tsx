@@ -90,18 +90,18 @@ export default function HomePage() {
                     className="inline-flex justify-center items-center gap-2 bg-primary hover:bg-primary-container text-white text-sm sm:text-base font-bold px-6 sm:px-7 py-3.5 sm:py-4 rounded-xl shadow-lg shadow-blue-900/10 hover:shadow-xl transition-all duration-150 text-center"
                   >
                     <span className="material-symbols-outlined text-xl">shopping_cart</span>
-                    <span>Order Skyline Watch — {formatNgn(HARDWARE_PRICES.ultra)}</span>
+                    <span>Order Watch — {formatNgn(HARDWARE_PRICES.ultra)}</span>
                     <span className="text-xs bg-blue-900/60 px-2 py-0.5 rounded text-blue-200">
                       Save {formatNgn(HARDWARE_PRICES.ultraWas - HARDWARE_PRICES.ultra)}
                     </span>
                   </Link>
-                  <a
-                    href="#biometric-breakdown"
-                    className="inline-flex justify-center items-center gap-2 bg-white hover:bg-surface-subtle text-primary border border-border-subtle text-sm sm:text-base font-semibold px-5 sm:px-6 py-3.5 sm:py-4 rounded-xl transition-all duration-150 shadow-sm text-center"
+                  <Link
+                    href="/consultancy"
+                    className="inline-flex justify-center items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm sm:text-base font-bold px-5 sm:px-6 py-3.5 sm:py-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-150 text-center"
                   >
-                    <span className="material-symbols-outlined text-xl text-primary">biotech</span>
-                    <span>Explore Biosensor Tech</span>
-                  </a>
+                    <span className="material-symbols-outlined text-xl">video_call</span>
+                    <span>Consult Specialist — From ₦15,000</span>
+                  </Link>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-text-muted pt-1">
@@ -982,7 +982,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <p className="text-xs sm:text-sm text-text-secondary italic leading-relaxed">
-                  &quot;At 2 AM, my Skyline Watch vibrated with an asymptomatic 160 bpm rhythm alert. I pressed 1-tap call, and Dr. Vance reviewed my live ECG right on her screen. She guided me through a vagal maneuver and dispatched emergency meds before things escalated. This watch saved my life.&quot;
+                  &quot;At 2 AM in Victoria Island, my Skyline Watch vibrated with an asymptomatic 160 bpm rhythm alert. I tapped the 1-tap call, and Dr. Okafor reviewed my live ECG right on his screen. He guided me through a vagal maneuver and dispatched emergency medication before things escalated. This platform saved my life.&quot;
                 </p>
               </div>
               <div className="flex items-center gap-3 mt-6 pt-4 border-t border-border-subtle">
@@ -993,7 +993,7 @@ export default function HomePage() {
                 />
                 <div>
                   <div className="text-xs sm:text-sm font-bold text-text-primary">Kelechi Adeleke</div>
-                  <div className="text-[11px] text-text-muted">Verified VitalsWatch™ Ultra Owner • Austin, TX</div>
+                  <div className="text-[11px] text-text-muted">Verified VitalsWatch™ Ultra Owner • Ikoyi, Lagos</div>
                 </div>
               </div>
             </div>
@@ -1007,7 +1007,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <p className="text-xs sm:text-sm text-text-secondary italic leading-relaxed">
-                  &quot;The 500Hz sampling resolution on the Skyline dry electrodes gives me clinical tracings identical to a 12-lead rhythm strip. When patients trigger a video consult, I can prescribe with complete diagnostic confidence.&quot;
+                  &quot;The 500Hz sampling resolution on the Skyline dry electrodes gives me clinical tracings identical to a hospital rhythm strip. When patients in Abuja or Port Harcourt trigger an encounter, I review Lead II ECG with complete diagnostic confidence and send digital prescriptions directly.&quot;
                 </p>
               </div>
               <div className="flex items-center gap-3 mt-6 pt-4 border-t border-border-subtle">
@@ -1017,8 +1017,8 @@ export default function HomePage() {
                   className="w-11 h-11 rounded-full object-cover border border-border-subtle"
                 />
                 <div>
-                  <div className="text-xs sm:text-sm font-bold text-text-primary">Dr. Chidi Okafor, MD, FACC</div>
-                  <div className="text-[11px] text-text-muted">Chief of Cardiology, Pacific Metro Health</div>
+                  <div className="text-xs sm:text-sm font-bold text-text-primary">Dr. Chinedu Okafor, MBBS, FWACP</div>
+                  <div className="text-[11px] text-text-muted">Consultant Cardiologist, LUTH Idi-Araba, Lagos</div>
                 </div>
               </div>
             </div>
@@ -1032,7 +1032,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <p className="text-xs sm:text-sm text-text-secondary italic leading-relaxed">
-                  &quot;Standard consumer watches take SpO2 snapshots every 30 minutes. Skyline’s continuous plethysmography tracks nocturnal desaturations with hospital-grade accuracy, letting us optimize COPD therapy without sleep labs.&quot;
+                  &quot;Standard consumer smartwatches take SpO2 snapshots every 30 minutes. Skyline’s continuous plethysmography tracks nocturnal desaturations with hospital-grade accuracy, letting us optimize chronic respiratory therapy across Nigeria without costly sleep labs.&quot;
                 </p>
               </div>
               <div className="flex items-center gap-3 mt-6 pt-4 border-t border-border-subtle">
@@ -1042,8 +1042,8 @@ export default function HomePage() {
                   className="w-11 h-11 rounded-full object-cover border border-border-subtle"
                 />
                 <div>
-                  <div className="text-xs sm:text-sm font-bold text-text-primary">Dr. Folake Bello, MD, PhD</div>
-                  <div className="text-[11px] text-text-muted">Senior Specialist, Tri-Valley Health Center</div>
+                  <div className="text-xs sm:text-sm font-bold text-text-primary">Dr. Amina Bello, MBBS, FMCP</div>
+                  <div className="text-[11px] text-text-muted">Chief Consultant, National Hospital Abuja</div>
                 </div>
               </div>
             </div>

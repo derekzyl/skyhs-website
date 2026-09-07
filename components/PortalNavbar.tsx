@@ -154,6 +154,17 @@ export default function PortalNavbar() {
             <span className="sm:hidden">{isOnCall ? 'On Call' : 'Busy'}</span>
           </button>
 
+          {(Boolean(user?.is_platform_admin) || (typeof user?.user_type === 'string' && user.user_type.toLowerCase() === 'admin')) && (
+            <Link
+              href="/admin"
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-xs text-amber-300 hover:bg-amber-500/20 transition-colors font-bold font-mono"
+              title="Switch to Admin Command Center"
+            >
+              <span className="material-symbols-outlined text-sm text-amber-400">admin_panel_settings</span>
+              <span>Admin Console</span>
+            </Link>
+          )}
+
           {queueCount > 0 && (
             <Link
               href={roomHref}

@@ -10,7 +10,7 @@ export default function Footer() {
         <span className="font-bold uppercase tracking-wider text-rose-200 mr-2">
           Emergency Notice:
         </span>
-        If you are experiencing chest pain, severe shortness of breath, or an acute life-threatening medical emergency, immediately call 911 or go to your nearest emergency room.
+        If you are experiencing chest pain, severe shortness of breath, or an acute life-threatening medical emergency, immediately call <strong>112</strong> (Nigeria Toll-Free) or Lagos LASAMBUS <strong>767</strong>, or proceed to your nearest emergency facility. Telehealth is not a replacement for immediate emergency triage.
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
@@ -18,7 +18,7 @@ export default function Footer() {
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center overflow-hidden p-1 shadow-md">
+              <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center overflow-hidden p-1.5 shadow-md">
                 <Image
                   src="/logo.png"
                   alt="Skyline Health Logo"
@@ -28,25 +28,25 @@ export default function Footer() {
                 />
               </div>
               <span className="text-lg font-extrabold tracking-tight text-white">
-                SKYLINE <span className="text-secondary-container font-medium">HEALTH</span>
+                SKYLINE <span className="text-sky-400 font-medium">HEALTH</span>
               </span>
             </div>
             <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-              Continuous medical-grade wrist telemetry integrated with 24/7 board-certified specialist clinical care. Real-time Lead II ECG, continuous pulse oximetry, and instant Epic/Cerner FHIR synchronization.
+              Continuous medical-grade wrist biometric telemetry integrated with 24/7 board-certified Nigerian specialists and international consultants. Real-time Lead II ECG, continuous optical SpO2, and encrypted e-Prescription synchronization.
             </p>
             {/* Certifications row */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              <span className="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-[11px] font-mono font-semibold text-emerald-400 flex items-center gap-1">
+            <div className="flex flex-wrap items-center gap-2 pt-2">
+              <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-[11px] font-mono font-semibold text-emerald-400 flex items-center gap-1">
                 <span className="material-symbols-outlined text-xs">verified</span>
-                HIPAA Compliant
+                MDCN Compliant
               </span>
-              <span className="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-[11px] font-mono font-semibold text-sky-400 flex items-center gap-1">
+              <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-[11px] font-mono font-semibold text-sky-400 flex items-center gap-1">
                 <span className="material-symbols-outlined text-xs">lock</span>
-                HITRUST CSF Certified
+                NDPR Data Privacy
               </span>
-              <span className="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-[11px] font-mono font-semibold text-purple-400 flex items-center gap-1">
-                <span className="material-symbols-outlined text-xs">integration_instructions</span>
-                HL7 FHIR Bridge
+              <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-[11px] font-mono font-semibold text-purple-400 flex items-center gap-1">
+                <span className="material-symbols-outlined text-xs">payments</span>
+                Paystack PCI-DSS L1
               </span>
             </div>
           </div>
@@ -63,8 +63,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#smartwatch" className="hover:text-white transition-colors">
-                  VitalsWatch Pro
+                <Link href="/#hardware-lineup" className="hover:text-white transition-colors">
+                  VitalsWatch™ Ultra
                 </Link>
               </li>
               <li>
@@ -73,8 +73,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#faq" className="hover:text-white transition-colors">
-                  Insurance & HMO Coverage
+                <Link href="/patient/records" className="hover:text-white transition-colors">
+                  Electronic Health Records
+                </Link>
+              </li>
+              <li>
+                <Link href="/checkout" className="hover:text-white transition-colors">
+                  Order Hardware & Sensors
                 </Link>
               </li>
             </ul>
@@ -87,13 +92,13 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5 text-xs">
               <li>
-                <Link href="/apply" className="hover:text-white transition-colors">
+                <Link href="/apply" className="hover:text-white transition-colors text-sky-400 font-semibold">
                   Join Specialist Network
                 </Link>
               </li>
               <li>
                 <Link href="/portal/dashboard" className="hover:text-white transition-colors">
-                  Provider Portal
+                  Clinician Workspace
                 </Link>
               </li>
               <li>
@@ -102,8 +107,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/portal/schedule" className="hover:text-white transition-colors">
+                  Availability & Slots
+                </Link>
+              </li>
+              <li>
                 <Link href="/portal/earnings" className="hover:text-white transition-colors">
-                  CPT Billing & Payouts
+                  Direct Naira Payouts
                 </Link>
               </li>
             </ul>
@@ -112,27 +122,33 @@ export default function Footer() {
           {/* Platform & Governance */}
           <div>
             <h4 className="text-xs font-mono uppercase tracking-widest text-slate-200 font-bold mb-4">
-              Security & Legal
+              Governance & Admin
             </h4>
             <ul className="space-y-2.5 text-xs">
               <li>
+                <Link href="/admin" className="text-amber-400/90 hover:text-amber-300 font-mono font-semibold transition-colors flex items-center gap-1">
+                  <span className="material-symbols-outlined text-xs">admin_panel_settings</span>
+                  Admin Command Console
+                </Link>
+              </li>
+              <li>
                 <span className="text-slate-400 hover:text-white cursor-pointer">
-                  Privacy Policy (HIPAA)
+                  NDPR Privacy Policy
                 </span>
               </li>
               <li>
                 <span className="text-slate-400 hover:text-white cursor-pointer">
-                  Terms of Telehealth Care
+                  Telehealth Clinical Standards
                 </span>
               </li>
               <li>
                 <span className="text-slate-400 hover:text-white cursor-pointer">
-                  FDA 510(k) Status
+                  MDCN Credentialing Policy
                 </span>
               </li>
               <li>
                 <span className="text-slate-400 hover:text-white cursor-pointer">
-                  BAA Agreement
+                  Paystack Escrow Terms
                 </span>
               </li>
             </ul>
@@ -140,11 +156,14 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p>© 2026 Skyline Health Technologies, Inc. All rights reserved.</p>
-          <div className="flex items-center gap-6">
-            <span>AES-256 WebRTC Telemetry</span>
-            <span>•</span>
-            <span>24/7 Clinical Network Status: Online</span>
+          <p>© 2026 Skyline Health Technologies Ltd. Lagos · Abuja · Port Harcourt. All rights reserved.</p>
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+            <span className="text-emerald-400 flex items-center gap-1 font-mono">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 live-pulse" />
+              WebRTC Encrypted Telemetry Active
+            </span>
+            <span>·</span>
+            <span>PCI-DSS Secured via Paystack</span>
           </div>
         </div>
       </div>

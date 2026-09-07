@@ -1,47 +1,92 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
+import { apiGet, clearAuthTokens, getAccessToken } from '../lib/api';
 import { formatNgn } from '../lib/money';
 import { HARDWARE_PRICES } from '../lib/pricing';
+import type { AuthUser } from '../lib/types';
 
 export default function Navbar() {
+  const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hardwareOpen, setHardwareOpen] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(null);
+
+  useEffect(() => {
+    const token = getAccessToken();
+    if (!token) return;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiGet<{ data?: AuthUser } | AuthUser>('/api/v1/auth/me');
+        if (cancelled) return;
+        const u = (res as { data?: AuthUser })?.data ?? (res as AuthUser);
+        if (u && typeof u === 'object' && 'id' in u) {
+          setUser(u);
+        }
+      } catch {
+        // Unauthenticated or expired token
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname]);
+
+  const handleLogout = () => {
+    clearAuthTokens();
+    setUser(null);
+    setUserDropdownOpen(false);
+    router.push('/login');
+  };
+
+  const displayName = user
+    ? [user.first_name, user.last_name].filter(Boolean).join(' ') || user.email || 'Account'
+    : '';
+
+  const isPlatformAdmin = Boolean(
+    user?.is_platform_admin ||
+    (typeof user?.user_type === 'string' && user.user_type.toLowerCase() === 'admin')
+  );
 
   return (
     <div className="w-full sticky top-0 z-50">
       {/* ── TOP ANNOUNCEMENT BAR ────────────────────────────────────────────────── */}
-      <div className="bg-primary text-white py-1.5 px-4 text-center text-xs font-semibold flex items-center justify-center gap-2 border-b border-primary-container shadow-xs">
+      <div className="bg-slate-950 text-white py-1.5 px-4 text-center text-xs font-semibold flex items-center justify-center gap-2 border-b border-slate-800 shadow-xs">
         <div className="flex items-center gap-1.5">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
-          <span className="font-bold tracking-wider uppercase text-[10px] text-sky-200">
-            Now shipping in Nigeria:
+          <span className="font-bold tracking-wider uppercase text-[10px] text-sky-400">
+            24/7 Telehealth Active in Nigeria:
           </span>
         </div>
-        <span className="hidden sm:inline text-sky-100 text-[11px]">
-          Skyline VitalsWatch Ultra includes 1 Year Complimentary 24/7 MD Consultation Access
+        <span className="hidden sm:inline text-slate-300 text-[11px]">
+          Lagos · Abuja · Port Harcourt · MDCN-Certified Teleconsultations & Electronic Prescriptions
         </span>
-        <span className="bg-primary-container/90 px-2 py-0.5 rounded text-[10px] font-mono font-bold border border-sky-400/30 text-white">
+        <span className="bg-primary/40 px-2 py-0.5 rounded text-[10px] font-mono font-bold border border-sky-500/30 text-sky-200">
           PAYSTACK · NGN
         </span>
       </div>
 
       {/* ── MAIN NAVIGATION HEADER ──────────────────────────────────────────────── */}
-      <header className="w-full bg-white/95 backdrop-blur-md border-b border-border-subtle shadow-sm transition-all duration-150">
+      <header className="w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition-all duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
           {/* Brand Identity */}
           <Link href="/" className="flex items-center gap-3 group shrink-0">
-            <div className="w-10 h-10 rounded-xl overflow-hidden bg-slate-900 flex items-center justify-center p-1 shadow-md group-hover:scale-105 transition-all">
+            <div className="w-10 h-10 rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center p-1.5 shadow-md group-hover:scale-105 border border-slate-800 transition-all">
               <Image
                 src="/logo.png"
                 alt="Skyline Health Logo"
-                width={40}
-                height={40}
+                width={36}
+                height={36}
                 className="w-full h-full object-contain"
                 priority
               />
@@ -49,27 +94,28 @@ export default function Navbar() {
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="text-base sm:text-lg font-extrabold text-primary tracking-tight">
-                  SKYLINE <span className="text-secondary font-medium">HEALTH</span>
+                  SKYLINE <span className="text-secondary font-semibold">HEALTH</span>
                 </span>
                 <span className="bg-emerald-50 text-emerald-700 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border border-emerald-200 hidden xs:inline-block">
-                  BIOSENSORS
+                  TELEHEALTH
                 </span>
               </div>
-              <p className="text-[10px] font-semibold text-text-muted flex items-center gap-1">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-status-normal" />
-                Clinical Grade Wearables
+              <p className="text-[10px] font-semibold text-slate-500 flex items-center gap-1">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                Medical Biometrics & MDCN Network
               </p>
             </div>
           </Link>
 
           {/* Desktop Links */}
-          <nav className="hidden lg:flex items-center space-x-6 text-xs font-bold text-text-secondary">
+          <nav className="hidden lg:flex items-center space-x-6 text-xs font-bold text-slate-700">
             {/* Hardware Dropdown */}
             <div className="relative">
               <button
+                type="button"
                 onClick={() => setHardwareOpen(!hardwareOpen)}
                 onMouseEnter={() => setHardwareOpen(true)}
-                className="text-primary hover:text-secondary py-2 flex items-center gap-1 focus:outline-none"
+                className="hover:text-primary py-2 flex items-center gap-1 focus:outline-none transition-colors"
               >
                 <span>Hardware Fleet</span>
                 <span className="material-symbols-outlined text-sm">expand_more</span>
@@ -78,12 +124,12 @@ export default function Navbar() {
               {hardwareOpen && (
                 <div
                   onMouseLeave={() => setHardwareOpen(false)}
-                  className="absolute left-0 top-full w-64 bg-white border border-border-subtle rounded-xl shadow-2xl p-2.5 z-50 animate-fadeIn"
+                  className="absolute left-0 top-full w-72 bg-white border border-slate-200 rounded-2xl shadow-2xl p-2.5 z-50 animate-fadeIn"
                 >
                   <Link
                     href="/#hardware-lineup"
                     onClick={() => setHardwareOpen(false)}
-                    className="block p-2.5 rounded-lg hover:bg-surface-subtle transition-colors"
+                    className="block p-2.5 rounded-xl hover:bg-slate-50 transition-colors"
                   >
                     <div className="font-bold text-xs text-primary flex items-center justify-between">
                       <span>VitalsWatch™ Ultra</span>
@@ -91,34 +137,40 @@ export default function Navbar() {
                         FLAGSHIP
                       </span>
                     </div>
-                    <div className="text-[11px] text-text-muted mt-0.5">Grade 5 Titanium • Lead II ECG • {formatNgn(HARDWARE_PRICES.ultra)}</div>
+                    <div className="text-[11px] text-slate-500 mt-0.5">
+                      Titanium Case · Lead II ECG · {formatNgn(HARDWARE_PRICES.ultra)}
+                    </div>
                   </Link>
 
                   <Link
                     href="/#hardware-lineup"
                     onClick={() => setHardwareOpen(false)}
-                    className="block p-2.5 rounded-lg hover:bg-surface-subtle transition-colors"
+                    className="block p-2.5 rounded-xl hover:bg-slate-50 transition-colors"
                   >
-                    <div className="font-bold text-xs text-text-primary">PulseBand Pro</div>
-                    <div className="text-[11px] text-text-muted mt-0.5">Continuous Optical SpO2 • {formatNgn(HARDWARE_PRICES.band)}</div>
+                    <div className="font-bold text-xs text-slate-900">PulseBand Pro</div>
+                    <div className="text-[11px] text-slate-500 mt-0.5">
+                      Continuous Optical SpO2 · {formatNgn(HARDWARE_PRICES.band)}
+                    </div>
                   </Link>
 
                   <Link
                     href="/#hardware-lineup"
                     onClick={() => setHardwareOpen(false)}
-                    className="block p-2.5 rounded-lg hover:bg-surface-subtle transition-colors"
+                    className="block p-2.5 rounded-xl hover:bg-slate-50 transition-colors"
                   >
-                    <div className="font-bold text-xs text-text-primary">Clinical Biosensor Suite</div>
-                    <div className="text-[11px] text-text-muted mt-0.5">Watch + Ring + Cellular Base Hub • {formatNgn(HARDWARE_PRICES.suite)}</div>
+                    <div className="font-bold text-xs text-slate-900">Clinical Biosensor Suite</div>
+                    <div className="text-[11px] text-slate-500 mt-0.5">
+                      Watch + Ring + Cellular Base Hub · {formatNgn(HARDWARE_PRICES.suite)}
+                    </div>
                   </Link>
 
-                  <div className="mt-1 pt-1 border-t border-border-subtle">
+                  <div className="mt-1 pt-1.5 border-t border-slate-100">
                     <Link
                       href="/smartwatch"
                       onClick={() => setHardwareOpen(false)}
-                      className="text-[11px] text-secondary font-bold hover:underline flex items-center gap-1 p-1"
+                      className="text-[11px] text-secondary font-bold hover:underline flex items-center justify-between p-1"
                     >
-                      <span>Explore Technical Specs</span>
+                      <span>Explore Technical Specifications</span>
                       <span className="material-symbols-outlined text-xs">arrow_forward</span>
                     </Link>
                   </div>
@@ -135,60 +187,124 @@ export default function Navbar() {
 
             <Link
               href="/consultancy"
-              className="text-primary hover:text-secondary transition-colors flex items-center gap-1.5"
+              className="hover:text-primary transition-colors flex items-center gap-1.5"
             >
-              <span className="w-2 h-2 rounded-full bg-status-normal live-pulse" />
-              Specialist Network
+              <span className="w-2 h-2 rounded-full bg-emerald-500 live-pulse" />
+              Specialist Directory
             </Link>
 
             <Link
-              href="/patient/records"
-              className="hover:text-primary transition-colors flex items-center gap-1"
+              href="/apply"
+              className="text-slate-600 hover:text-primary transition-colors flex items-center gap-1"
             >
-              <span className="material-symbols-outlined text-sm">clinical_notes</span>
-              My Records
+              <span className="material-symbols-outlined text-sm text-sky-600">verified_user</span>
+              Join as Doctor
             </Link>
 
-            <Link
-              href="/portal/dashboard"
-              className="hover:text-primary transition-colors flex items-center gap-1 text-slate-600"
-            >
-              <span className="material-symbols-outlined text-sm text-sky-600">stethoscope</span>
-              Clinician Portal
-            </Link>
+            {isPlatformAdmin && (
+              <Link
+                href="/admin"
+                className="px-2.5 py-1 rounded-full bg-slate-900 text-sky-300 hover:bg-slate-800 text-[11px] font-mono font-bold flex items-center gap-1 border border-slate-700 transition-all shadow-xs"
+              >
+                <span className="material-symbols-outlined text-xs text-amber-400">admin_panel_settings</span>
+                Admin Console
+              </Link>
+            )}
           </nav>
 
           {/* Trailing Actions */}
           <div className="flex items-center gap-2.5 sm:gap-3">
-            {/* Cart Link */}
-            <Link
-              href="/checkout"
-              className="relative p-2 text-text-secondary hover:text-primary rounded-lg border border-border-subtle hover:bg-surface-subtle transition-colors flex items-center"
-              title="View Cart & Checkout"
-              aria-label="View Shopping Cart"
-            >
-              <span className="material-symbols-outlined text-xl">shopping_bag</span>
-              <span className="absolute -top-1 -right-1 bg-secondary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                1
-              </span>
-            </Link>
+            {/* User Account / Sign In State */}
+            {user ? (
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  className="flex items-center gap-2 py-1.5 px-3 rounded-xl border border-slate-200 hover:border-slate-300 bg-white text-xs font-bold text-slate-800 shadow-xs focus:outline-none transition-all"
+                >
+                  <div className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold">
+                    {displayName.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="hidden md:inline max-w-[120px] truncate">{displayName}</span>
+                  <span className="material-symbols-outlined text-xs text-slate-400">expand_more</span>
+                </button>
+
+                {userDropdownOpen && (
+                  <div className="absolute right-0 top-full mt-1.5 w-60 bg-white border border-slate-200 rounded-2xl shadow-xl p-2 z-50 animate-fadeIn text-xs">
+                    <div className="px-3 py-2 border-b border-slate-100">
+                      <div className="font-bold text-slate-900 truncate">{displayName}</div>
+                      <div className="text-[11px] text-slate-500 truncate">{user.email}</div>
+                    </div>
+
+                    <div className="py-1">
+                      {isPlatformAdmin && (
+                        <Link
+                          href="/admin"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="flex items-center gap-2 px-3 py-2 rounded-lg text-primary font-bold hover:bg-slate-50 transition-colors"
+                        >
+                          <span className="material-symbols-outlined text-base text-amber-500">admin_panel_settings</span>
+                          <span>Admin Console</span>
+                        </Link>
+                      )}
+                      <Link
+                        href="/portal/dashboard"
+                        onClick={() => setUserDropdownOpen(false)}
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-base text-sky-600">stethoscope</span>
+                        <span>Clinician Portal</span>
+                      </Link>
+                      <Link
+                        href="/patient/records"
+                        onClick={() => setUserDropdownOpen(false)}
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-base text-slate-500">clinical_notes</span>
+                        <span>Patient Records</span>
+                      </Link>
+                    </div>
+
+                    <div className="pt-1 border-t border-slate-100">
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-rose-600 hover:bg-rose-50 transition-colors text-left font-semibold"
+                      >
+                        <span className="material-symbols-outlined text-base">logout</span>
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="hidden xs:inline-flex text-xs font-bold text-slate-700 hover:text-primary px-3 py-2 transition-colors"
+              >
+                Sign In
+              </Link>
+            )}
 
             {/* Order Watch CTA */}
             <Link
               href="/checkout"
-              className="hidden sm:inline-flex bg-primary hover:bg-primary-container text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm hover:shadow transition-all duration-150 items-center gap-1.5 shrink-0"
+              className="bg-primary hover:bg-primary-container text-white text-xs font-bold px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-xs hover:shadow transition-all duration-150 flex items-center gap-1.5 shrink-0"
             >
-              <span>Order Watch — {formatNgn(HARDWARE_PRICES.ultra)}</span>
-              <span className="material-symbols-outlined text-base">arrow_forward</span>
+              <span className="material-symbols-outlined text-sm">shopping_bag</span>
+              <span className="hidden sm:inline">Order Watch — {formatNgn(HARDWARE_PRICES.ultra)}</span>
+              <span className="sm:hidden">Order</span>
             </Link>
 
             {/* Mobile Hamburger Toggle */}
             <button
+              type="button"
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2 text-text-secondary hover:text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="lg:hidden p-2 text-slate-700 hover:text-primary rounded-xl border border-slate-200 focus:outline-none"
               aria-label="Toggle Navigation Menu"
             >
-              <span className="material-symbols-outlined text-2xl">
+              <span className="material-symbols-outlined text-xl">
                 {mobileOpen ? 'close' : 'menu'}
               </span>
             </button>
@@ -197,16 +313,16 @@ export default function Navbar() {
 
         {/* ── MOBILE MENU DRAWER ──────────────────────────────────────────────────── */}
         {mobileOpen && (
-          <div className="lg:hidden border-t border-border-subtle bg-white px-4 pt-3 pb-6 space-y-4 shadow-2xl max-h-[calc(100vh-100px)] overflow-y-auto animate-fadeIn">
+          <div className="lg:hidden border-t border-slate-200 bg-white/95 backdrop-blur-xl px-4 pt-3 pb-6 space-y-4 shadow-2xl max-h-[calc(100vh-100px)] overflow-y-auto animate-fadeIn">
             {/* Quick Actions */}
-            <div className="grid grid-cols-2 gap-2 pb-3 border-b border-border-subtle">
+            <div className="grid grid-cols-2 gap-2 pb-3 border-b border-slate-200">
               <Link
                 href="/checkout"
                 onClick={() => setMobileOpen(false)}
-                className="py-2.5 px-3 text-center text-xs font-bold text-white bg-primary rounded-xl flex items-center justify-center gap-1.5 shadow-sm"
+                className="py-2.5 px-3 text-center text-xs font-bold text-white bg-primary rounded-xl flex items-center justify-center gap-1.5 shadow-xs"
               >
                 <span className="material-symbols-outlined text-sm">shopping_cart</span>
-                Order Watch ({formatNgn(HARDWARE_PRICES.ultra)})
+                Order Watch
               </Link>
               <Link
                 href="/consultancy"
@@ -214,93 +330,81 @@ export default function Navbar() {
                 className="py-2.5 px-3 text-center text-xs font-bold text-primary border border-primary/30 rounded-xl flex items-center justify-center gap-1.5"
               >
                 <span className="material-symbols-outlined text-sm">video_call</span>
-                Consult Doctor
+                Find Specialist
               </Link>
             </div>
 
-            {/* Navigation Links */}
-            <div className="space-y-1">
-              <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted px-2 py-1">
-                Hardware & Features
-              </div>
+            <div className="space-y-1 text-sm font-semibold text-slate-800">
               <Link
                 href="/#hardware-lineup"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-between p-2 rounded-lg text-sm font-semibold text-text-primary hover:bg-surface-subtle"
+                className="block px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors"
               >
-                <span className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-base text-primary">watch</span>
-                  Skyline VitalsWatch™ Ultra
-                </span>
-                <span className="text-xs font-bold text-primary font-mono">{formatNgn(HARDWARE_PRICES.ultra)}</span>
+                Hardware Lineup & Sensors
               </Link>
               <Link
                 href="/#biometric-breakdown"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 p-2 rounded-lg text-sm font-semibold text-text-secondary hover:bg-surface-subtle"
+                className="block px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors"
               >
-                <span className="material-symbols-outlined text-base text-secondary">ecg_heart</span>
-                Continuous Biometric Sensors
+                Continuous ECG Telemetry
               </Link>
               <Link
-                href="/#clinical-advantage"
+                href="/consultancy"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 p-2 rounded-lg text-sm font-semibold text-text-secondary hover:bg-surface-subtle"
+                className="block px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors text-primary font-bold"
               >
-                <span className="material-symbols-outlined text-base text-emerald-600">health_and_safety</span>
-                24/7 Clinical Telehealth Advantage
-              </Link>
-              <Link
-                href="/smartwatch"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 p-2 rounded-lg text-sm font-semibold text-text-secondary hover:bg-surface-subtle"
-              >
-                <span className="material-symbols-outlined text-base text-slate-500">memory</span>
-                Technical Hardware Specifications
-              </Link>
-            </div>
-
-            <div className="space-y-1 pt-2 border-t border-border-subtle">
-              <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-text-muted px-2 py-1">
-                Patient & Clinician Portals
-              </div>
-              <Link
-                href="/patient/records"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-between p-2 rounded-lg text-sm font-semibold text-text-primary hover:bg-surface-subtle"
-              >
-                <span className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-base text-primary">clinical_notes</span>
-                  Patient Health Records & Vitals
-                </span>
-                <span className="text-[10px] font-bold bg-sky-100 text-primary px-1.5 py-0.5 rounded">
-                  NEW
-                </span>
-              </Link>
-              <Link
-                href="/portal/dashboard"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 p-2 rounded-lg text-sm font-semibold text-text-secondary hover:bg-surface-subtle"
-              >
-                <span className="material-symbols-outlined text-base text-slate-600">space_dashboard</span>
-                Clinician Portal Dashboard
+                Specialist Network (MDCN Verified)
               </Link>
               <Link
                 href="/apply"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 p-2 rounded-lg text-sm font-semibold text-text-secondary hover:bg-surface-subtle"
+                className="block px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors"
               >
-                <span className="material-symbols-outlined text-base text-secondary">assignment_ind</span>
-                Join Roster as Specialist MD
+                Join Doctor Network
               </Link>
               <Link
-                href="/login"
+                href="/portal/dashboard"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 p-2 rounded-lg text-sm font-semibold text-text-secondary hover:bg-surface-subtle"
+                className="block px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors"
               >
-                <span className="material-symbols-outlined text-base text-slate-400">login</span>
-                Clinician Sign In
+                Clinician Portal
               </Link>
+              {isPlatformAdmin && (
+                <Link
+                  href="/admin"
+                  onClick={() => setMobileOpen(false)}
+                  className="block px-3 py-2.5 rounded-lg bg-slate-900 text-sky-300 font-mono font-bold"
+                >
+                  ⚡ Admin Command Center
+                </Link>
+              )}
+            </div>
+
+            <div className="pt-3 border-t border-slate-200">
+              {user ? (
+                <div className="flex items-center justify-between px-2">
+                  <div className="text-xs">
+                    <p className="font-bold text-slate-900">{displayName}</p>
+                    <p className="text-slate-500 text-[11px]">{user.email}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="text-xs font-bold text-rose-600 px-3 py-1.5 rounded-lg border border-rose-200 hover:bg-rose-50"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="block w-full py-2.5 text-center text-xs font-bold text-slate-800 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors"
+                >
+                  Sign In to Portal
+                </Link>
+              )}
             </div>
           </div>
         )}
