@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
+import ThemeToggle from './ThemeToggle';
 import { apiGet, clearAuthTokens } from '../lib/api';
 import type { AuthUser, ConsultationSession } from '../lib/types';
 
@@ -80,11 +81,11 @@ export default function PortalNavbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-slate-900 border-b border-slate-800 text-white shadow-md">
+    <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-xs transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
         <div className="flex items-center gap-4 sm:gap-6">
           <Link href="/portal/dashboard" className="flex items-center gap-2.5 sm:gap-3">
-            <div className="w-9 h-9 rounded-xl bg-slate-800 overflow-hidden flex items-center justify-center p-1 shadow-md shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 overflow-hidden flex items-center justify-center p-1 shadow-xs shrink-0">
               <Image
                 src="/logo.png"
                 alt="Skyline Health"
@@ -95,10 +96,10 @@ export default function PortalNavbar() {
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="text-sm sm:text-base font-bold tracking-tight text-white">
-                  SKYLINE <span className="text-secondary-container">HEALTH</span>
+                <span className="text-sm sm:text-base font-bold tracking-tight text-slate-900 dark:text-white">
+                  SKYLINE <span className="text-primary dark:text-sky-400">HEALTH</span>
                 </span>
-                <span className="px-1.5 py-0.2 rounded bg-sky-950 border border-sky-800 text-[9px] sm:text-[10px] font-mono font-bold text-sky-400">
+                <span className="px-1.5 py-0.5 rounded bg-sky-50 dark:bg-sky-950 border border-sky-200 dark:border-sky-800 text-[9px] sm:text-[10px] font-mono font-bold text-sky-600 dark:text-sky-400">
                   MD PORTAL
                 </span>
               </div>
@@ -116,14 +117,14 @@ export default function PortalNavbar() {
                   href={item.href}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors ${
                     isActive
-                      ? 'bg-slate-800 text-sky-400 font-bold'
-                      : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
+                      ? 'bg-sky-50 dark:bg-slate-800 text-sky-600 dark:text-sky-400 font-bold border border-sky-100 dark:border-slate-700'
+                      : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   <span className="material-symbols-outlined text-base">{item.icon}</span>
                   <span>{item.label}</span>
                   {item.badge && (
-                    <span className="text-[9px] bg-sky-500/20 text-sky-300 px-1.5 py-0.5 rounded border border-sky-500/30 font-mono">
+                    <span className="text-[9px] bg-sky-500/10 dark:bg-sky-500/20 text-sky-600 dark:text-sky-300 px-1.5 py-0.5 rounded border border-sky-500/20 dark:border-sky-500/30 font-mono">
                       {item.badge}
                     </span>
                   )}
@@ -138,14 +139,14 @@ export default function PortalNavbar() {
             onClick={() => setIsOnCall(!isOnCall)}
             className={`px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 sm:gap-2 border transition-all ${
               isOnCall
-                ? 'bg-emerald-950/80 border-emerald-500/40 text-emerald-400'
-                : 'bg-amber-950/80 border-amber-500/40 text-amber-400'
+                ? 'bg-emerald-50 dark:bg-emerald-950/80 border-emerald-300 dark:border-emerald-500/40 text-emerald-700 dark:text-emerald-400'
+                : 'bg-amber-50 dark:bg-amber-950/80 border-amber-300 dark:border-amber-500/40 text-amber-700 dark:text-amber-400'
             }`}
             title="Toggle Clinical On-Call Availability"
           >
             <span
               className={`w-2 h-2 rounded-full ${
-                isOnCall ? 'bg-emerald-400 live-pulse' : 'bg-amber-400'
+                isOnCall ? 'bg-emerald-500 dark:bg-emerald-400 live-pulse' : 'bg-amber-500 dark:bg-amber-400'
               }`}
             />
             <span className="hidden sm:inline">
@@ -157,10 +158,10 @@ export default function PortalNavbar() {
           {(Boolean(user?.is_platform_admin) || (typeof user?.user_type === 'string' && user.user_type.toLowerCase() === 'admin')) && (
             <Link
               href="/admin"
-              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-xs text-amber-300 hover:bg-amber-500/20 transition-colors font-bold font-mono"
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-500/10 border border-amber-300 dark:border-amber-500/30 text-xs text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-500/20 transition-colors font-bold font-mono"
               title="Switch to Admin Command Center"
             >
-              <span className="material-symbols-outlined text-sm text-amber-400">admin_panel_settings</span>
+              <span className="material-symbols-outlined text-sm text-amber-500 dark:text-amber-400">admin_panel_settings</span>
               <span>Admin Console</span>
             </Link>
           )}
@@ -168,25 +169,30 @@ export default function PortalNavbar() {
           {queueCount > 0 && (
             <Link
               href={roomHref}
-              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-sky-500/10 border border-sky-500/30 text-xs text-sky-300 hover:bg-sky-500/20 transition-colors"
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-sky-50 dark:bg-sky-500/10 border border-sky-300 dark:border-sky-500/30 text-xs text-sky-700 dark:text-sky-300 hover:bg-sky-100 dark:hover:bg-sky-500/20 transition-colors"
             >
               <span className="material-symbols-outlined text-sm">notifications_active</span>
               <span className="font-bold">{queueCount} In Queue</span>
             </Link>
           )}
 
+          {/* Theme Switcher in Portal Navbar */}
+          <div className="flex items-center">
+            <ThemeToggle />
+          </div>
+
           <Link
             href="/portal/profile"
-            className="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-800 hover:opacity-90 transition-opacity"
+            className="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-800 hover:opacity-90 transition-opacity"
           >
-            <div className="w-8 h-8 rounded-full overflow-hidden border border-slate-700 shrink-0 bg-slate-800 flex items-center justify-center text-[10px] font-bold">
+            <div className="w-8 h-8 rounded-full overflow-hidden border border-slate-300 dark:border-slate-700 shrink-0 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10px] font-bold text-slate-700 dark:text-slate-200">
               {user?.first_name?.[0] || user?.email?.[0] || 'MD'}
             </div>
             <div className="hidden xl:block text-left">
-              <div className="text-xs font-bold leading-none text-white">
+              <div className="text-xs font-bold leading-none text-slate-900 dark:text-white">
                 {clinicianLabel(user)}
               </div>
-              <div className="text-[10px] text-slate-400 leading-tight">
+              <div className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
                 {user?.email || 'Signed in'}
               </div>
             </div>
@@ -194,7 +200,7 @@ export default function PortalNavbar() {
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-slate-300 hover:text-white rounded-lg hover:bg-slate-800"
+            className="lg:hidden p-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
             aria-label="Toggle Clinician Navigation Menu"
           >
             <span className="material-symbols-outlined text-2xl">
@@ -205,20 +211,20 @@ export default function PortalNavbar() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-800 bg-slate-900 px-4 pt-3 pb-6 space-y-3 shadow-2xl animate-fadeIn">
+        <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-3 pb-6 space-y-3 shadow-2xl animate-fadeIn">
           {queueCount > 0 && (
             <Link
               href={roomHref}
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between p-3 rounded-xl bg-sky-950/80 border border-sky-800 text-sky-300 text-xs font-bold"
+              className="flex items-center justify-between p-3 rounded-xl bg-sky-50 dark:bg-sky-950/80 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300 text-xs font-bold"
             >
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-base text-sky-400 animate-pulse">
+                <span className="material-symbols-outlined text-base text-sky-600 dark:text-sky-400 animate-pulse">
                   notifications_active
                 </span>
                 <span>{queueCount} session(s) active</span>
               </div>
-              <span className="text-[10px] font-mono bg-sky-900 px-2 py-0.5 rounded text-white">
+              <span className="text-[10px] font-mono bg-sky-600 dark:bg-sky-900 px-2 py-0.5 rounded text-white">
                 Open chat →
               </span>
             </Link>
@@ -234,8 +240,8 @@ export default function PortalNavbar() {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-colors ${
                     isActive
-                      ? 'bg-slate-800 text-sky-400 font-bold border border-slate-700'
-                      : 'text-slate-300 hover:bg-slate-800/40 hover:text-white'
+                      ? 'bg-sky-50 dark:bg-slate-800 text-sky-600 dark:text-sky-400 font-bold border border-sky-200 dark:border-slate-700'
+                      : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/40 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -243,7 +249,7 @@ export default function PortalNavbar() {
                     <span>{item.label}</span>
                   </div>
                   {item.badge && (
-                    <span className="text-[9px] bg-sky-500/20 text-sky-300 px-1.5 py-0.5 rounded font-mono">
+                    <span className="text-[9px] bg-sky-500/10 dark:bg-sky-500/20 text-sky-600 dark:text-sky-300 px-1.5 py-0.5 rounded font-mono">
                       {item.badge}
                     </span>
                   )}
@@ -252,23 +258,26 @@ export default function PortalNavbar() {
             })}
           </nav>
 
-          <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+          <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
             <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-slate-400 hover:text-white flex items-center gap-1"
+              className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-1"
             >
               <span className="material-symbols-outlined text-sm">home</span>
               <span>Public Website</span>
             </Link>
-            <button
-              type="button"
-              onClick={logout}
-              className="text-red-400 hover:text-red-300 flex items-center gap-1"
-            >
-              <span className="material-symbols-outlined text-sm">logout</span>
-              <span>Sign Out</span>
-            </button>
+            <div className="flex items-center gap-2">
+              <ThemeToggle showLabel />
+              <button
+                type="button"
+                onClick={logout}
+                className="text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 flex items-center gap-1 font-semibold ml-2"
+              >
+                <span className="material-symbols-outlined text-sm">logout</span>
+                <span>Sign Out</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

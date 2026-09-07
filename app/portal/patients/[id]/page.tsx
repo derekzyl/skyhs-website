@@ -58,12 +58,12 @@ export default function PatientLongitudinalRecordPage() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-md">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-slate-900 dark:text-slate-100">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs dark:shadow-md">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white">Patient record</h1>
-          <div className="text-xs text-slate-400 mt-1 font-mono">ID: {patientId || '—'}</div>
-          <p className="text-xs text-slate-500 mt-2">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Patient record</h1>
+          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-mono">ID: {patientId || '—'}</div>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
             Encounters and care summaries for this patient from consultancy sessions.
           </p>
         </div>
@@ -79,7 +79,7 @@ export default function PatientLongitudinalRecordPage() {
       </div>
 
       {error && (
-        <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs">
+        <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-500/30 text-rose-600 dark:text-rose-300 text-xs">
           {error}
         </div>
       )}
@@ -87,7 +87,7 @@ export default function PatientLongitudinalRecordPage() {
       {loading && <p className="text-sm text-slate-500">Loading…</p>}
 
       {!loading && sessions.length === 0 && (
-        <div className="p-10 rounded-2xl border border-slate-800 bg-slate-900 text-center text-sm text-slate-500">
+        <div className="p-10 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-center text-sm text-slate-500 dark:text-slate-400 shadow-xs">
           No consultancy sessions found for this patient.
         </div>
       )}
@@ -98,35 +98,35 @@ export default function PatientLongitudinalRecordPage() {
           return (
             <div
               key={s.id}
-              className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2"
+              className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2 shadow-xs dark:shadow-none"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <div className="text-sm font-bold text-white">
+                  <div className="text-sm font-bold text-slate-900 dark:text-white">
                     {s.specialty || 'Consultation'} · {s.status}
                   </div>
-                  <div className="text-xs text-slate-400 font-mono">
+                  <div className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                     {new Date(s.scheduled_at).toLocaleString()} · {s.duration_minutes} min
                   </div>
                 </div>
                 <Link
                   href={`/portal/consultation/${s.id}`}
-                  className="text-xs text-sky-400 hover:underline"
+                  className="text-xs text-sky-600 dark:text-sky-400 hover:underline font-semibold"
                 >
                   Open chat →
                 </Link>
               </div>
               {s.chief_complaint && (
-                <p className="text-xs text-slate-300">Complaint: {s.chief_complaint}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-300">Complaint: {s.chief_complaint}</p>
               )}
               {summary?.diagnosis || summary?.soap_notes ? (
-                <div className="text-xs text-slate-400 space-y-1 border-t border-slate-800 pt-2">
+                <div className="text-xs text-slate-600 dark:text-slate-400 space-y-1 border-t border-slate-100 dark:border-slate-800 pt-2">
                   {summary.diagnosis && <p>Diagnosis: {summary.diagnosis}</p>}
                   {summary.soap_notes && <p>Notes: {summary.soap_notes}</p>}
                   {summary.prescriptions && <p>Rx: {summary.prescriptions}</p>}
                 </div>
               ) : (
-                <p className="text-xs text-slate-600">No care summary yet.</p>
+                <p className="text-xs text-slate-400 dark:text-slate-600">No care summary yet.</p>
               )}
             </div>
           );

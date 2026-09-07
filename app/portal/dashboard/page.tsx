@@ -67,19 +67,19 @@ export default function ClinicianDashboardPage() {
   const completedToday = sessions.filter((s) => s.status === 'completed').length;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-slate-800">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-slate-900 dark:text-slate-100">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-sky-400">
+          <div className="flex items-center gap-2 text-xs font-mono text-sky-600 dark:text-sky-400">
             <span className="material-symbols-outlined text-base">verified</span>
             <span>CLINICIAN WORKSPACE</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
             Good day, {displayName}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
             You have{' '}
-            <span className="text-sky-400 font-bold">
+            <span className="text-sky-600 dark:text-sky-400 font-bold">
               {waiting.length} patient{waiting.length === 1 ? '' : 's'} waiting
             </span>{' '}
             in your clinical queue.
@@ -89,7 +89,7 @@ export default function ClinicianDashboardPage() {
         <div className="flex items-center gap-3">
           <Link
             href="/portal/schedule"
-            className="px-4 py-2 rounded-xl bg-slate-900 border border-slate-700 hover:bg-slate-800 text-xs font-bold text-slate-300 transition-colors flex items-center gap-1.5"
+            className="px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 transition-colors flex items-center gap-1.5 shadow-xs"
           >
             <span className="material-symbols-outlined text-base">calendar_month</span>
             <span>Manage Schedule</span>
@@ -97,7 +97,7 @@ export default function ClinicianDashboardPage() {
           {nextPatient && (
             <Link
               href={`/portal/consultation/${nextPatient.id}`}
-              className="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-white text-xs font-bold shadow-lg shadow-sky-950 transition-all flex items-center gap-2"
+              className="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-white text-xs font-bold shadow-md shadow-sky-950/20 transition-all flex items-center gap-2"
             >
               <span className="material-symbols-outlined text-base live-pulse">chat</span>
               <span>Open Chat Room</span>
@@ -107,94 +107,94 @@ export default function ClinicianDashboardPage() {
       </div>
 
       {error && (
-        <p className="text-xs text-rose-400 bg-rose-950/40 border border-rose-800/50 rounded-xl px-4 py-3">
+        <p className="text-xs text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/50 rounded-xl px-4 py-3">
           {error}
         </p>
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
-          <div className="text-xs font-mono text-slate-400 flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 space-y-1 shadow-xs dark:shadow-none">
+          <div className="text-xs font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
             <span>Today&apos;s Encounters</span>
-            <span className="material-symbols-outlined text-sky-400">event_available</span>
+            <span className="material-symbols-outlined text-sky-500 dark:text-sky-400">event_available</span>
           </div>
-          <div className="text-2xl font-extrabold font-mono text-white">
+          <div className="text-2xl font-extrabold font-mono text-slate-900 dark:text-white">
             {loading ? '…' : `${sessions.length} Total`}
           </div>
-          <div className="text-[11px] text-emerald-400">
+          <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
             {completedToday} Completed • {waiting.length} Waiting
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
-          <div className="text-xs font-mono text-slate-400 flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 space-y-1 shadow-xs dark:shadow-none">
+          <div className="text-xs font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
             <span>Live / Waiting</span>
-            <span className="material-symbols-outlined text-emerald-400">sensors</span>
+            <span className="material-symbols-outlined text-emerald-500 dark:text-emerald-400">sensors</span>
           </div>
-          <div className="text-2xl font-extrabold font-mono text-emerald-400">
+          <div className="text-2xl font-extrabold font-mono text-emerald-600 dark:text-emerald-400">
             {waiting.length}
           </div>
-          <div className="text-[11px] text-slate-400">Active queue</div>
+          <div className="text-[11px] text-slate-500 dark:text-slate-400">Active queue</div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
-          <div className="text-xs font-mono text-slate-400 flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 space-y-1 shadow-xs dark:shadow-none">
+          <div className="text-xs font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
             <span>Fees (sessions)</span>
-            <span className="material-symbols-outlined text-amber-400">payments</span>
+            <span className="material-symbols-outlined text-amber-500 dark:text-amber-400">payments</span>
           </div>
-          <div className="text-2xl font-extrabold font-mono text-white">
+          <div className="text-2xl font-extrabold font-mono text-slate-900 dark:text-white">
             {formatNgn(sessions.reduce((sum, s) => sum + (s.fee || 0), 0))}
           </div>
-          <div className="text-[11px] text-sky-400 font-mono">Listed encounter fees</div>
+          <div className="text-[11px] text-sky-600 dark:text-sky-400 font-mono">Listed encounter fees</div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-1">
-          <div className="text-xs font-mono text-slate-400 flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 space-y-1 shadow-xs dark:shadow-none">
+          <div className="text-xs font-mono text-slate-500 dark:text-slate-400 flex items-center justify-between">
             <span>Upcoming</span>
-            <span className="material-symbols-outlined text-purple-400">schedule</span>
+            <span className="material-symbols-outlined text-purple-500 dark:text-purple-400">schedule</span>
           </div>
-          <div className="text-2xl font-extrabold font-mono text-purple-400">
+          <div className="text-2xl font-extrabold font-mono text-purple-600 dark:text-purple-400">
             {upcoming.length}
           </div>
-          <div className="text-[11px] text-slate-400">Scheduled + active</div>
+          <div className="text-[11px] text-slate-500 dark:text-slate-400">Scheduled + active</div>
         </div>
       </div>
 
       {nextPatient ? (
-        <div className="rounded-2xl border border-sky-500/30 bg-gradient-to-r from-slate-900 via-slate-900 to-sky-950/40 p-6 shadow-xl space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+        <div className="rounded-2xl border border-sky-200 dark:border-sky-500/30 bg-gradient-to-r from-sky-50/70 via-white to-blue-50/50 dark:from-slate-900 dark:via-slate-900 dark:to-sky-950/40 p-6 shadow-md dark:shadow-xl space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
             <div className="flex items-center gap-3">
-              <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-mono font-bold flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 live-pulse" />
+              <span className="px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-mono font-bold flex items-center gap-1.5 border border-emerald-200 dark:border-emerald-500/30">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 live-pulse" />
                 {nextPatient.status === 'waiting' || nextPatient.status === 'live'
                   ? 'PATIENT IN QUEUE'
                   : 'NEXT SCHEDULED'}
               </span>
-              <span className="text-xs text-slate-400 font-mono">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                 Scheduled for {formatTime(nextPatient.scheduled_at)}
               </span>
             </div>
-            <div className="text-xs font-mono text-sky-400 bg-sky-950/60 px-3 py-1 rounded-lg border border-sky-800">
+            <div className="text-xs font-mono text-sky-700 dark:text-sky-400 bg-sky-100 dark:bg-sky-950/60 px-3 py-1 rounded-lg border border-sky-200 dark:border-sky-800">
               {nextPatient.status.toUpperCase()} • {formatNgn(nextPatient.fee)}
             </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             <div className="lg:col-span-4 space-y-1">
-              <h3 className="text-lg font-bold text-white leading-tight">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">
                 Session {nextPatient.id.slice(0, 8)}…
               </h3>
-              <div className="text-xs text-slate-400">
+              <div className="text-xs text-slate-500 dark:text-slate-400">
                 Patient ID: {nextPatient.patient_id.slice(0, 8)}…
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed pt-1">
-                <span className="text-sky-400 font-semibold">Chief Complaint:</span>{' '}
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed pt-1">
+                <span className="text-sky-600 dark:text-sky-400 font-semibold">Chief Complaint:</span>{' '}
                 {nextPatient.chief_complaint || 'Not provided'}
               </p>
             </div>
 
             <div className="lg:col-span-5 space-y-2">
-              <div className="text-xs font-mono text-slate-400 flex items-center gap-1.5 text-emerald-400 font-bold">
+              <div className="text-xs font-mono text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-bold">
                 <span className="material-symbols-outlined text-sm">sensors</span>
                 Chat encounter ready
               </div>
@@ -204,7 +204,7 @@ export default function ClinicianDashboardPage() {
             <div className="lg:col-span-3 flex flex-col gap-2.5">
               <Link
                 href={`/portal/consultation/${nextPatient.id}`}
-                className="w-full py-3.5 rounded-xl bg-primary hover:bg-primary-container text-white text-xs font-bold text-center shadow-lg shadow-sky-950 transition-all flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-xl bg-primary hover:bg-primary-container text-white text-xs font-bold text-center shadow-md transition-all flex items-center justify-center gap-2"
               >
                 <span className="material-symbols-outlined text-lg">chat</span>
                 <span>Start Chat Encounter</span>
@@ -214,26 +214,26 @@ export default function ClinicianDashboardPage() {
         </div>
       ) : (
         !loading && (
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-8 text-center text-sm text-slate-400">
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 p-8 text-center text-sm text-slate-500 dark:text-slate-400 shadow-xs">
             No sessions in your queue yet.
           </div>
         )
       )}
 
-      <div className="rounded-2xl border border-slate-800 bg-slate-900/90 overflow-hidden shadow-sm">
-        <div className="p-5 border-b border-slate-800 flex items-center justify-between">
+      <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 overflow-hidden shadow-xs dark:shadow-sm">
+        <div className="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-sky-400 text-xl">view_list</span>
-            <h3 className="text-sm font-bold text-white">Your Consultations</h3>
+            <span className="material-symbols-outlined text-sky-500 dark:text-sky-400 text-xl">view_list</span>
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Your Consultations</h3>
           </div>
-          <span className="text-xs font-mono text-slate-400">
+          <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
             {upcoming.length} active / upcoming
           </span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-950/60 text-slate-400 font-mono uppercase text-[10px] tracking-wider border-b border-slate-800">
+            <thead className="bg-slate-50 dark:bg-slate-950/60 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] tracking-wider border-b border-slate-200 dark:border-slate-800">
               <tr>
                 <th className="py-3 px-4">Time</th>
                 <th className="py-3 px-4">Session</th>
@@ -243,7 +243,7 @@ export default function ClinicianDashboardPage() {
                 <th className="py-3 px-4 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 text-slate-300">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-700 dark:text-slate-300">
               {loading ? (
                 <tr>
                   <td colSpan={6} className="py-8 px-4 text-center text-slate-500">
@@ -258,24 +258,24 @@ export default function ClinicianDashboardPage() {
                 </tr>
               ) : (
                 sessions.map((p) => (
-                  <tr key={p.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3.5 px-4 font-mono font-bold text-white whitespace-nowrap">
+                  <tr key={p.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                    <td className="py-3.5 px-4 font-mono font-bold text-slate-900 dark:text-white whitespace-nowrap">
                       {formatTime(p.scheduled_at)}
                     </td>
-                    <td className="py-3.5 px-4 font-mono text-sky-400">{p.id.slice(0, 10)}…</td>
-                    <td className="py-3.5 px-4 max-w-xs truncate text-slate-300">
+                    <td className="py-3.5 px-4 font-mono text-sky-600 dark:text-sky-400">{p.id.slice(0, 10)}…</td>
+                    <td className="py-3.5 px-4 max-w-xs truncate text-slate-600 dark:text-slate-300">
                       {p.chief_complaint || '—'}
                     </td>
-                    <td className="py-3.5 px-4 font-mono text-emerald-400 uppercase">
+                    <td className="py-3.5 px-4 font-mono text-emerald-600 dark:text-emerald-400 uppercase font-semibold">
                       {p.status}
                     </td>
-                    <td className="py-3.5 px-4 font-mono text-sky-400">
+                    <td className="py-3.5 px-4 font-mono text-slate-900 dark:text-white font-semibold">
                       {formatNgn(p.fee)}
                     </td>
                     <td className="py-3.5 px-4 text-right whitespace-nowrap">
                       <Link
                         href={`/portal/consultation/${p.id}`}
-                        className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-400 font-bold border border-slate-700 transition-colors"
+                        className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-sky-600 dark:text-sky-400 font-bold border border-slate-200 dark:border-slate-700 transition-colors"
                       >
                         Open Chat
                       </Link>

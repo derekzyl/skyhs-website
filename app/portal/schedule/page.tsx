@@ -126,11 +126,11 @@ export default function ClinicianSchedulePage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-slate-900 dark:text-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl font-bold text-white">Availability & Telehealth Schedule</h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Availability & Telehealth Schedule</h1>
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
             Configure clinical consultation hours, emergency on-call routing, and inter-visit buffer intervals.
           </p>
         </div>
@@ -145,27 +145,27 @@ export default function ClinicianSchedulePage() {
       </div>
 
       {error && (
-        <p className="text-xs text-rose-400 bg-rose-950/40 border border-rose-800/50 rounded-xl px-4 py-3">
+        <p className="text-xs text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/50 rounded-xl px-4 py-3">
           {error}
         </p>
       )}
       {success && (
-        <p className="text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 rounded-xl px-4 py-3">
+        <p className="text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 rounded-xl px-4 py-3">
           {success}
         </p>
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <div className="lg:col-span-8 bg-slate-900 rounded-2xl border border-slate-800 p-6 space-y-4">
-          <h3 className="text-sm font-bold text-white flex items-center gap-2">
-            <span className="material-symbols-outlined text-sky-400">date_range</span>
+        <div className="lg:col-span-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4 shadow-xs dark:shadow-none">
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <span className="material-symbols-outlined text-sky-600 dark:text-sky-400">date_range</span>
             Weekly Recurring Telehealth Hours
           </h3>
 
           {loading ? (
             <p className="text-xs text-slate-500 py-6">Loading availability…</p>
           ) : (
-            <div className="divide-y divide-slate-800">
+            <div className="divide-y divide-slate-100 dark:divide-slate-800">
               {schedule.map((item, index) => (
                 <div
                   key={item.day}
@@ -178,7 +178,7 @@ export default function ClinicianSchedulePage() {
                       onChange={() => toggleDay(index)}
                       className="w-4 h-4 rounded text-sky-500 accent-sky-500"
                     />
-                    <span className={`font-bold ${item.enabled ? 'text-white' : 'text-slate-500'}`}>
+                    <span className={`font-bold ${item.enabled ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'}`}>
                       {item.day}
                     </span>
                   </div>
@@ -186,26 +186,26 @@ export default function ClinicianSchedulePage() {
                   {item.enabled ? (
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2">
-                        <span className="text-slate-400">From</span>
+                        <span className="text-slate-500 dark:text-slate-400">From</span>
                         <input
                           type="text"
                           value={item.start}
                           onChange={(e) => updateField(index, 'start', e.target.value)}
-                          className="p-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white font-mono text-center w-24"
+                          className="p-1.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-mono text-center w-24 text-xs"
                         />
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-slate-400">To</span>
+                        <span className="text-slate-500 dark:text-slate-400">To</span>
                         <input
                           type="text"
                           value={item.end}
                           onChange={(e) => updateField(index, 'end', e.target.value)}
-                          className="p-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white font-mono text-center w-24"
+                          className="p-1.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-mono text-center w-24 text-xs"
                         />
                       </div>
                     </div>
                   ) : (
-                    <span className="text-slate-500 italic">Off duty</span>
+                    <span className="text-slate-400 dark:text-slate-500 italic">Off duty</span>
                   )}
                 </div>
               ))}
@@ -214,19 +214,19 @@ export default function ClinicianSchedulePage() {
         </div>
 
         <div className="lg:col-span-4 space-y-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
-            <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-sky-400">
+          <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 shadow-xs dark:shadow-none">
+            <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
               Clinical Flow Settings
             </h4>
 
             <div>
-              <label className="text-xs font-bold text-slate-300 block mb-1">
+              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">
                 Inter-Consultation Buffer Time
               </label>
               <select
                 value={bufferMinutes}
                 onChange={(e) => setBufferMinutes(e.target.value)}
-                className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs"
+                className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs"
               >
                 <option value="5">5 Minutes (Back-to-back)</option>
                 <option value="10">10 Minutes (Standard SOAP Review)</option>
@@ -235,7 +235,7 @@ export default function ClinicianSchedulePage() {
               </select>
             </div>
 
-            <div className="pt-2 border-t border-slate-800">
+            <div className="pt-2 border-t border-slate-200 dark:border-slate-800">
               <label className="flex items-start gap-3 cursor-pointer">
                 <input
                   type="checkbox"
@@ -244,10 +244,10 @@ export default function ClinicianSchedulePage() {
                   className="mt-1 w-4 h-4 text-emerald-500 accent-emerald-500"
                 />
                 <div>
-                  <span className="text-xs font-bold text-white block">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white block">
                     Accept Urgent Telemetry Alerts
                   </span>
-                  <p className="text-[11px] text-slate-400 leading-relaxed mt-0.5">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mt-0.5">
                     Allow the platform triage system to ring your device if an assigned patient
                     triggers an acute arrhythmia.
                   </p>
