@@ -202,7 +202,7 @@ export default function PatientWebWaitingRoomPage() {
               <div className="flex items-center justify-between">
                 <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-text-secondary dark:text-slate-300 flex items-center gap-2">
                   <span className="material-symbols-outlined text-emerald-500 dark:text-emerald-400 text-base">watch</span>
-                  VitalsWatch Live Bridge
+                  VitalsBand Live Bridge
                 </h3>
                 <span className="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-400 font-mono text-[10px] font-bold">
                   READY

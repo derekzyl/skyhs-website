@@ -830,7 +830,7 @@ export default function ConsultancyDiscoveryPage() {
                       value={chiefComplaint}
                       onChange={(e) => setChiefComplaint(e.target.value)}
                       rows={2}
-                      placeholder="e.g. Palpitations detected on VitalsWatch, elevated resting BP, or second opinion..."
+                      placeholder="e.g. Palpitations detected on VitalsBand, elevated resting BP, or second opinion..."
                       className="w-full p-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-primary"
                     />
                   </div>

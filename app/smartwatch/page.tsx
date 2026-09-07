@@ -23,20 +23,20 @@ export default function SmartwatchHardwarePage() {
             <div className="lg:col-span-7 space-y-6 text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold tracking-wider">
                 <span className="material-symbols-outlined text-sm">verified</span>
-                <span>AEROSPACE GRADE 5 TITANIUM • MEDICAL-GRADE ECG SENSOR</span>
+                <span>AEROSPACE GRADE 5 TITANIUM • SCREENLESS BIOMETRIC BAND</span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
-                Skyline VitalsWatch Pro
+                Skyline VitalsBand™ Ultra
               </h1>
 
               <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl font-normal">
-                Continuous medical-grade biometric surveillance on your wrist. Built from surgical titanium with multi-wavelength optical PPG, single-lead ECG electrodes, and built-in 5G eSIM connectivity. Order and ship across Nigeria.
+                Continuous medical-grade biometric surveillance contoured to your wrist. Built from surgical titanium with multi-wavelength optical PPG, dry-contact Lead II ECG electrodes, and built-in 5G eSIM connectivity. Intentionally screenless so you can wear it alongside your favorite branded watch.
               </p>
 
               {/* Real-time ECG Waveform */}
               <div className="pt-2 max-w-xl">
-                <EcgWaveform height={75} heartRate={74} rhythmText="VitalsWatch Pro Hardware Sensor Stream" />
+                <EcgWaveform height={75} heartRate={74} rhythmText="VitalsBand Hardware Sensor Stream" />
               </div>
 
               <div className="flex flex-wrap items-center gap-4 pt-4">
@@ -45,7 +45,7 @@ export default function SmartwatchHardwarePage() {
                   className="px-6 py-3.5 rounded-xl bg-primary-container hover:bg-primary text-white font-bold text-sm shadow-lg shadow-sky-950 transition-all flex items-center gap-2"
                 >
                   <span className="material-symbols-outlined text-lg">shopping_cart</span>
-                  <span>Order VitalsWatch — {formatNgn(HARDWARE_PRICES.ultra)}</span>
+                  <span>Order VitalsBand — {formatNgn(HARDWARE_PRICES.ultra)}</span>
                 </Link>
                 <Link
                   href="/consultancy"
@@ -63,20 +63,22 @@ export default function SmartwatchHardwarePage() {
               </div>
             </div>
 
-            {/* Right Watch Hardware Visualization */}
+            {/* Right Band Hardware Visualization */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="w-full max-w-md p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl space-y-6 text-center">
-                <div className="relative mx-auto w-52 h-52 rounded-full border-4 border-slate-700 flex items-center justify-center p-4 bg-slate-950 shadow-2xl">
-                  {/* Titanium Bezel Accent */}
-                  <div className="absolute inset-0 rounded-full border border-sky-500/20" />
-                  <div className="space-y-1">
-                    <span className="material-symbols-outlined text-4xl text-rose-500 live-pulse">
-                      favorite
-                    </span>
-                    <div className="text-4xl font-extrabold font-mono text-white">74</div>
-                    <div className="text-[10px] font-mono text-emerald-400 font-bold">
-                      SINUS RHYTHM • 98% SpO2
-                    </div>
+              <div className="w-full max-w-md p-5 sm:p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl space-y-5 text-center">
+                <div className="relative rounded-2xl overflow-hidden bg-slate-950 aspect-[4/3] border border-slate-800 shadow-inner">
+                  <img
+                    src="/images/devices/sky_vitalsband_ultra.png"
+                    alt="Skyline VitalsBand Ultra Titanium Module"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>Dry-Contact ECG Array</span>
+                  </div>
+                  <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-mono border border-white/10 flex items-center gap-1">
+                    <span className="text-rose-400 font-bold">♥ 74 BPM</span>
+                    <span className="text-slate-400">• 98% SpO2</span>
                   </div>
                 </div>
 
@@ -87,11 +89,11 @@ export default function SmartwatchHardwarePage() {
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-950 border border-slate-800">
                     <span className="text-slate-500 text-[9px] uppercase block">Battery</span>
-                    <span className="text-xs font-bold text-emerald-400">7 Days Continuous</span>
+                    <span className="text-xs font-bold text-emerald-400">7–14 Days</span>
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-950 border border-slate-800">
-                    <span className="text-slate-500 text-[9px] uppercase block">Radio</span>
-                    <span className="text-xs font-bold text-sky-400">5G eSIM Built-in</span>
+                    <span className="text-slate-500 text-[9px] uppercase block">Interface</span>
+                    <span className="text-xs font-bold text-sky-400">Screenless</span>
                   </div>
                 </div>
               </div>
@@ -111,7 +113,7 @@ export default function SmartwatchHardwarePage() {
               Multi-Wavelength Diagnostic Engineering
             </h2>
             <p className="text-text-secondary text-sm sm:text-base">
-              Unlike generic smartwatches that take intermittent snapshots, the Skyline sensor array captures continuous waveform data capable of real-time clinical interpretation.
+              Unlike consumer fitness trackers that take intermittent snapshots, the Skyline band sensor array captures continuous waveform data capable of real-time clinical interpretation.
             </p>
           </div>
 
@@ -122,7 +124,7 @@ export default function SmartwatchHardwarePage() {
               </div>
               <h3 className="text-base font-bold text-text-primary">Medical-Grade Single-Lead ECG</h3>
               <p className="text-xs text-text-secondary leading-relaxed">
-                Titanium contact electrodes embedded in the bezel and case back capture 30-second rhythm strips, enabling automatic classification of atrial fibrillation, sinus tachycardia, and bradycardia.
+                Titanium contact electrodes embedded directly in the contoured chassis capture 30-second rhythm strips, enabling automatic classification of atrial fibrillation, sinus tachycardia, and bradycardia.
               </p>
             </div>
 
@@ -161,16 +163,20 @@ export default function SmartwatchHardwarePage() {
             <table className="w-full text-left text-xs">
               <tbody className="divide-y divide-border-subtle">
                 <tr className="hover:bg-surface-subtle/50">
-                  <td className="py-3.5 px-6 font-bold text-text-primary w-1/3">Case Material</td>
-                  <td className="py-3.5 px-6 text-text-secondary">Aerospace Grade 5 Titanium with brushed DLC finish</td>
+                  <td className="py-3.5 px-6 font-bold text-text-primary w-1/3">Form Factor</td>
+                  <td className="py-3.5 px-6 text-text-secondary">Screenless Ergonomic Health Band (Wearable alongside watches)</td>
                 </tr>
                 <tr className="hover:bg-surface-subtle/50">
-                  <td className="py-3.5 px-6 font-bold text-text-primary">Display</td>
-                  <td className="py-3.5 px-6 text-text-secondary">1.43-inch Always-On AMOLED with Sapphire Crystal (1000 nits)</td>
+                  <td className="py-3.5 px-6 font-bold text-text-primary">Case Material</td>
+                  <td className="py-3.5 px-6 text-text-secondary">Aerospace Grade 5 Titanium with brushed finish & hypoallergenic inner casing</td>
+                </tr>
+                <tr className="hover:bg-surface-subtle/50">
+                  <td className="py-3.5 px-6 font-bold text-text-primary">Display Interface</td>
+                  <td className="py-3.5 px-6 text-text-secondary">Screenless with Micro-LED clinical status indicator (Zero distraction)</td>
                 </tr>
                 <tr className="hover:bg-surface-subtle/50">
                   <td className="py-3.5 px-6 font-bold text-text-primary">ECG Sensor</td>
-                  <td className="py-3.5 px-6 text-text-secondary">Lead II equivalent Single-Lead with Titanium Bezel Contact</td>
+                  <td className="py-3.5 px-6 text-text-secondary">Lead II equivalent Single-Lead with Titanium Bevel Contact (500Hz)</td>
                 </tr>
                 <tr className="hover:bg-surface-subtle/50">
                   <td className="py-3.5 px-6 font-bold text-text-primary">Connectivity</td>
@@ -178,7 +184,7 @@ export default function SmartwatchHardwarePage() {
                 </tr>
                 <tr className="hover:bg-surface-subtle/50">
                   <td className="py-3.5 px-6 font-bold text-text-primary">Battery Life</td>
-                  <td className="py-3.5 px-6 text-text-secondary">Up to 7 days continuous telemetry recording on a single charge</td>
+                  <td className="py-3.5 px-6 text-text-secondary">Up to 14 days continuous telemetry recording on a single charge</td>
                 </tr>
                 <tr className="hover:bg-surface-subtle/50">
                   <td className="py-3.5 px-6 font-bold text-text-primary">Water Resistance</td>

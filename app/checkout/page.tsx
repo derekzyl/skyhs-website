@@ -37,24 +37,24 @@ export default function CheckoutPage() {
 
   const devices = {
     ultra: {
-      name: 'Skyline VitalsWatch™ Ultra',
+      name: 'Skyline VitalsBand™ Ultra',
       basePrice: HARDWARE_PRICES.ultra,
       subtitle: 'Aerospace Grade 5 Titanium • Lead II ECG • Standalone LTE-M',
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80',
-      sku: 'vitalswatch-ultra',
+      image: '/images/devices/sky_vitalsband_ultra.png',
+      sku: 'vitalsband-ultra',
     },
     band: {
       name: 'Skyline PulseBand Pro',
       basePrice: HARDWARE_PRICES.band,
       subtitle: 'Slim Screenless Continuous Optical SpO2 & HRV',
-      image: 'https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=600&q=80',
+      image: '/images/devices/sky_pulseband_pro.png',
       sku: 'pulseband-pro',
     },
     suite: {
       name: 'Clinical Biosensor Suite',
       basePrice: HARDWARE_PRICES.suite,
-      subtitle: 'VitalsWatch Ultra + Sleep Ring + Home Cellular Base Hub',
-      image: 'https://images.unsplash.com/photo-1544117518-30df578096a4?w=600&q=80',
+      subtitle: 'VitalsBand Ultra + Sleep Ring + Home Cellular Base Hub',
+      image: '/images/devices/sky_biosensor_suite.png',
       sku: 'biosensor-suite',
     },
   };
@@ -482,7 +482,7 @@ export default function CheckoutPage() {
                 30-Day Clinical Risk-Free Trial
               </div>
               <p className="text-[11px] leading-relaxed">
-                If the Skyline VitalsWatch does not exceed your expectations, return it within 30 days for a full refund.
+                If the Skyline VitalsBand does not exceed your expectations, return it within 30 days for a full refund.
               </p>
             </div>
           </div>

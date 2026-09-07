@@ -64,7 +64,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/#hardware-lineup" className="hover:text-white transition-colors">
-                  VitalsWatch™ Ultra
+                  VitalsBand™ Ultra
                 </Link>
               </li>
               <li>

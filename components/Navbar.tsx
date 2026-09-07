@@ -133,13 +133,13 @@ export default function Navbar() {
                     className="block p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                   >
                     <div className="font-bold text-xs text-primary dark:text-sky-400 flex items-center justify-between">
-                      <span>VitalsWatch™ Ultra</span>
+                      <span>VitalsBand™ Ultra</span>
                       <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/60">
                         FLAGSHIP
                       </span>
                     </div>
                     <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                      Titanium Case · Lead II ECG · {formatNgn(HARDWARE_PRICES.ultra)}
+                      Titanium Band · Lead II ECG · {formatNgn(HARDWARE_PRICES.ultra)}
                     </div>
                   </Link>
 
@@ -161,7 +161,7 @@ export default function Navbar() {
                   >
                     <div className="font-bold text-xs text-slate-900 dark:text-white">Clinical Biosensor Suite</div>
                     <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                      Watch + Ring + Cellular Base Hub · {formatNgn(HARDWARE_PRICES.suite)}
+                      Band + Ring + Cellular Base Hub · {formatNgn(HARDWARE_PRICES.suite)}
                     </div>
                   </Link>
 
@@ -291,13 +291,13 @@ export default function Navbar() {
               </Link>
             )}
 
-            {/* Order Watch CTA */}
+            {/* Order Band CTA */}
             <Link
               href="/checkout"
               className="bg-primary hover:bg-primary-container text-white text-xs font-bold px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-xs hover:shadow transition-all duration-150 flex items-center gap-1.5 shrink-0"
             >
               <span className="material-symbols-outlined text-sm">shopping_bag</span>
-              <span className="hidden sm:inline">Order Watch — {formatNgn(HARDWARE_PRICES.ultra)}</span>
+              <span className="hidden sm:inline">Order Band — {formatNgn(HARDWARE_PRICES.ultra)}</span>
               <span className="sm:hidden">Order</span>
             </Link>
 
@@ -326,7 +326,7 @@ export default function Navbar() {
                 className="py-2.5 px-3 text-center text-xs font-bold text-white bg-primary rounded-xl flex items-center justify-center gap-1.5 shadow-xs"
               >
                 <span className="material-symbols-outlined text-sm">shopping_cart</span>
-                Order Watch
+                Order Band
               </Link>
               <Link
                 href="/consultancy"

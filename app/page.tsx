@@ -19,7 +19,7 @@ export default function HomePage() {
     savings: number;
     band: string;
   }>({
-    name: 'Skyline VitalsWatch™ Ultra',
+    name: 'Skyline VitalsBand™ Ultra',
     price: HARDWARE_PRICES.ultra,
     savings: HARDWARE_PRICES.ultraWas - HARDWARE_PRICES.ultra,
     band: 'Titanium Link (Space Gray)',
@@ -54,11 +54,11 @@ export default function HomePage() {
           {/* Top Badge Pill */}
           <div className="flex flex-wrap items-center gap-2 mb-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-sky-950/60 border border-blue-200 dark:border-sky-800 text-primary-container dark:text-sky-300 text-xs font-semibold shadow-xs">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-500" />
-              <span className="font-bold text-primary dark:text-sky-400">NEW GENERATION</span>
+              <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="font-bold text-primary dark:text-sky-400">SCREENLESS CLINICAL BAND</span>
               <span className="text-blue-300 dark:text-sky-700">|</span>
               <span className="truncate max-w-[240px] sm:max-w-none">
-                Skyline VitalsWatch™ Ultra & Continuous Biometric Sensor Pod
+                Designed to Complement Your Watch • Never Replace It
               </span>
             </div>
             <span className="inline-flex items-center gap-1 text-xs text-status-normal font-semibold bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 px-2.5 py-1 rounded-full">
@@ -70,16 +70,15 @@ export default function HomePage() {
             {/* Left Hero Content Column (6 Cols) */}
             <div className="lg:col-span-6 space-y-6 text-left">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-extrabold text-primary dark:text-white leading-[1.14] tracking-tight">
-                Clinical-Grade Biometric Smartwatch.{' '}
+                Clinical Telemetry on Your Wrist.{' '}
                 <br className="hidden sm:inline" />
                 <span className="text-secondary dark:text-sky-400 underline decoration-blue-200 dark:decoration-sky-800 underline-offset-8">
-                  24/7 Physician-Backed
-                </span>{' '}
-                Telehealth.
+                  Keep Your Favorite Watch.
+                </span>
               </h1>
 
               <p className="text-sm sm:text-base md:text-lg text-text-secondary dark:text-slate-300 max-w-xl leading-relaxed font-normal">
-                Continuous medical-grade ECG, SpO2, blood pressure trends, and core biometric telemetry directly on your wrist — paired with instant 1-tap encrypted video consults with board-certified physicians the second anomalies are detected.
+                Never dispose of your Rolex, Omega, or mechanical timepiece. Skyline is a screenless, featherweight biometric band with continuous medical-grade ECG, SpO2, and 24/7 on-demand doctor access that wears invisibly on your other wrist.
               </p>
 
               {/* CTA and Pricing Cluster */}
@@ -90,7 +89,7 @@ export default function HomePage() {
                     className="inline-flex justify-center items-center gap-2 bg-primary hover:bg-primary-container text-white text-sm sm:text-base font-bold px-6 sm:px-7 py-3.5 sm:py-4 rounded-xl shadow-lg shadow-blue-900/10 hover:shadow-xl transition-all duration-150 text-center"
                   >
                     <span className="material-symbols-outlined text-xl">shopping_cart</span>
-                    <span>Order Watch — {formatNgn(HARDWARE_PRICES.ultra)}</span>
+                    <span>Order Band — {formatNgn(HARDWARE_PRICES.ultra)}</span>
                     <span className="text-xs bg-blue-900/60 px-2 py-0.5 rounded text-blue-200">
                       Save {formatNgn(HARDWARE_PRICES.ultraWas - HARDWARE_PRICES.ultra)}
                     </span>
@@ -165,17 +164,22 @@ export default function HomePage() {
             {/* Right Column: Product Image Showcase with Live Sensor Badges (6 Cols) */}
             <div className="lg:col-span-6 relative">
               <div className="relative bg-gradient-to-br from-slate-100 via-white to-blue-50/40 dark:from-slate-900 dark:via-slate-900/90 dark:to-slate-950 rounded-3xl p-3 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden">
-                {/* Image of Watch & Sensor Pod */}
+                {/* Image of Skyline VitalsBand */}
                 <div className="relative rounded-2xl overflow-hidden bg-slate-900 aspect-[16/10] sm:aspect-[16/9] flex items-center justify-center">
                   <img
-                    src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1000&q=80"
-                    alt="Sleek modern titanium health smartwatch with OLED display showing real-time ECG rhythm wave, pulse 72 bpm, SpO2 99%"
+                    src="/images/devices/sky_vitalsband_hero.png"
+                    alt="Sleek modern titanium Skyline VitalsBand screenless health band worn on wrist showing subtle status LED and continuous clinical sensor telemetry"
                     className="w-full h-full object-cover rounded-2xl transform hover:scale-[1.02] transition-transform duration-300"
                   />
                   {/* Ambient overlay pill */}
                   <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-md text-white px-3 py-1 rounded-full text-[11px] font-mono flex items-center gap-1.5 border border-white/20">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     <span>Continuous Lead II ECG Active</span>
+                  </div>
+                  {/* Dual-wrist concept badge */}
+                  <div className="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md text-slate-200 px-3 py-1 rounded-full text-[10px] font-mono border border-white/10 hidden sm:flex items-center gap-1">
+                    <span className="material-symbols-outlined text-xs text-sky-400">watch</span>
+                    <span>Pair With Any Watch</span>
                   </div>
                 </div>
 
@@ -207,13 +211,13 @@ export default function HomePage() {
 
                   <div className="bg-white dark:bg-slate-800/80 p-2 sm:p-2.5 rounded-xl border border-border-subtle dark:border-slate-700/60 shadow-xs">
                     <div className="text-[9px] sm:text-[10px] text-text-muted dark:text-slate-400 uppercase font-bold">
-                      Regulatory
+                      Design Form
                     </div>
                     <div className="text-xs font-bold text-text-primary dark:text-white mt-0.5 truncate">
-                      Medical-Grade
+                      Screenless Band
                     </div>
                     <div className="text-[9px] sm:text-[10px] font-mono text-status-normal font-semibold">
-                      510(k) Cleared
+                      Zero Distraction
                     </div>
                   </div>
 
@@ -222,7 +226,7 @@ export default function HomePage() {
                       Battery Life
                     </div>
                     <div className="text-xs font-bold text-text-primary dark:text-white mt-0.5 truncate">
-                      7-Day Run
+                      7–14 Days
                     </div>
                     <div className="text-[9px] sm:text-[10px] font-mono text-text-muted dark:text-slate-400 font-semibold">
                       Fast Inductive
@@ -264,6 +268,101 @@ export default function HomePage() {
               <div className="text-left">
                 <div className="text-xs sm:text-sm font-bold text-text-primary dark:text-white">HIPAA / AES-256</div>
                 <div className="text-[10px] sm:text-[11px] text-text-muted dark:text-slate-400">Encrypted Health Vault</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 1.5 DUAL-WRIST PHILOSOPHY: WHY A BAND, NOT A WATCH ───────────────────── */}
+      <section className="py-16 sm:py-24 bg-gradient-to-b from-surface-subtle via-white to-surface-canvas dark:from-slate-950 dark:via-slate-900/60 dark:to-slate-950 border-b border-border-subtle dark:border-slate-800 transition-colors duration-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/70 dark:bg-sky-950/70 text-primary dark:text-sky-300 text-xs font-semibold mb-3">
+              <span className="material-symbols-outlined text-sm">watch</span>
+              <span>The Dual-Wrist Philosophy</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary dark:text-white tracking-tight">
+              Why a Wearable Band, Not a Smartwatch?
+            </h2>
+            <p className="text-sm sm:text-base text-text-secondary dark:text-slate-300 mt-3 leading-relaxed">
+              You shouldn&apos;t have to abandon your Rolex, Omega, or heirloom mechanical watch just to get continuous medical-grade cardiac telemetry. Skyline is intentionally engineered as an ultra-slim, screenless band that complements your timepiece.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            {/* Visual Column: Dual-Wrist Lifestyle Image */}
+            <div className="lg:col-span-6 relative">
+              <div className="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl group">
+                <img
+                  src="/images/devices/sky_vitalsband_dual_wrist.png"
+                  alt="Professional wearing a traditional luxury watch on one wrist and the discreet screenless Skyline VitalsBand health band on the other wrist"
+                  className="w-full h-full object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-slate-900/80 backdrop-blur-md border border-white/10 text-white">
+                  <div className="flex items-center justify-between text-xs font-mono text-slate-300">
+                    <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                      The Dual-Wrist Standard
+                    </span>
+                    <span className="text-[11px] text-slate-400">Left: Timepiece • Right: VitalsBand</span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-200 mt-2 font-medium">
+                    &quot;Your luxury watch tells the time. Skyline watches over your life.&quot;
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Content Column: 4 Key Advantages */}
+            <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-border-subtle dark:border-slate-800 shadow-xs space-y-2">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-sky-950/80 text-primary dark:text-sky-400 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-xl">watch</span>
+                </div>
+                <h3 className="text-sm font-bold text-text-primary dark:text-white">
+                  Keep Your Favorite Watch
+                </h3>
+                <p className="text-xs text-text-secondary dark:text-slate-300 leading-relaxed">
+                  Never retire your luxury mechanical timepiece, vintage heirloom, or daily driver. Wear Skyline on your opposite wrist or under your cuff with zero clash.
+                </p>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-border-subtle dark:border-slate-800 shadow-xs space-y-2">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-xl">notifications_off</span>
+                </div>
+                <h3 className="text-sm font-bold text-text-primary dark:text-white">
+                  Zero Screen Fatigue
+                </h3>
+                <p className="text-xs text-text-secondary dark:text-slate-300 leading-relaxed">
+                  No redundant social media pings, distracting popups, or battery-draining displays. Skyline silently monitors your cardiac rhythm in the background.
+                </p>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-border-subtle dark:border-slate-800 shadow-xs space-y-2">
+                <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-xl">battery_charging_full</span>
+                </div>
+                <h3 className="text-sm font-bold text-text-primary dark:text-white">
+                  7 to 14-Day Battery Life
+                </h3>
+                <p className="text-xs text-text-secondary dark:text-slate-300 leading-relaxed">
+                  Smartwatches die within 24 hours because screens devour power. Skyline’s screenless architecture lasts up to two weeks on a single charge.
+                </p>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-border-subtle dark:border-slate-800 shadow-xs space-y-2">
+                <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/80 text-status-critical flex items-center justify-center">
+                  <span className="material-symbols-outlined text-xl">ecg_heart</span>
+                </div>
+                <h3 className="text-sm font-bold text-text-primary dark:text-white">
+                  Hospital-Grade Sensor Fit
+                </h3>
+                <p className="text-xs text-text-secondary dark:text-slate-300 leading-relaxed">
+                  Bulky watches shift around and lose arterial contact. Skyline’s contoured ergonomic titanium pod hugs the wrist for continuous, clinical-grade precision.
+                </p>
               </div>
             </div>
           </div>
@@ -402,10 +501,10 @@ export default function HomePage() {
               <span>The Skyline Telehealth Advantage</span>
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary dark:text-white tracking-tight">
-              Your Watch Detects Anomalies.<br />Our On-Demand Doctors Respond.
+              Your Band Detects Anomalies.<br />Our On-Demand Doctors Respond.
             </h2>
             <p className="text-sm sm:text-base text-text-secondary dark:text-slate-300 mt-3">
-              Other smartwatches simply send you scary push notifications. Skyline connects your live wrist biometric stream straight to a board-certified physician in under 90 seconds.
+              Other fitness bands simply count steps and smartwatches send scary alerts. Skyline connects your live wrist biometric stream straight to a board-certified physician in under 90 seconds.
             </p>
           </div>
 
@@ -422,7 +521,7 @@ export default function HomePage() {
                 </span>
                 <span className="text-slate-500 hidden sm:inline">|</span>
                 <span className="text-xs font-mono text-slate-300 hidden sm:inline">
-                  Watch Stream: VitalsWatch Ultra #SK-8832
+                  Band Stream: VitalsBand Ultra #SK-8832
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -514,7 +613,7 @@ export default function HomePage() {
                     <div className="flex items-center gap-2">
                       <span className="material-symbols-outlined text-primary dark:text-sky-400 text-xl">vital_signs</span>
                       <span className="text-xs sm:text-sm font-bold text-text-primary dark:text-white">
-                        Watch Biometric Stream
+                        Band Biometric Stream
                       </span>
                     </div>
                     <span className="text-[10px] sm:text-xs font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/60 font-semibold">
@@ -526,7 +625,7 @@ export default function HomePage() {
                   <div className="p-3 rounded-xl bg-slate-900 text-white">
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-[9px] sm:text-[10px] font-mono text-slate-400">
-                        WATCH LEAD II WAVEFORM • 25mm/s
+                        BAND LEAD II WAVEFORM • 25mm/s
                       </span>
                       <span className="text-[9px] sm:text-[10px] font-mono text-emerald-400">
                         NORMAL SINUS • 72 BPM
@@ -573,7 +672,7 @@ export default function HomePage() {
                       Physician Impression & Triage Plan
                     </div>
                     <p className="text-text-secondary dark:text-slate-300 text-[11px] sm:text-xs leading-relaxed">
-                      &quot;Arrhythmia warning triggered on watch at 14:02 resolved into clean sinus rhythm. ECG reveals normal PR interval. No urgent ED visit required. Refill dispatched to patient pharmacy.&quot;
+                      &quot;Arrhythmia warning triggered on band at 14:02 resolved into clean sinus rhythm. ECG reveals normal PR interval. No urgent ED visit required. Refill dispatched to patient pharmacy.&quot;
                     </p>
                   </div>
                 </div>
@@ -602,7 +701,7 @@ export default function HomePage() {
                 </div>
                 <h4 className="text-xl font-bold text-primary dark:text-white">Skyline Telemetry Basic</h4>
                 <div className="text-2xl font-extrabold text-text-primary dark:text-white mt-2">
-                  Free <span className="text-xs font-normal text-text-muted dark:text-slate-400">with watch</span>
+                  Free <span className="text-xs font-normal text-text-muted dark:text-slate-400">with band</span>
                 </div>
                 <p className="text-xs text-text-secondary dark:text-slate-300 mt-2">
                   Full continuous biometric monitoring, PDF health report exports, abnormal heart rhythm notifications.
@@ -636,7 +735,7 @@ export default function HomePage() {
                 </div>
                 <h4 className="text-xl font-bold text-primary dark:text-white">Skyline Care+ Concierge</h4>
                 <div className="text-2xl font-extrabold text-text-primary dark:text-white mt-2">
-                  {formatNgn(45_000)} <span className="text-xs font-normal text-text-muted dark:text-slate-400">/ month (1st year free with watch)</span>
+                  {formatNgn(45_000)} <span className="text-xs font-normal text-text-muted dark:text-slate-400">/ month (1st year free with band)</span>
                 </div>
                 <p className="text-xs text-text-secondary dark:text-slate-300 mt-2">
                   24/7 on-demand 1-tap video consults with board-certified US doctors, instant prescription routing, and rapid cardiac triage.
@@ -660,7 +759,7 @@ export default function HomePage() {
                 href="/checkout"
                 className="mt-6 w-full py-2.5 rounded-lg bg-primary hover:bg-primary-container text-xs font-bold text-white text-center shadow-md transition-colors block"
               >
-                Claim With Watch Bundle
+                Claim With Band Bundle
               </Link>
             </div>
 
@@ -671,7 +770,7 @@ export default function HomePage() {
                 </div>
                 <h4 className="text-xl font-bold text-primary dark:text-white">Skyline Care+ Family</h4>
                 <div className="text-2xl font-extrabold text-text-primary dark:text-white mt-2">
-                  {formatNgn(89_000)} <span className="text-xs font-normal text-text-muted dark:text-slate-400">/ month for up to 4 watches</span>
+                  {formatNgn(89_000)} <span className="text-xs font-normal text-text-muted dark:text-slate-400">/ month for up to 4 bands</span>
                 </div>
                 <p className="text-xs text-text-secondary dark:text-slate-300 mt-2">
                   Shared family dashboard, senior fall escalation, remote caregiver alerts, and pediatric/geriatric specialist access.
@@ -742,15 +841,19 @@ export default function HomePage() {
             {/* Product 1: PulseBand Pro */}
             <div className="bg-surface-canvas dark:bg-slate-900 rounded-2xl border border-border-subtle dark:border-slate-800 p-6 flex flex-col justify-between hover:shadow-md transition-shadow">
               <div>
-                <div className="aspect-video bg-slate-100 dark:bg-slate-800 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden">
-                  <span className="material-symbols-outlined text-6xl text-slate-400 dark:text-slate-500">watch</span>
-                  <span className="absolute top-2 left-2 bg-slate-800 dark:bg-slate-700 text-white text-[10px] font-mono px-2 py-0.5 rounded">
-                    SLIM PROFILE
+                <div className="aspect-video bg-slate-900 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden border border-border-subtle dark:border-slate-800">
+                  <img
+                    src="/images/devices/sky_pulseband_pro.png"
+                    alt="Skyline PulseBand Pro screenless health tracker band"
+                    className="w-full h-full object-cover"
+                  />
+                  <span className="absolute top-2 left-2 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-mono px-2 py-0.5 rounded border border-white/10">
+                    SLIM SCREENLESS
                   </span>
                 </div>
                 <h3 className="text-xl font-bold text-text-primary">Skyline PulseBand Pro</h3>
                 <p className="text-xs text-text-muted mt-1">
-                  Lightweight screenless biometric band for screen-free athletes and sleep tracking.
+                  Lightweight screenless biometric band for screen-free athletes and continuous sleep tracking.
                 </p>
                 <div className="mt-4 flex items-baseline gap-2">
                   <span className="text-3xl font-extrabold text-primary dark:text-blue-400 font-mono">{formatNgn(HARDWARE_PRICES.band)}</span>
@@ -783,22 +886,25 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Product 2: VitalsWatch Ultra (HERO) */}
+            {/* Product 2: VitalsBand Ultra (HERO) */}
             <div className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-primary dark:border-blue-500 p-6 flex flex-col justify-between shadow-xl relative lg:-translate-y-2">
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-primary dark:bg-blue-600 text-white text-xs font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-sm flex items-center gap-1">
-                <span className="material-symbols-outlined text-xs">star</span> Flagship Clinical Device
+                <span className="material-symbols-outlined text-xs">star</span> Flagship Clinical Band
               </div>
               <div>
-                <div className="aspect-video bg-blue-50/50 dark:bg-blue-950/30 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden border border-blue-100 dark:border-blue-900/50">
+                <div className="aspect-video bg-slate-900 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden border border-blue-100 dark:border-blue-900/50">
                   <img
-                    src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80"
-                    alt="Flagship Skyline VitalsWatch Ultra"
+                    src="/images/devices/sky_vitalsband_ultra.png"
+                    alt="Flagship Skyline VitalsBand Ultra with aerospace titanium core and woven strap"
                     className="w-full h-full object-cover"
                   />
+                  <span className="absolute top-2 left-2 bg-slate-950/80 backdrop-blur-md text-emerald-400 text-[10px] font-mono px-2 py-0.5 rounded border border-emerald-500/30">
+                    TITANIUM • LEAD II ECG
+                  </span>
                 </div>
-                <h3 className="text-xl font-bold text-text-primary">Skyline VitalsWatch™ Ultra</h3>
+                <h3 className="text-xl font-bold text-text-primary">Skyline VitalsBand™ Ultra</h3>
                 <p className="text-xs text-text-muted mt-1">
-                  Titanium smartwatch with live OLED ECG screen, speaker/mic, and standalone cellular telemetry.
+                  Aerospace Grade 5 Titanium screenless biometric band with dry-contact Lead II ECG electrodes, 8-channel optical PPG, and standalone cellular telemetry.
                 </p>
                 <div className="mt-4 flex items-baseline gap-2">
                   <span className="text-3xl font-extrabold text-primary dark:text-blue-400 font-mono">{formatNgn(HARDWARE_PRICES.ultra)}</span>
@@ -810,7 +916,7 @@ export default function HomePage() {
                 <ul className="text-xs space-y-2 mt-6 text-text-secondary border-t border-border-subtle dark:border-slate-800 pt-4">
                   <li className="flex items-center gap-2 font-semibold text-primary dark:text-blue-400">
                     <span className="material-symbols-outlined text-status-normal text-sm">check</span>
-                    Grade 5 Titanium + Sapphire Screen
+                    Grade 5 Titanium Chassis + Micro-LED
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-status-normal text-sm">check</span>
@@ -818,11 +924,11 @@ export default function HomePage() {
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-status-normal text-sm">check</span>
-                    7-Day Continuous Battery Life
+                    7–14 Day Continuous Battery Life
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-status-normal text-sm">check</span>
-                    Standalone LTE-M Emergency Call
+                    Standalone LTE-M Telehealth Link
                   </li>
                   <li className="flex items-center gap-2 text-status-normal font-semibold">
                     <span className="material-symbols-outlined text-status-normal text-sm">check</span>
@@ -834,22 +940,26 @@ export default function HomePage() {
                 href="/checkout?device=ultra"
                 className="mt-8 w-full bg-primary hover:bg-primary-container text-white text-xs sm:text-sm font-bold py-3.5 rounded-xl text-center shadow-md transition-colors block"
               >
-                Order VitalsWatch Ultra — {formatNgn(HARDWARE_PRICES.ultra)}
+                Order VitalsBand Ultra — {formatNgn(HARDWARE_PRICES.ultra)}
               </Link>
             </div>
 
             {/* Product 3: Clinical Biosensor Suite */}
             <div className="bg-surface-canvas dark:bg-slate-900 rounded-2xl border border-border-subtle dark:border-slate-800 p-6 flex flex-col justify-between hover:shadow-md transition-shadow">
               <div>
-                <div className="aspect-video bg-slate-100 dark:bg-slate-800 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden">
-                  <span className="material-symbols-outlined text-6xl text-slate-400 dark:text-slate-500">hub</span>
+                <div className="aspect-video bg-slate-900 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden border border-border-subtle dark:border-slate-800">
+                  <img
+                    src="/images/devices/sky_biosensor_suite.png"
+                    alt="Clinical Biosensor Suite with VitalsBand, sleep ring, and cellular base hub"
+                    className="w-full h-full object-cover"
+                  />
                   <span className="absolute top-2 left-2 bg-secondary text-white text-[10px] font-mono px-2 py-0.5 rounded">
                     HOSPITAL RPM BUNDLE
                   </span>
                 </div>
                 <h3 className="text-xl font-bold text-text-primary">Clinical Biosensor Suite</h3>
                 <p className="text-xs text-text-muted mt-1">
-                  Complete diagnostic ecosystem: Watch Ultra + Biosensor Ring + Home Cellular Base Hub.
+                  Complete diagnostic ecosystem: VitalsBand Ultra + Biosensor Ring + Home Cellular Base Hub.
                 </p>
                 <div className="mt-4 flex items-baseline gap-2">
                   <span className="text-3xl font-extrabold text-primary dark:text-blue-400 font-mono">{formatNgn(HARDWARE_PRICES.suite)}</span>
@@ -858,7 +968,7 @@ export default function HomePage() {
                 <ul className="text-xs space-y-2 mt-6 text-text-secondary border-t border-border-subtle dark:border-slate-800 pt-4">
                   <li className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-status-normal text-sm">check</span>
-                    Includes Watch + Continuous Sleep Ring
+                    Includes VitalsBand + Continuous Sleep Ring
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-status-normal text-sm">check</span>
@@ -899,16 +1009,22 @@ export default function HomePage() {
                   <tr>
                     <th className="py-3.5 px-4">Hardware Feature</th>
                     <th className="py-3.5 px-4">PulseBand Pro ({formatNgn(HARDWARE_PRICES.band)})</th>
-                    <th className="py-3.5 px-4 text-primary dark:text-blue-400">VitalsWatch™ Ultra ({formatNgn(HARDWARE_PRICES.ultra)})</th>
+                    <th className="py-3.5 px-4 text-primary dark:text-blue-400">VitalsBand™ Ultra ({formatNgn(HARDWARE_PRICES.ultra)})</th>
                     <th className="py-3.5 px-4">Biosensor Suite ({formatNgn(HARDWARE_PRICES.suite)})</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border-subtle dark:divide-slate-800">
                   <tr>
-                    <td className="py-3 px-4 font-semibold text-text-primary">Bezel & Glass</td>
-                    <td className="py-3 px-4 text-text-secondary">Anodized Aluminum / Polymer</td>
-                    <td className="py-3 px-4 font-bold text-primary dark:text-blue-400">Grade 5 Titanium + Sapphire</td>
-                    <td className="py-3 px-4 text-text-secondary">Titanium + Ceramic Pod</td>
+                    <td className="py-3 px-4 font-semibold text-text-primary">Form Factor & Materials</td>
+                    <td className="py-3 px-4 text-text-secondary">Matte Antimicrobial Silicone</td>
+                    <td className="py-3 px-4 font-bold text-primary dark:text-blue-400">Grade 5 Titanium + Woven Loop</td>
+                    <td className="py-3 px-4 text-text-secondary">Titanium Band + Titanium Ring</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 font-semibold text-text-primary">Display Interface</td>
+                    <td className="py-3 px-4 text-text-secondary">Screenless (Status Micro-LED)</td>
+                    <td className="py-3 px-4 font-bold text-primary dark:text-blue-400">Screenless (Clinical Micro-LED)</td>
+                    <td className="py-3 px-4 text-text-secondary">Screenless Multi-Sensor Pods</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-semibold text-text-primary">ECG Capability</td>
@@ -918,9 +1034,9 @@ export default function HomePage() {
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-semibold text-text-primary">Battery Life</td>
-                    <td className="py-3 px-4 text-text-secondary">14 Days</td>
-                    <td className="py-3 px-4 font-bold text-primary dark:text-blue-400">7 Days Continuous (OLED Always-On)</td>
-                    <td className="py-3 px-4 text-text-secondary">7 Days Watch / 10 Days Ring</td>
+                    <td className="py-3 px-4 text-text-secondary">14 Days Continuous</td>
+                    <td className="py-3 px-4 font-bold text-primary dark:text-blue-400">7–14 Days Continuous</td>
+                    <td className="py-3 px-4 text-text-secondary">7–14 Days Band / 10 Days Ring</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-semibold text-text-primary">LTE-M Standalone Cellular</td>
@@ -972,7 +1088,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <p className="text-xs sm:text-sm text-text-secondary italic leading-relaxed">
-                  &quot;At 2 AM in Victoria Island, my Skyline Watch vibrated with an asymptomatic 160 bpm rhythm alert. I tapped the 1-tap call, and Dr. Okafor reviewed my live ECG right on his screen. He guided me through a vagal maneuver and dispatched emergency medication before things escalated. This platform saved my life.&quot;
+                  &quot;At 2 AM in Victoria Island, my Skyline Band vibrated with an asymptomatic 160 bpm rhythm alert. I tapped the 1-tap call, and Dr. Okafor reviewed my live ECG right on his screen. He guided me through a vagal maneuver and dispatched emergency medication before things escalated. This platform saved my life.&quot;
                 </p>
               </div>
               <div className="flex items-center gap-3 mt-6 pt-4 border-t border-border-subtle dark:border-slate-800">
@@ -983,7 +1099,7 @@ export default function HomePage() {
                 />
                 <div>
                   <div className="text-xs sm:text-sm font-bold text-text-primary">Kelechi Adeleke</div>
-                  <div className="text-[11px] text-text-muted">Verified VitalsWatch™ Ultra Owner • Ikoyi, Lagos</div>
+                  <div className="text-[11px] text-text-muted">Verified VitalsBand™ Ultra Owner • Ikoyi, Lagos</div>
                 </div>
               </div>
             </div>
@@ -1022,7 +1138,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <p className="text-xs sm:text-sm text-text-secondary italic leading-relaxed">
-                  &quot;Standard consumer smartwatches take SpO2 snapshots every 30 minutes. Skyline’s continuous plethysmography tracks nocturnal desaturations with hospital-grade accuracy, letting us optimize chronic respiratory therapy across Nigeria without costly sleep labs.&quot;
+                  &quot;Standard consumer smartwatches take SpO2 snapshots every 30 minutes. Skyline’s continuous band tracks nocturnal desaturations with hospital-grade accuracy, letting us optimize chronic respiratory therapy across Nigeria without costly sleep labs.&quot;
                 </p>
               </div>
               <div className="flex items-center gap-3 mt-6 pt-4 border-t border-border-subtle dark:border-slate-800">
@@ -1066,7 +1182,7 @@ export default function HomePage() {
               className="w-full sm:w-auto bg-white hover:bg-slate-100 text-primary text-sm sm:text-base font-bold px-8 py-4 rounded-xl shadow-xl transition-all flex items-center justify-center gap-2"
             >
               <span className="material-symbols-outlined text-xl">shopping_bag</span>
-              <span>Order VitalsWatch™ Ultra — {formatNgn(HARDWARE_PRICES.ultra)}</span>
+              <span>Order VitalsBand™ Ultra — {formatNgn(HARDWARE_PRICES.ultra)}</span>
             </Link>
             <a
               href="#specs"
