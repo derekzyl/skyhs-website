@@ -723,16 +723,16 @@ export default function HomePage() {
       </section>
 
       {/* ── 4. HARDWARE LINEUP & COMPARISON MATRIX ────────────────────────────────── */}
-      <section className="py-14 sm:py-20 bg-white" id="hardware-lineup">
+      <section className="py-14 sm:py-20 bg-white dark:bg-slate-950 border-b border-border-subtle dark:border-slate-800 transition-colors duration-200" id="hardware-lineup">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <span className="text-xs font-bold uppercase tracking-wider text-secondary">
+            <span className="text-xs font-bold uppercase tracking-wider text-secondary dark:text-sky-400">
               Choose Your Device
             </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary tracking-tight mt-1">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary dark:text-white tracking-tight mt-1">
               Skyline Health Biometric Fleet
             </h2>
-            <p className="text-sm sm:text-base text-text-secondary mt-3">
+            <p className="text-sm sm:text-base text-text-secondary dark:text-slate-300 mt-3">
               Engineered for hospital-grade precision. Backed by the world’s most advanced on-demand physician network.
             </p>
           </div>

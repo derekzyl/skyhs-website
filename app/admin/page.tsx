@@ -61,16 +61,16 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* ── HEADER TITLE & QUICK ACTIONS ────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border-subtle dark:border-slate-800">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-amber-400">
+          <div className="flex items-center gap-2 text-xs font-mono text-amber-600 dark:text-amber-400">
             <span className="material-symbols-outlined text-sm">shield</span>
             <span>PLATFORM GOVERNANCE & CLINICAL DISPATCH</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-text-primary dark:text-white mt-1">
             Executive Command Dashboard
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-text-secondary dark:text-slate-400 mt-1">
             Live telemetry operations, MDCN credentials queue, and Paystack settlement controls.
           </p>
         </div>
@@ -78,14 +78,14 @@ export default function AdminDashboardPage() {
         <div className="flex items-center gap-3">
           <Link
             href="/admin/consultants"
-            className="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 hover:bg-slate-800 text-xs font-bold text-slate-200 transition-all flex items-center gap-2"
+            className="px-4 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-border-subtle dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold text-text-primary dark:text-slate-200 transition-all flex items-center gap-2 shadow-xs"
           >
-            <span className="material-symbols-outlined text-base text-sky-400">badge</span>
+            <span className="material-symbols-outlined text-base text-primary dark:text-sky-400">badge</span>
             <span>View All Doctors ({consultants.length})</span>
           </Link>
           <Link
             href="/admin/payouts"
-            className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-white text-xs font-bold shadow-lg shadow-sky-950 transition-all flex items-center gap-2"
+            className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-white text-xs font-bold shadow-lg shadow-sky-950/20 transition-all flex items-center gap-2"
           >
             <span className="material-symbols-outlined text-base">payments</span>
             <span>Payout Ledger</span>
@@ -94,12 +94,12 @@ export default function AdminDashboardPage() {
       </div>
 
       {actionMessage && (
-        <div className="p-4 rounded-xl bg-sky-950/60 border border-sky-800/80 text-xs text-sky-200 flex items-center justify-between">
+        <div className="p-4 rounded-xl bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800/80 text-xs text-sky-900 dark:text-sky-200 flex items-center justify-between">
           <span>{actionMessage}</span>
           <button
             type="button"
             onClick={() => setActionMessage(null)}
-            className="text-slate-400 hover:text-white text-xs font-bold"
+            className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs font-bold"
           >
             Dismiss
           </button>
@@ -109,119 +109,119 @@ export default function AdminDashboardPage() {
       {/* ── EXECUTIVE KPI METRIC CARDS ─────────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {/* Card 1: Active Clinicians */}
-        <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2 relative overflow-hidden group hover:border-slate-700 transition-all">
+        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900/90 border border-border-subtle dark:border-slate-800 space-y-2 relative overflow-hidden group hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-xs dark:shadow-none">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">Active MDs</span>
-            <span className="p-2 rounded-xl bg-sky-500/10 text-sky-400 material-symbols-outlined text-lg">
+            <span className="text-xs font-mono text-text-muted dark:text-slate-400 uppercase tracking-wider">Active MDs</span>
+            <span className="p-2 rounded-xl bg-sky-500/10 text-primary dark:text-sky-400 material-symbols-outlined text-lg">
               medical_services
             </span>
           </div>
-          <div className="text-3xl font-extrabold font-mono text-white">
+          <div className="text-3xl font-extrabold font-mono text-text-primary dark:text-white">
             {loading ? '…' : approvedDoctors.length || 14}
           </div>
-          <div className="text-[11px] text-emerald-400 flex items-center gap-1 font-mono">
+          <div className="text-[11px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-mono">
             <span className="material-symbols-outlined text-xs">check_circle</span>
             <span>100% MDCN Verified</span>
           </div>
         </div>
 
         {/* Card 2: Pending Applications */}
-        <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2 relative overflow-hidden group hover:border-slate-700 transition-all">
+        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900/90 border border-border-subtle dark:border-slate-800 space-y-2 relative overflow-hidden group hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-xs dark:shadow-none">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">Pending Approvals</span>
-            <span className="p-2 rounded-xl bg-amber-500/10 text-amber-400 material-symbols-outlined text-lg">
+            <span className="text-xs font-mono text-text-muted dark:text-slate-400 uppercase tracking-wider">Pending Approvals</span>
+            <span className="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 material-symbols-outlined text-lg">
               pending_actions
             </span>
           </div>
-          <div className="text-3xl font-extrabold font-mono text-amber-400">
+          <div className="text-3xl font-extrabold font-mono text-amber-600 dark:text-amber-400">
             {loading ? '…' : pendingDoctors.length}
           </div>
-          <div className="text-[11px] text-slate-400 flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 live-pulse" />
+          <div className="text-[11px] text-text-muted dark:text-slate-400 flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 live-pulse" />
             <span>Awaiting Council check</span>
           </div>
         </div>
 
         {/* Card 3: Platform Gross Volume */}
-        <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2 relative overflow-hidden group hover:border-slate-700 transition-all">
+        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900/90 border border-border-subtle dark:border-slate-800 space-y-2 relative overflow-hidden group hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-xs dark:shadow-none">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">Platform Volume</span>
-            <span className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 material-symbols-outlined text-lg">
+            <span className="text-xs font-mono text-text-muted dark:text-slate-400 uppercase tracking-wider">Platform Volume</span>
+            <span className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 material-symbols-outlined text-lg">
               account_balance
             </span>
           </div>
-          <div className="text-3xl font-extrabold font-mono text-emerald-400">
+          <div className="text-3xl font-extrabold font-mono text-emerald-600 dark:text-emerald-400">
             {loading ? '…' : formatNgn(totalVolumeNgn || 845000)}
           </div>
-          <div className="text-[11px] text-slate-400 font-mono">
+          <div className="text-[11px] text-text-muted dark:text-slate-400 font-mono">
             Paystack & Naira flow
           </div>
         </div>
 
         {/* Card 4: Pending Doctor Disbursements */}
-        <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2 relative overflow-hidden group hover:border-slate-700 transition-all">
+        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900/90 border border-border-subtle dark:border-slate-800 space-y-2 relative overflow-hidden group hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-xs dark:shadow-none">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">Pending Payouts</span>
-            <span className="p-2 rounded-xl bg-purple-500/10 text-purple-400 material-symbols-outlined text-lg">
+            <span className="text-xs font-mono text-text-muted dark:text-slate-400 uppercase tracking-wider">Pending Payouts</span>
+            <span className="p-2 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 material-symbols-outlined text-lg">
               payments
             </span>
           </div>
-          <div className="text-3xl font-extrabold font-mono text-purple-400">
+          <div className="text-3xl font-extrabold font-mono text-purple-600 dark:text-purple-400">
             {loading ? '…' : formatNgn(pendingPayoutNgn || 142000)}
           </div>
-          <div className="text-[11px] text-slate-400 font-mono">
+          <div className="text-[11px] text-text-muted dark:text-slate-400 font-mono">
             85% Clinician Share
           </div>
         </div>
       </div>
 
       {/* ── PENDING VERIFICATIONS QUEUE (PRIORITY) ────────────────────────────────── */}
-      <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900/90 border border-border-subtle dark:border-slate-800 space-y-4 shadow-xs dark:shadow-none">
+        <div className="flex items-center justify-between pb-3 border-b border-border-subtle dark:border-slate-800">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 live-pulse" />
-            <h2 className="text-base font-bold text-white">MDCN Verification Queue</h2>
-            <span className="text-xs font-mono text-slate-400">
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 live-pulse" />
+            <h2 className="text-base font-bold text-text-primary dark:text-white">MDCN Verification Queue</h2>
+            <span className="text-xs font-mono text-text-muted dark:text-slate-400">
               ({pendingDoctors.length} pending approval)
             </span>
           </div>
           <Link
             href="/admin/consultants"
-            className="text-xs text-sky-400 hover:text-sky-300 font-bold transition-colors"
+            className="text-xs text-primary dark:text-sky-400 hover:underline font-bold transition-colors"
           >
             Manage Roster →
           </Link>
         </div>
 
         {pendingDoctors.length === 0 ? (
-          <div className="py-8 text-center text-xs text-slate-400 space-y-1">
+          <div className="py-8 text-center text-xs text-text-muted dark:text-slate-400 space-y-1">
             <span className="material-symbols-outlined text-3xl text-emerald-500">task_alt</span>
-            <p className="font-semibold text-slate-300">All consultant applications are up to date.</p>
-            <p className="text-slate-500">No clinician applications currently awaiting MDCN review.</p>
+            <p className="font-semibold text-text-primary dark:text-slate-300">All consultant applications are up to date.</p>
+            <p className="text-text-muted dark:text-slate-500">No clinician applications currently awaiting MDCN review.</p>
           </div>
         ) : (
-          <div className="divide-y divide-slate-800/80">
+          <div className="divide-y divide-border-subtle dark:divide-slate-800/80">
             {pendingDoctors.map((doc) => (
               <div
                 key={doc.id}
                 className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
               >
                 <div className="flex items-start gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-white text-sm shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center font-bold text-primary dark:text-white text-sm shrink-0">
                     {doc.display_name.charAt(0)}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold text-white">{doc.display_name}</span>
-                      <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                      <span className="text-sm font-bold text-text-primary dark:text-white">{doc.display_name}</span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30">
                         {doc.npi_number || 'MDCN PENDING'}
                       </span>
                     </div>
-                    <div className="text-xs text-slate-400 mt-0.5">
+                    <div className="text-xs text-text-secondary dark:text-slate-400 mt-0.5">
                       {doc.specialty} · {doc.hospital || 'Hospital Affiliation Pending'}
                     </div>
-                    <div className="text-[11px] text-slate-500 mt-0.5">
-                      Consultation Rate: <span className="font-mono text-slate-300 font-semibold">{formatNgn(doc.fee)}</span>
+                    <div className="text-[11px] text-text-muted dark:text-slate-500 mt-0.5">
+                      Consultation Rate: <span className="font-mono text-text-primary dark:text-slate-300 font-semibold">{formatNgn(doc.fee)}</span>
                     </div>
                   </div>
                 </div>
@@ -244,30 +244,30 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* ── RECENT TELEHEALTH ENCOUNTERS STREAM ───────────────────────────────────── */}
-      <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900/90 border border-border-subtle dark:border-slate-800 space-y-4 shadow-xs dark:shadow-none">
+        <div className="flex items-center justify-between pb-3 border-b border-border-subtle dark:border-slate-800">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-            <h2 className="text-base font-bold text-white">Live & Recent Clinical Encounters</h2>
+            <h2 className="text-base font-bold text-text-primary dark:text-white">Live & Recent Clinical Encounters</h2>
           </div>
           <Link
             href="/admin/sessions"
-            className="text-xs text-sky-400 hover:text-sky-300 font-bold transition-colors"
+            className="text-xs text-primary dark:text-sky-400 hover:underline font-bold transition-colors"
           >
             All Sessions ({sessions.length}) →
           </Link>
         </div>
 
         {sessions.length === 0 ? (
-          <div className="py-8 text-center text-xs text-slate-400 space-y-1">
-            <span className="material-symbols-outlined text-3xl text-slate-600">monitor_heart</span>
-            <p className="font-semibold text-slate-300">No tele-encounters recorded in this period.</p>
+          <div className="py-8 text-center text-xs text-text-muted dark:text-slate-400 space-y-1">
+            <span className="material-symbols-outlined text-3xl text-slate-400 dark:text-slate-600">monitor_heart</span>
+            <p className="font-semibold text-text-primary dark:text-slate-300">No tele-encounters recorded in this period.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-slate-800 text-[11px] font-mono uppercase text-slate-500">
+                <tr className="border-b border-border-subtle dark:border-slate-800 text-[11px] font-mono uppercase text-text-muted dark:text-slate-500">
                   <th className="pb-3 font-semibold">Encounter ID</th>
                   <th className="pb-3 font-semibold">Clinician</th>
                   <th className="pb-3 font-semibold">Scheduled (WAT)</th>
@@ -276,34 +276,34 @@ export default function AdminDashboardPage() {
                   <th className="pb-3 font-semibold">Payout</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 font-medium">
+              <tbody className="divide-y divide-border-subtle dark:divide-slate-800/60 font-medium">
                 {sessions.slice(0, 5).map((s) => (
-                  <tr key={s.id} className="hover:bg-slate-800/30 transition-colors">
-                    <td className="py-3.5 font-mono text-slate-300">{s.id.slice(0, 10)}…</td>
-                    <td className="py-3.5 text-white font-bold">{s.consultant_name || 'Consultant'}</td>
-                    <td className="py-3.5 text-slate-400 font-mono">
+                  <tr key={s.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                    <td className="py-3.5 font-mono text-text-secondary dark:text-slate-300">{s.id.slice(0, 10)}…</td>
+                    <td className="py-3.5 text-text-primary dark:text-white font-bold">{s.consultant_name || 'Consultant'}</td>
+                    <td className="py-3.5 text-text-muted dark:text-slate-400 font-mono">
                       {new Date(s.scheduled_at).toLocaleDateString()} {new Date(s.scheduled_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </td>
                     <td className="py-3.5">
                       <span
                         className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase ${
                           s.status === 'completed'
-                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30'
                             : s.status === 'live'
-                            ? 'bg-sky-500/10 text-sky-400 border border-sky-500/30 animate-pulse'
-                            : 'bg-slate-800 text-slate-300'
+                            ? 'bg-sky-500/10 text-primary dark:text-sky-400 border border-sky-500/30 animate-pulse'
+                            : 'bg-slate-100 dark:bg-slate-800 text-text-secondary dark:text-slate-300'
                         }`}
                       >
                         {s.status}
                       </span>
                     </td>
-                    <td className="py-3.5 font-mono text-slate-200">{formatNgn(s.fee)}</td>
+                    <td className="py-3.5 font-mono text-text-primary dark:text-slate-200">{formatNgn(s.fee)}</td>
                     <td className="py-3.5">
                       <span
                         className={`px-2 py-0.5 rounded text-[10px] font-mono ${
                           s.payout_status === 'paid'
-                            ? 'text-purple-400 bg-purple-500/10'
-                            : 'text-amber-400 bg-amber-500/10'
+                            ? 'text-purple-600 dark:text-purple-400 bg-purple-500/10'
+                            : 'text-amber-600 dark:text-amber-400 bg-amber-500/10'
                         }`}
                       >
                         {s.payout_status === 'paid' ? 'Disbursed' : 'Pending'}

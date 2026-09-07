@@ -68,7 +68,7 @@ export default function PatientWebWaitingRoomPage() {
   const doctorName = session?.consultant_name || 'Your clinician';
 
   return (
-    <div className="min-h-screen flex flex-col bg-surface-canvas text-text-primary font-sans">
+    <div className="min-h-screen flex flex-col bg-surface-canvas dark:bg-slate-950 text-text-primary dark:text-slate-100 font-sans">
       <Navbar />
 
       <div className="bg-slate-900 text-white py-8 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
@@ -87,7 +87,7 @@ export default function PatientWebWaitingRoomPage() {
             </p>
           </div>
 
-          <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs font-mono">
+          <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800 text-xs font-mono">
             <div className="text-slate-400 text-[10px] uppercase">Session Status</div>
             <div className="text-base font-bold text-sky-400 uppercase">
               {session?.status || 'loading…'}
@@ -98,7 +98,7 @@ export default function PatientWebWaitingRoomPage() {
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-6">
         {error && (
-          <p className="text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3">
+          <p className="text-xs text-rose-600 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 rounded-xl px-4 py-3">
             {error}{' '}
             {!getAccessToken() && (
               <Link href="/login" className="font-bold underline">
@@ -111,12 +111,12 @@ export default function PatientWebWaitingRoomPage() {
         <div
           className={`p-4 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs ${
             ready
-              ? 'bg-emerald-950/80 border-emerald-500/40 text-emerald-300'
-              : 'bg-slate-900 border-slate-800 text-slate-300'
+              ? 'bg-emerald-50 dark:bg-emerald-950/80 border-emerald-300 dark:border-emerald-500/40 text-emerald-900 dark:text-emerald-300'
+              : 'bg-white dark:bg-slate-900 border-border-subtle dark:border-slate-800 text-text-secondary dark:text-slate-300 shadow-sm'
           }`}
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden border border-white/20">
+            <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200 dark:border-white/20">
               <img
                 src={session?.consultant_avatar || '/images/avatars/dr_chidi_okafor.jpg'}
                 alt={doctorName}
@@ -124,8 +124,8 @@ export default function PatientWebWaitingRoomPage() {
               />
             </div>
             <div>
-              <span className="font-bold text-white block">{doctorName}</span>
-              <span className="text-[11px] text-slate-400">
+              <span className="font-bold text-text-primary dark:text-white block">{doctorName}</span>
+              <span className="text-[11px] text-text-muted dark:text-slate-400">
                 {ready
                   ? 'Clinician has started the session. Join the chat now.'
                   : 'Waiting for clinician to start the encounter…'}
@@ -145,13 +145,13 @@ export default function PatientWebWaitingRoomPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-          <div className="md:col-span-7 bg-slate-900 rounded-2xl border border-slate-800 p-5 space-y-4">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-              <span className="material-symbols-outlined text-sky-400 text-base">videocam</span>
+          <div className="md:col-span-7 bg-white dark:bg-slate-900 rounded-2xl border border-border-subtle dark:border-slate-800 p-5 space-y-4 shadow-sm">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-text-secondary dark:text-slate-300 flex items-center gap-2">
+              <span className="material-symbols-outlined text-sky-500 dark:text-sky-400 text-base">videocam</span>
               Self Camera & Audio Check
             </h3>
 
-            <div className="relative h-60 rounded-xl overflow-hidden bg-black border border-slate-800 flex items-center justify-center">
+            <div className="relative h-60 rounded-xl overflow-hidden bg-slate-950 border border-slate-800 flex items-center justify-center">
               {cameraEnabled ? (
                 <div className="text-center text-slate-400 space-y-1">
                   <span className="material-symbols-outlined text-4xl">videocam</span>
@@ -192,27 +192,27 @@ export default function PatientWebWaitingRoomPage() {
               </div>
             </div>
 
-            <div className="text-[11px] text-slate-400 text-center font-mono">
+            <div className="text-[11px] text-text-muted dark:text-slate-400 text-center font-mono">
               Microphone status: {micEnabled ? 'Active' : 'Muted'}
             </div>
           </div>
 
           <div className="md:col-span-5 space-y-4">
-            <div className="bg-slate-900 rounded-2xl border border-slate-800 p-5 space-y-4">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-border-subtle dark:border-slate-800 p-5 space-y-4 shadow-sm">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-emerald-400 text-base">watch</span>
+                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-text-secondary dark:text-slate-300 flex items-center gap-2">
+                  <span className="material-symbols-outlined text-emerald-500 dark:text-emerald-400 text-base">watch</span>
                   VitalsWatch Live Bridge
                 </h3>
-                <span className="px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800/60 text-emerald-400 font-mono text-[10px] font-bold">
+                <span className="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-400 font-mono text-[10px] font-bold">
                   READY
                 </span>
               </div>
 
               <EcgWaveform height={70} heartRate={72} rhythmText="Sensor check preview" />
 
-              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-[11px] text-slate-400 space-y-1">
-                <div className="text-white font-bold">Polling session status</div>
+              <div className="p-3 bg-slate-50 dark:bg-slate-950 rounded-xl border border-border-subtle dark:border-slate-800 text-[11px] text-text-muted dark:text-slate-400 space-y-1">
+                <div className="text-text-primary dark:text-white font-bold">Polling session status</div>
                 <div>
                   You will be redirected to the consultation chat when the clinician starts the
                   encounter.

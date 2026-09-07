@@ -82,17 +82,17 @@ export default function AdminSessionsPage() {
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* ── HEADER ─────────────────────────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border-subtle dark:border-slate-800">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-sky-400">
+          <div className="flex items-center gap-2 text-xs font-mono text-primary dark:text-sky-400">
             <Link href="/admin" className="hover:underline">Admin</Link>
             <span>/</span>
             <span>TELEHEALTH SESSIONS & TELEMETRY</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-text-primary dark:text-white mt-1">
             Clinical Encounters Monitor
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-text-secondary dark:text-slate-400 mt-1">
             Real-time tracking of physician video encounters, telemetry compliance, disputes, and payouts.
           </p>
         </div>
@@ -100,7 +100,7 @@ export default function AdminSessionsPage() {
         <button
           type="button"
           onClick={loadSessions}
-          className="p-2.5 rounded-xl bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-300 text-xs font-bold transition-all flex items-center gap-1.5 self-start sm:self-auto"
+          className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-border-subtle dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-secondary dark:text-slate-300 text-xs font-bold transition-all flex items-center gap-1.5 self-start sm:self-auto shadow-xs"
         >
           <span className="material-symbols-outlined text-base">refresh</span>
           <span>Refresh Encounters</span>
@@ -108,12 +108,12 @@ export default function AdminSessionsPage() {
       </div>
 
       {toastMessage && (
-        <div className="p-4 rounded-xl bg-slate-900 border border-slate-700 text-xs text-sky-300 flex items-center justify-between">
+        <div className="p-4 rounded-xl bg-sky-50 dark:bg-slate-900 border border-sky-200 dark:border-slate-700 text-xs text-sky-900 dark:text-sky-300 flex items-center justify-between shadow-xs">
           <span>{toastMessage}</span>
           <button
             type="button"
             onClick={() => setToastMessage(null)}
-            className="text-slate-400 hover:text-white"
+            className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
           >
             ✕
           </button>
@@ -121,7 +121,7 @@ export default function AdminSessionsPage() {
       )}
 
       {/* ── FILTER TABS ────────────────────────────────────────────────────────── */}
-      <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 w-fit">
+      <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-border-subtle dark:border-slate-800 w-fit">
         {(['all', 'live', 'scheduled', 'completed', 'disputed'] as const).map((tab) => (
           <button
             key={tab}
@@ -130,7 +130,7 @@ export default function AdminSessionsPage() {
             className={`px-4 py-1.5 rounded-lg text-xs font-bold uppercase transition-all ${
               filter === tab
                 ? 'bg-primary text-white shadow-xs'
-                : 'text-slate-400 hover:text-white'
+                : 'text-text-muted dark:text-slate-400 hover:text-text-primary dark:hover:text-white'
             }`}
           >
             {tab}
@@ -139,19 +139,19 @@ export default function AdminSessionsPage() {
       </div>
 
       {/* ── SESSIONS TABLE ─────────────────────────────────────────────────────── */}
-      <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 overflow-hidden">
+      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900/90 border border-border-subtle dark:border-slate-800 overflow-hidden shadow-xs dark:shadow-none">
         {loading ? (
-          <div className="py-16 text-center text-xs text-slate-400">Loading tele-encounters…</div>
+          <div className="py-16 text-center text-xs text-text-muted dark:text-slate-400">Loading tele-encounters…</div>
         ) : filtered.length === 0 ? (
           <div className="py-16 text-center space-y-2">
-            <span className="material-symbols-outlined text-4xl text-slate-600">event_busy</span>
-            <p className="text-xs text-slate-400">No sessions match the selected filter.</p>
+            <span className="material-symbols-outlined text-4xl text-slate-400 dark:text-slate-600">event_busy</span>
+            <p className="text-xs text-text-muted dark:text-slate-400">No sessions match the selected filter.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-slate-800 text-[11px] font-mono uppercase text-slate-500">
+                <tr className="border-b border-border-subtle dark:border-slate-800 text-[11px] font-mono uppercase text-text-muted dark:text-slate-500">
                   <th className="pb-3 font-semibold">Encounter ID</th>
                   <th className="pb-3 font-semibold">Clinician</th>
                   <th className="pb-3 font-semibold">Scheduled Date/Time</th>
@@ -162,32 +162,32 @@ export default function AdminSessionsPage() {
                   <th className="pb-3 font-semibold text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 font-medium">
+              <tbody className="divide-y divide-border-subtle dark:divide-slate-800/60 font-medium">
                 {filtered.map((s) => (
-                  <tr key={s.id} className="hover:bg-slate-800/30 transition-colors">
-                    <td className="py-4 font-mono text-slate-300">
+                  <tr key={s.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                    <td className="py-4 font-mono text-text-secondary dark:text-slate-300">
                       #{s.id.slice(0, 8)}
                     </td>
-                    <td className="py-4 font-bold text-white">
+                    <td className="py-4 font-bold text-text-primary dark:text-white">
                       {s.consultant_name || 'Assigned Clinician'}
                     </td>
-                    <td className="py-4 font-mono text-slate-400">
+                    <td className="py-4 font-mono text-text-muted dark:text-slate-400">
                       {new Date(s.scheduled_at).toLocaleDateString()} {new Date(s.scheduled_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </td>
-                    <td className="py-4 text-slate-300 max-w-xs truncate">
+                    <td className="py-4 text-text-secondary dark:text-slate-300 max-w-xs truncate">
                       {s.chief_complaint || 'General telemetry check'}
                     </td>
-                    <td className="py-4 font-mono text-slate-200 font-bold">
+                    <td className="py-4 font-mono text-text-primary dark:text-slate-200 font-bold">
                       {formatNgn(s.fee)}
                     </td>
                     <td className="py-4">
                       <span
                         className={`px-2.5 py-1 rounded-full text-[10px] font-mono font-bold uppercase ${
                           s.status === 'completed'
-                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30'
                             : s.status === 'live'
-                            ? 'bg-sky-500/10 text-sky-400 border border-sky-500/30 live-pulse'
-                            : 'bg-slate-800 text-slate-300'
+                            ? 'bg-sky-500/10 text-primary dark:text-sky-400 border border-sky-500/30 live-pulse'
+                            : 'bg-slate-100 dark:bg-slate-800 text-text-secondary dark:text-slate-300'
                         }`}
                       >
                         {s.status}
@@ -197,8 +197,8 @@ export default function AdminSessionsPage() {
                       <span
                         className={`px-2 py-0.5 rounded text-[10px] font-mono font-semibold ${
                           s.payout_status === 'paid'
-                            ? 'bg-purple-500/10 text-purple-400'
-                            : 'bg-amber-500/10 text-amber-400'
+                            ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400'
+                            : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
                         }`}
                       >
                         {s.payout_status === 'paid' ? 'Disbursed' : 'Pending'}
@@ -221,7 +221,7 @@ export default function AdminSessionsPage() {
                             type="button"
                             disabled={actionBusyId === s.id}
                             onClick={() => handleDispute(s.id)}
-                            className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 text-[11px] font-bold"
+                            className="px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-text-secondary dark:text-slate-400 text-[11px] font-bold"
                           >
                             Flag Dispute
                           </button>

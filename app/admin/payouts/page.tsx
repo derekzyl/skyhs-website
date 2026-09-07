@@ -73,17 +73,17 @@ export default function AdminPayoutsPage() {
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* ── HEADER ─────────────────────────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border-subtle dark:border-slate-800">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-purple-400">
+          <div className="flex items-center gap-2 text-xs font-mono text-purple-600 dark:text-purple-400">
             <Link href="/admin" className="hover:underline">Admin</Link>
             <span>/</span>
             <span>SETTLEMENTS & PAYOUT LEDGER</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-text-primary dark:text-white mt-1">
             Doctor Disbursements & Financial Ledger
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-text-secondary dark:text-slate-400 mt-1">
             Automatic Nigerian bank settlement breakdown (85% clinician share / 15% platform fee).
           </p>
         </div>
@@ -93,7 +93,7 @@ export default function AdminPayoutsPage() {
             type="button"
             disabled={batchBusy}
             onClick={handleBatchDisburse}
-            className="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all disabled:opacity-50 flex items-center gap-2 shadow-lg shadow-purple-950"
+            className="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all disabled:opacity-50 flex items-center gap-2 shadow-lg shadow-purple-950/20"
           >
             <span className="material-symbols-outlined text-base">payments</span>
             <span>{batchBusy ? 'Processing Batch…' : `Disburse All Pending (${formatNgn(pendingDisbursementNgn)})`}</span>
@@ -102,12 +102,12 @@ export default function AdminPayoutsPage() {
       </div>
 
       {toastMessage && (
-        <div className="p-4 rounded-xl bg-slate-900 border border-slate-700 text-xs text-sky-300 flex items-center justify-between">
+        <div className="p-4 rounded-xl bg-sky-50 dark:bg-slate-900 border border-sky-200 dark:border-slate-700 text-xs text-sky-900 dark:text-sky-300 flex items-center justify-between shadow-xs">
           <span>{toastMessage}</span>
           <button
             type="button"
             onClick={() => setToastMessage(null)}
-            className="text-slate-400 hover:text-white"
+            className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
           >
             ✕
           </button>
@@ -116,64 +116,64 @@ export default function AdminPayoutsPage() {
 
       {/* ── FINANCIAL KPI WIDGETS ──────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2">
-          <div className="text-xs font-mono text-slate-400 uppercase tracking-wider">Gross Encounters</div>
-          <div className="text-3xl font-extrabold font-mono text-white">
+        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900/90 border border-border-subtle dark:border-slate-800 space-y-2 shadow-xs dark:shadow-none">
+          <div className="text-xs font-mono text-text-muted dark:text-slate-400 uppercase tracking-wider">Gross Encounters</div>
+          <div className="text-3xl font-extrabold font-mono text-text-primary dark:text-white">
             {formatNgn(totalCompletedGross)}
           </div>
-          <div className="text-[11px] text-slate-400">{completed.length} completed sessions</div>
+          <div className="text-[11px] text-text-muted dark:text-slate-400">{completed.length} completed sessions</div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2">
-          <div className="text-xs font-mono text-slate-400 uppercase tracking-wider">Platform Fee (15%)</div>
-          <div className="text-3xl font-extrabold font-mono text-sky-400">
+        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900/90 border border-border-subtle dark:border-slate-800 space-y-2 shadow-xs dark:shadow-none">
+          <div className="text-xs font-mono text-text-muted dark:text-slate-400 uppercase tracking-wider">Platform Fee (15%)</div>
+          <div className="text-3xl font-extrabold font-mono text-primary dark:text-sky-400">
             {formatNgn(platformFee)}
           </div>
-          <div className="text-[11px] text-slate-400">Network infrastructure revenue</div>
+          <div className="text-[11px] text-text-muted dark:text-slate-400">Network infrastructure revenue</div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2">
-          <div className="text-xs font-mono text-slate-400 uppercase tracking-wider">Pending Payouts (85%)</div>
-          <div className="text-3xl font-extrabold font-mono text-amber-400">
+        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900/90 border border-border-subtle dark:border-slate-800 space-y-2 shadow-xs dark:shadow-none">
+          <div className="text-xs font-mono text-text-muted dark:text-slate-400 uppercase tracking-wider">Pending Payouts (85%)</div>
+          <div className="text-3xl font-extrabold font-mono text-amber-600 dark:text-amber-400">
             {formatNgn(pendingDisbursementNgn)}
           </div>
-          <div className="text-[11px] text-amber-400/80 font-mono">
+          <div className="text-[11px] text-amber-600 dark:text-amber-400/80 font-mono">
             {pendingPayouts.length} doctors awaiting payout
           </div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2">
-          <div className="text-xs font-mono text-slate-400 uppercase tracking-wider">Disbursed to Doctors</div>
-          <div className="text-3xl font-extrabold font-mono text-emerald-400">
+        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900/90 border border-border-subtle dark:border-slate-800 space-y-2 shadow-xs dark:shadow-none">
+          <div className="text-xs font-mono text-text-muted dark:text-slate-400 uppercase tracking-wider">Disbursed to Doctors</div>
+          <div className="text-3xl font-extrabold font-mono text-emerald-600 dark:text-emerald-400">
             {formatNgn(disbursedTotalNgn)}
           </div>
-          <div className="text-[11px] text-slate-400 font-mono">Settled via NUBAN Transfer</div>
+          <div className="text-[11px] text-text-muted dark:text-slate-400 font-mono">Settled via NUBAN Transfer</div>
         </div>
       </div>
 
       {/* ── PENDING DISBURSEMENTS TABLE ────────────────────────────────────────── */}
-      <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900/90 border border-border-subtle dark:border-slate-800 space-y-4 shadow-xs dark:shadow-none">
+        <div className="flex items-center justify-between pb-3 border-b border-border-subtle dark:border-slate-800">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 live-pulse" />
-            <h2 className="text-base font-bold text-white">Pending Doctor Disbursements</h2>
-            <span className="text-xs font-mono text-slate-400">
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 live-pulse" />
+            <h2 className="text-base font-bold text-text-primary dark:text-white">Pending Doctor Disbursements</h2>
+            <span className="text-xs font-mono text-text-muted dark:text-slate-400">
               ({pendingPayouts.length} queue entries)
             </span>
           </div>
         </div>
 
         {pendingPayouts.length === 0 ? (
-          <div className="py-12 text-center text-xs text-slate-400 space-y-1">
+          <div className="py-12 text-center text-xs text-text-muted dark:text-slate-400 space-y-1">
             <span className="material-symbols-outlined text-3xl text-emerald-500">done_all</span>
-            <p className="font-semibold text-slate-300">All completed encounters have been disbursed.</p>
-            <p className="text-slate-500">No pending balances in the clinician settlement queue.</p>
+            <p className="font-semibold text-text-primary dark:text-slate-300">All completed encounters have been disbursed.</p>
+            <p className="text-text-muted dark:text-slate-500">No pending balances in the clinician settlement queue.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-slate-800 text-[11px] font-mono uppercase text-slate-500">
+                <tr className="border-b border-border-subtle dark:border-slate-800 text-[11px] font-mono uppercase text-text-muted dark:text-slate-500">
                   <th className="pb-3 font-semibold">Encounter</th>
                   <th className="pb-3 font-semibold">Doctor</th>
                   <th className="pb-3 font-semibold">Date Completed</th>
@@ -183,22 +183,22 @@ export default function AdminPayoutsPage() {
                   <th className="pb-3 font-semibold text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 font-medium">
+              <tbody className="divide-y divide-border-subtle dark:divide-slate-800/60 font-medium">
                 {pendingPayouts.map((s) => {
                   const fee = Number(s.fee) || 0;
                   const cut = fee * 0.15;
                   const net = fee * 0.85;
 
                   return (
-                    <tr key={s.id} className="hover:bg-slate-800/30 transition-colors">
-                      <td className="py-4 font-mono text-slate-300">#{s.id.slice(0, 8)}</td>
-                      <td className="py-4 text-white font-bold">{s.consultant_name || 'Consultant'}</td>
-                      <td className="py-4 font-mono text-slate-400">
+                    <tr key={s.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                      <td className="py-4 font-mono text-text-secondary dark:text-slate-300">#{s.id.slice(0, 8)}</td>
+                      <td className="py-4 text-text-primary dark:text-white font-bold">{s.consultant_name || 'Consultant'}</td>
+                      <td className="py-4 font-mono text-text-muted dark:text-slate-400">
                         {new Date(s.scheduled_at).toLocaleDateString()}
                       </td>
-                      <td className="py-4 font-mono text-slate-300">{formatNgn(fee)}</td>
-                      <td className="py-4 font-mono text-slate-500">{formatNgn(cut)}</td>
-                      <td className="py-4 font-mono text-emerald-400 font-bold">{formatNgn(net)}</td>
+                      <td className="py-4 font-mono text-text-secondary dark:text-slate-300">{formatNgn(fee)}</td>
+                      <td className="py-4 font-mono text-text-muted dark:text-slate-500">{formatNgn(cut)}</td>
+                      <td className="py-4 font-mono text-emerald-600 dark:text-emerald-400 font-bold">{formatNgn(net)}</td>
                       <td className="py-4 text-right">
                         <button
                           type="button"
