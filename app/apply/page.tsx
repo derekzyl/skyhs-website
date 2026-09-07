@@ -151,8 +151,8 @@ export default function ClinicianApplyPage() {
                   currentStep === s.num
                     ? 'bg-primary-container text-white border-primary-container shadow-md'
                     : currentStep > s.num
-                    ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
-                    : 'bg-white border-border-subtle text-text-muted'
+                    ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300'
+                    : 'bg-white dark:bg-slate-900 border-border-subtle dark:border-slate-800 text-text-muted'
                 }`}
               >
                 <div className="text-[10px] font-mono font-bold uppercase">
@@ -166,7 +166,7 @@ export default function ClinicianApplyPage() {
 
         {isSubmitted ? (
           /* Submission Success View */
-          <div className="max-w-xl mx-auto p-8 rounded-2xl bg-white border border-border-subtle shadow-xl text-center space-y-6">
+          <div className="max-w-xl mx-auto p-8 rounded-2xl bg-white dark:bg-slate-900 border border-border-subtle dark:border-slate-800 shadow-xl text-center space-y-6">
             <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
               <span className="material-symbols-outlined text-3xl">verified</span>
             </div>
@@ -212,7 +212,7 @@ export default function ClinicianApplyPage() {
           /* 4-Step Wizard Content + Sidebar */
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
             {/* Form Section */}
-            <div className="lg:col-span-8 bg-white rounded-2xl border border-border-subtle p-6 sm:p-8 shadow-sm">
+            <div className="lg:col-span-8 bg-white dark:bg-slate-900 rounded-2xl border border-border-subtle dark:border-slate-800 p-6 sm:p-8 shadow-sm">
               {/* Step 1: Identity & Council */}
               {currentStep === 1 && (
                 <div className="space-y-4">
@@ -233,7 +233,7 @@ export default function ClinicianApplyPage() {
                       <select
                         value={formData.councilType}
                         onChange={(e) => setFormData({ ...formData, councilType: e.target.value })}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs bg-white"
+                        className="w-full p-2.5 rounded-lg border border-border-subtle dark:border-slate-700 text-xs bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100"
                       >
                         <option value="MDCN">MDCN (Medical & Dental)</option>
                         <option value="PCN">PCN (Pharmacy)</option>
@@ -250,7 +250,7 @@ export default function ClinicianApplyPage() {
                         type="text"
                         value={formData.registrationNumber}
                         onChange={(e) => setFormData({ ...formData, registrationNumber: e.target.value })}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs font-mono font-bold"
+                        className="w-full p-2.5 rounded-lg border border-border-subtle dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-xs font-mono font-bold"
                       />
                     </div>
                     <div className="sm:col-span-2">
@@ -261,7 +261,7 @@ export default function ClinicianApplyPage() {
                         type="text"
                         value={formData.fullName}
                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs"
+                        className="w-full p-2.5 rounded-lg border border-border-subtle dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-xs"
                       />
                     </div>
                     <div>
@@ -274,7 +274,7 @@ export default function ClinicianApplyPage() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="e.g. dr.name@hospital.com"
-                        className="w-full px-4 py-2.5 rounded-lg border border-border-subtle bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 text-xs text-text-primary transition-shadow"
+                        className="w-full px-4 py-2.5 rounded-lg border border-border-subtle dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 text-xs text-slate-800 dark:text-slate-100 transition-shadow"
                       />
                     </div>
                     <div>
@@ -287,7 +287,7 @@ export default function ClinicianApplyPage() {
                         value={formData.password}
                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                         placeholder="Min. 8 characters"
-                        className="w-full px-4 py-2.5 rounded-lg border border-border-subtle bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 text-xs text-text-primary transition-shadow"
+                        className="w-full px-4 py-2.5 rounded-lg border border-border-subtle dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 text-xs text-slate-800 dark:text-slate-100 transition-shadow"
                       />
                     </div>
                     <div>
@@ -299,7 +299,7 @@ export default function ClinicianApplyPage() {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="+234 801 234 5678"
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs font-mono"
+                        className="w-full p-2.5 rounded-lg border border-border-subtle dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-xs font-mono"
                       />
                     </div>
                   </div>
@@ -326,7 +326,7 @@ export default function ClinicianApplyPage() {
                       <select
                         value={formData.primaryState}
                         onChange={(e) => setFormData({ ...formData, primaryState: e.target.value })}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs bg-white"
+                        className="w-full p-2.5 rounded-lg border border-border-subtle dark:border-slate-700 text-xs bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100"
                       >
                         <option>Lagos</option>
                         <option>FCT Abuja</option>
@@ -349,7 +349,7 @@ export default function ClinicianApplyPage() {
                         type="text"
                         value={formData.currentHospital}
                         onChange={(e) => setFormData({ ...formData, currentHospital: e.target.value })}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs"
+                        className="w-full p-2.5 rounded-lg border border-border-subtle dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-xs"
                       />
                     </div>
                     <div>
@@ -360,7 +360,7 @@ export default function ClinicianApplyPage() {
                         type="text"
                         value={formData.medicalSchool}
                         onChange={(e) => setFormData({ ...formData, medicalSchool: e.target.value })}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs"
+                        className="w-full p-2.5 rounded-lg border border-border-subtle dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-xs"
                       />
                     </div>
                     <div>
@@ -373,13 +373,13 @@ export default function ClinicianApplyPage() {
                         onChange={(e) => setFormData({ ...formData, graduationYear: e.target.value })}
                         placeholder="YYYY"
                         maxLength={4}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs font-mono"
+                        className="w-full p-2.5 rounded-lg border border-border-subtle dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-xs font-mono"
                       />
                     </div>
                   </div>
 
-                  <div className="p-3 bg-sky-50 rounded-xl border border-sky-200 text-xs text-sky-900 flex items-center gap-2">
-                    <span className="material-symbols-outlined text-base text-sky-600">info</span>
+                  <div className="p-3 bg-sky-50 dark:bg-sky-950/40 rounded-xl border border-sky-200 dark:border-sky-800 text-xs text-sky-900 dark:text-sky-300 flex items-center gap-2">
+                    <span className="material-symbols-outlined text-base text-sky-600 dark:text-sky-400">info</span>
                     <span>
                       Skyline provides complimentary group medical liability cover for all platform clinical consultations.
                     </span>
@@ -407,7 +407,7 @@ export default function ClinicianApplyPage() {
                       <select
                         value={formData.specialty}
                         onChange={(e) => setFormData({ ...formData, specialty: e.target.value })}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs bg-white"
+                        className="w-full p-2.5 rounded-lg border border-border-subtle dark:border-slate-700 text-xs bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100"
                       >
                         <option>General Practice</option>
                         <option>Cardiology</option>
@@ -428,12 +428,12 @@ export default function ClinicianApplyPage() {
                         type="text"
                         value={formData.subSpecialty}
                         onChange={(e) => setFormData({ ...formData, subSpecialty: e.target.value })}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs"
+                        className="w-full p-2.5 rounded-lg border border-border-subtle dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 text-xs"
                       />
                     </div>
                   </div>
 
-                  <div className="p-4 bg-surface-subtle rounded-xl border border-border-subtle space-y-3">
+                  <div className="p-4 bg-surface-subtle dark:bg-slate-800/60 rounded-xl border border-border-subtle dark:border-slate-800 space-y-3">
                     <h4 className="text-xs font-bold text-text-primary">
                       Telehealth Competency Agreement
                     </h4>
@@ -442,7 +442,7 @@ export default function ClinicianApplyPage() {
                       <li>I understand that single-lead ECG is for screening and ambulatory rhythm assessment, not a complete replacement for a diagnostic 12-lead ECG in acute MI suspicion.</li>
                       <li>I will electronically finalize SOAP encounter documentation within 24 hours of visit conclusion.</li>
                     </ul>
-                    <label className="flex items-center gap-2 pt-2 border-t border-border-subtle cursor-pointer">
+                    <label className="flex items-center gap-2 pt-2 border-t border-border-subtle dark:border-slate-800 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={formData.agreedToProtocols}
@@ -458,9 +458,9 @@ export default function ClinicianApplyPage() {
               )}
 
               {/* Wizard Navigation Buttons */}
-              <div className="pt-6 mt-6 border-t border-border-subtle space-y-3">
+              <div className="pt-6 mt-6 border-t border-border-subtle dark:border-slate-800 space-y-3">
                 {submitError && (
-                  <p className="text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
+                  <p className="text-xs text-rose-600 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 rounded-lg px-3 py-2">
                     {submitError}{' '}
                     {!getAccessToken() && (
                       <Link href="/login" className="font-bold underline">
@@ -473,7 +473,7 @@ export default function ClinicianApplyPage() {
                   {currentStep > 1 ? (
                     <button
                       onClick={handleBack}
-                      className="px-4 py-2 rounded-lg border border-border-subtle text-xs font-bold text-text-secondary hover:bg-surface-subtle"
+                      className="px-4 py-2 rounded-lg border border-border-subtle dark:border-slate-700 text-xs font-bold text-text-secondary hover:bg-surface-subtle dark:hover:bg-slate-800"
                     >
                       Back
                     </button>
@@ -501,7 +501,7 @@ export default function ClinicianApplyPage() {
 
             {/* Right Guidance Sidebar */}
             <div className="lg:col-span-4 space-y-6">
-              <div className="bg-white rounded-2xl border border-border-subtle p-6 shadow-sm space-y-4">
+              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-border-subtle dark:border-slate-800 p-6 shadow-sm space-y-4">
                 <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-text-primary flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-primary text-base">verified</span>
                   Why Join Skyline?

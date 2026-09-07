@@ -129,37 +129,37 @@ export default function VirtualConsultationRoomPage() {
   const myId = me?.id;
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex flex-col lg:flex-row bg-slate-950 text-slate-100 font-sans">
+    <div className="min-h-[calc(100vh-64px)] flex flex-col lg:flex-row bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans">
       {/* Chat panel (replaces fake video UI) */}
-      <div className="lg:w-7/12 flex flex-col p-4 sm:p-6 border-r border-slate-800 bg-slate-900">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+      <div className="lg:w-7/12 flex flex-col p-4 sm:p-6 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 mb-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 live-pulse" />
-              <span className="text-xs font-mono font-bold text-white uppercase">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 dark:bg-emerald-400 live-pulse" />
+              <span className="text-xs font-mono font-bold text-slate-900 dark:text-white uppercase">
                 {session?.status || 'loading'} • Chat Encounter
               </span>
             </div>
-            <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+            <div className="text-[10px] text-slate-500 dark:text-slate-400 font-mono mt-0.5">
               Session {sessionId.slice(0, 12)}…
               {session?.chief_complaint ? ` • ${session.chief_complaint}` : ''}
             </div>
           </div>
           <Link
             href="/portal/dashboard"
-            className="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-bold text-slate-300 hover:bg-slate-700"
+            className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 transition-colors"
           >
             Leave
           </Link>
         </div>
 
         {error && (
-          <p className="mb-3 text-xs text-rose-400 bg-rose-950/40 border border-rose-800/50 rounded-xl px-3 py-2">
+          <p className="mb-3 text-xs text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/50 rounded-xl px-3 py-2">
             {error}
           </p>
         )}
 
-        <div className="flex-1 min-h-[320px] rounded-2xl bg-slate-950 border border-slate-800 p-4 overflow-y-auto space-y-3">
+        <div className="flex-1 min-h-[320px] rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 overflow-y-auto space-y-3">
           {loading ? (
             <p className="text-xs text-slate-500 text-center py-12">Loading chat…</p>
           ) : messages.length === 0 ? (
@@ -175,10 +175,10 @@ export default function VirtualConsultationRoomPage() {
                   className={`flex ${mine ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed ${
+                    className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed shadow-xs ${
                       mine
                         ? 'bg-primary-container text-white'
-                        : 'bg-slate-900 border border-slate-800 text-slate-200'
+                        : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200'
                     }`}
                   >
                     <div className="whitespace-pre-wrap">{m.body}</div>
@@ -207,7 +207,7 @@ export default function VirtualConsultationRoomPage() {
             placeholder={
               getAccessToken() ? 'Type a clinical message…' : 'Sign in to chat'
             }
-            className="flex-1 p-3 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-sky-500"
+            className="flex-1 p-3 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-sky-500"
           />
           <button
             onClick={sendMessage}
@@ -220,63 +220,63 @@ export default function VirtualConsultationRoomPage() {
       </div>
 
       {/* Care summary / SOAP */}
-      <div className="lg:w-5/12 flex flex-col p-4 sm:p-6 bg-slate-950 space-y-4">
-        <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
-          <h3 className="text-sm font-bold text-white">Care Summary</h3>
-          <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+      <div className="lg:w-5/12 flex flex-col p-4 sm:p-6 bg-slate-50 dark:bg-slate-950 space-y-4">
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs">
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white">Care Summary</h3>
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono mt-0.5">
             Save diagnosis, SOAP notes, prescriptions, and follow-up
           </div>
         </div>
 
         <div className="space-y-3 flex-1">
           <div>
-            <label className="text-[11px] font-mono uppercase font-bold text-sky-400 block mb-1">
+            <label className="text-[11px] font-mono uppercase font-bold text-sky-600 dark:text-sky-400 block mb-1">
               Diagnosis
             </label>
             <textarea
               rows={2}
               value={diagnosis}
               onChange={(e) => setDiagnosis(e.target.value)}
-              className="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+              className="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-sky-500"
             />
           </div>
           <div>
-            <label className="text-[11px] font-mono uppercase font-bold text-emerald-400 block mb-1">
+            <label className="text-[11px] font-mono uppercase font-bold text-emerald-600 dark:text-emerald-400 block mb-1">
               SOAP Notes
             </label>
             <textarea
               rows={5}
               value={soapNotes}
               onChange={(e) => setSoapNotes(e.target.value)}
-              className="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+              className="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-sky-500"
             />
           </div>
           <div>
-            <label className="text-[11px] font-mono uppercase font-bold text-amber-400 block mb-1">
+            <label className="text-[11px] font-mono uppercase font-bold text-amber-600 dark:text-amber-400 block mb-1">
               Prescriptions
             </label>
             <textarea
               rows={2}
               value={prescriptions}
               onChange={(e) => setPrescriptions(e.target.value)}
-              className="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+              className="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-sky-500"
             />
           </div>
           <div>
-            <label className="text-[11px] font-mono uppercase font-bold text-purple-400 block mb-1">
+            <label className="text-[11px] font-mono uppercase font-bold text-purple-600 dark:text-purple-400 block mb-1">
               Follow-up
             </label>
             <textarea
               rows={2}
               value={followUp}
               onChange={(e) => setFollowUp(e.target.value)}
-              className="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+              className="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-sky-500"
             />
           </div>
         </div>
 
         {summaryMsg && (
-          <p className="text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 rounded-xl px-3 py-2">
+          <p className="text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 rounded-xl px-3 py-2">
             {summaryMsg}
           </p>
         )}
@@ -284,14 +284,14 @@ export default function VirtualConsultationRoomPage() {
         <button
           onClick={saveSummary}
           disabled={savingSummary}
-          className="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-950 transition-all disabled:opacity-60"
+          className="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition-all disabled:opacity-60"
         >
           {savingSummary ? 'Saving…' : 'Save Care Summary'}
         </button>
 
         <div className="flex items-center justify-between text-[11px] text-slate-500">
           <span>Chat + care summary</span>
-          <Link href="/portal/dashboard" className="text-sky-400 hover:text-sky-300">
+          <Link href="/portal/dashboard" className="text-sky-600 dark:text-sky-400 hover:underline">
             Return to Dashboard
           </Link>
         </div>

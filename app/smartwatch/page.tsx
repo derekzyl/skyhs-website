@@ -101,7 +101,7 @@ export default function SmartwatchHardwarePage() {
       </section>
 
       {/* ── SENSOR ARCHITECTURE SECTION ─────────────────────────────────────────── */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white dark:bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-mono font-bold uppercase tracking-wider">
@@ -157,7 +157,7 @@ export default function SmartwatchHardwarePage() {
             <p className="text-xs text-text-secondary">Designed for continuous clinical durability and comfort.</p>
           </div>
 
-          <div className="bg-white rounded-2xl border border-border-subtle overflow-hidden shadow-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-border-subtle dark:border-slate-800 overflow-hidden shadow-sm">
             <table className="w-full text-left text-xs">
               <tbody className="divide-y divide-border-subtle">
                 <tr className="hover:bg-surface-subtle/50">

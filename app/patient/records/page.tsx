@@ -118,7 +118,7 @@ export default function PatientRecordsPage() {
           </div>
         )}
 
-        <div className="flex gap-2 border-b border-slate-200">
+        <div className="flex gap-2 border-b border-slate-200 dark:border-slate-800">
           {(['consultations', 'summaries'] as const).map((tab) => (
             <button
               key={tab}
@@ -126,8 +126,8 @@ export default function PatientRecordsPage() {
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 text-xs font-bold capitalize ${
                 activeTab === tab
-                  ? 'text-primary border-b-2 border-primary'
-                  : 'text-slate-500'
+                  ? 'text-primary dark:text-sky-400 border-b-2 border-primary dark:border-sky-400'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
               }`}
             >
               {tab}
@@ -135,10 +135,10 @@ export default function PatientRecordsPage() {
           ))}
         </div>
 
-        {loading && <p className="text-sm text-slate-500">Loading…</p>}
+        {loading && <p className="text-sm text-slate-500 dark:text-slate-400">Loading…</p>}
 
         {!loading && sessions.length === 0 && (
-          <div className="p-10 rounded-2xl border border-slate-200 bg-white text-center text-sm text-slate-500">
+          <div className="p-10 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-center text-sm text-slate-500 dark:text-slate-400">
             No consultations yet. Book a chat visit to build your record.
           </div>
         )}
@@ -148,26 +148,26 @@ export default function PatientRecordsPage() {
             {sessions.map((enc) => (
               <div
                 key={enc.id}
-                className="p-5 rounded-2xl bg-white border border-slate-200 space-y-2"
+                className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2"
               >
                 <div className="flex flex-wrap justify-between gap-2">
                   <div>
-                    <div className="text-sm font-bold text-slate-900">
+                    <div className="text-sm font-bold text-slate-900 dark:text-white">
                       {enc.consultant_name || 'Clinician'} · {enc.specialty || 'General'}
                     </div>
-                    <div className="text-xs text-slate-500 font-mono">
+                    <div className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                       {new Date(enc.scheduled_at).toLocaleString()} · {enc.status}
                     </div>
                   </div>
                   <Link
                     href={`/waiting-room/${enc.id}`}
-                    className="text-xs text-sky-600 hover:underline"
+                    className="text-xs text-sky-600 dark:text-sky-400 hover:underline"
                   >
                     Open session →
                   </Link>
                 </div>
                 {enc.chief_complaint && (
-                  <p className="text-xs text-slate-600">{enc.chief_complaint}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-300">{enc.chief_complaint}</p>
                 )}
               </div>
             ))}
@@ -181,20 +181,20 @@ export default function PatientRecordsPage() {
               return (
                 <div
                   key={enc.id}
-                  className="p-5 rounded-2xl bg-white border border-slate-200 space-y-2 text-xs"
+                  className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2 text-xs"
                 >
-                  <div className="font-bold text-slate-900">
+                  <div className="font-bold text-slate-900 dark:text-white">
                     {enc.consultant_name || 'Visit'} ·{' '}
                     {new Date(enc.scheduled_at).toLocaleDateString()}
                   </div>
                   {summary?.diagnosis || summary?.soap_notes || summary?.prescriptions ? (
-                    <>
+                    <div className="space-y-1 text-slate-700 dark:text-slate-300">
                       {summary.diagnosis && <p>Diagnosis: {summary.diagnosis}</p>}
                       {summary.soap_notes && <p>Notes: {summary.soap_notes}</p>}
                       {summary.prescriptions && <p>Rx: {summary.prescriptions}</p>}
-                    </>
+                    </div>
                   ) : (
-                    <p className="text-slate-500">No care summary posted yet.</p>
+                    <p className="text-slate-500 dark:text-slate-400">No care summary posted yet.</p>
                   )}
                 </div>
               );

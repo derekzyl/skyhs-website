@@ -410,10 +410,10 @@ export default function ConsultancyDiscoveryPage() {
 
       {/* ── SEARCH & SPECIALTY FILTER BAR ───────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 z-10 w-full">
-        <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-4 sm:p-6 space-y-4">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
             <div className="md:col-span-8 relative">
-              <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xl">
+              <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-xl">
                 search
               </span>
               <input
@@ -421,7 +421,7 @@ export default function ConsultancyDiscoveryPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search by doctor name, specialty, teaching hospital (LUTH, UCH, NHA)..."
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50/70 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all font-medium text-slate-800"
+                className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all font-medium text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
               />
             </div>
 
@@ -433,7 +433,7 @@ export default function ConsultancyDiscoveryPage() {
                   onChange={(e) => setAvailableOnly(e.target.checked)}
                   className="w-4 h-4 rounded text-primary focus:ring-primary accent-primary"
                 />
-                <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-500" />
                   Available Today Only
                 </span>
@@ -441,8 +441,8 @@ export default function ConsultancyDiscoveryPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400 mr-2">
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-2">
               Filter Specialty:
             </span>
             {specialties.map((spec) => (
@@ -453,7 +453,7 @@ export default function ConsultancyDiscoveryPage() {
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
                   selectedSpecialty === spec
                     ? 'bg-primary text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                 }`}
               >
                 {spec}
@@ -466,10 +466,10 @@ export default function ConsultancyDiscoveryPage() {
       {/* ── DOCTOR DIRECTORY GRID ────────────────────────────────────────────────── */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 flex-1 w-full">
         <div className="flex items-center justify-between mb-6">
-          <div className="text-sm font-semibold text-slate-600">
-            Showing <span className="text-primary font-bold">{filteredDoctors.length}</span> certified specialists
+          <div className="text-sm font-semibold text-slate-600 dark:text-slate-400">
+            Showing <span className="text-primary dark:text-blue-400 font-bold">{filteredDoctors.length}</span> certified specialists
           </div>
-          <div className="text-xs font-mono text-emerald-600 flex items-center gap-1 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+          <div className="text-xs font-mono text-emerald-600 dark:text-emerald-400 flex items-center gap-1 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full border border-emerald-200 dark:border-emerald-800">
             <span className="material-symbols-outlined text-xs">verified</span>
             <span>MDCN & NDPR Verified</span>
           </div>
@@ -478,12 +478,12 @@ export default function ConsultancyDiscoveryPage() {
         {loading ? (
           <div className="p-16 text-center text-sm text-slate-400">Loading specialist network…</div>
         ) : filteredDoctors.length === 0 ? (
-          <div className="p-16 text-center rounded-2xl bg-white border border-slate-200 space-y-2">
-            <span className="material-symbols-outlined text-5xl text-slate-300">
+          <div className="p-16 text-center rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
+            <span className="material-symbols-outlined text-5xl text-slate-300 dark:text-slate-600">
               person_search
             </span>
-            <h3 className="text-base font-bold text-slate-800">No specialists match your query</h3>
-            <p className="text-xs text-slate-500">
+            <h3 className="text-base font-bold text-slate-800 dark:text-white">No specialists match your query</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Try adjusting your specialty filter or clearing search keywords.
             </p>
           </div>
@@ -492,7 +492,7 @@ export default function ConsultancyDiscoveryPage() {
             {filteredDoctors.map((doc) => (
               <div
                 key={doc.id}
-                className="bg-white rounded-2xl border border-slate-200/90 p-6 hover:border-primary/40 hover:shadow-xl transition-all flex flex-col justify-between group"
+                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-6 hover:border-primary/40 hover:shadow-xl transition-all flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex items-start gap-4 mb-4">
@@ -500,53 +500,53 @@ export default function ConsultancyDiscoveryPage() {
                       <img
                         src={doc.avatar_url || '/images/avatars/dr_chidi_okafor.jpg'}
                         alt={doc.display_name}
-                        className="w-16 h-16 rounded-2xl object-cover border border-slate-200 shadow-xs"
+                        className="w-16 h-16 rounded-2xl object-cover border border-slate-200 dark:border-slate-700 shadow-xs"
                       />
                       {doc.is_available_now && (
                         <span
-                          className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white"
+                          className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900"
                           title="Available on call"
                         />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <h3 className="text-base font-extrabold text-slate-900 truncate">
+                        <h3 className="text-base font-extrabold text-slate-900 dark:text-white truncate">
                           {doc.display_name}
                         </h3>
                         <span
-                          className="material-symbols-outlined text-sky-600 text-base shrink-0"
+                          className="material-symbols-outlined text-sky-600 dark:text-sky-400 text-base shrink-0"
                           title="MDCN Verified"
                         >
                           verified
                         </span>
                       </div>
-                      <div className="text-xs font-bold text-primary truncate mt-0.5">{doc.title}</div>
-                      <div className="text-[11px] text-slate-500 truncate mt-0.5 flex items-center gap-1">
-                        <span className="material-symbols-outlined text-xs text-slate-400">domain</span>
+                      <div className="text-xs font-bold text-primary dark:text-blue-400 truncate mt-0.5">{doc.title}</div>
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400 truncate mt-0.5 flex items-center gap-1">
+                        <span className="material-symbols-outlined text-xs text-slate-400 dark:text-slate-500">domain</span>
                         <span>{doc.hospital}</span>
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-600 leading-relaxed mb-4 line-clamp-3">
+                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4 line-clamp-3">
                     {doc.bio}
                   </p>
 
                   {/* Credentials / NPI pill */}
-                  <div className="space-y-1.5 mb-4 pb-4 border-b border-slate-100 text-[11px] text-slate-600">
+                  <div className="space-y-1.5 mb-4 pb-4 border-b border-slate-100 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-400">
                     <div className="flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-xs text-emerald-600">workspace_premium</span>
-                      <span className="font-semibold">{doc.credentials?.join(' · ') || 'MBBS, FWACP'}</span>
+                      <span className="material-symbols-outlined text-xs text-emerald-600 dark:text-emerald-400">workspace_premium</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{doc.credentials?.join(' · ') || 'MBBS, FWACP'}</span>
                     </div>
                     {doc.npi_number && (
-                      <div className="flex items-center gap-1.5 font-mono text-[10px] text-slate-500">
-                        <span className="material-symbols-outlined text-xs text-slate-400">badge</span>
+                      <div className="flex items-center gap-1.5 font-mono text-[10px] text-slate-500 dark:text-slate-400">
+                        <span className="material-symbols-outlined text-xs text-slate-400 dark:text-slate-500">badge</span>
                         <span>{doc.npi_number}</span>
                       </div>
                     )}
-                    <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
-                      <span className="material-symbols-outlined text-xs text-sky-600">translate</span>
+                    <div className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400">
+                      <span className="material-symbols-outlined text-xs text-sky-600 dark:text-sky-400">translate</span>
                       <span>{doc.languages?.join(', ') || 'English'}</span>
                     </div>
                   </div>
@@ -555,17 +555,17 @@ export default function ConsultancyDiscoveryPage() {
                 <div>
                   <div className="flex items-center justify-between pt-1 mb-4">
                     <div>
-                      <div className="text-[10px] font-mono uppercase text-slate-400 font-bold">Consultation Fee</div>
-                      <div className="text-lg font-mono font-extrabold text-slate-900">
+                      <div className="text-[10px] font-mono uppercase text-slate-400 dark:text-slate-500 font-bold">Consultation Fee</div>
+                      <div className="text-lg font-mono font-extrabold text-slate-900 dark:text-white">
                         {formatNgn(doc.fee)}
-                        <span className="text-xs font-normal text-slate-500"> / 30m</span>
+                        <span className="text-xs font-normal text-slate-500 dark:text-slate-400"> / 30m</span>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 inline-block font-semibold">
+                      <div className="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800 inline-block font-semibold">
                         {doc.next_available_slot || 'Available Today'}
                       </div>
-                      <div className="text-[11px] text-slate-500 mt-0.5 font-medium">
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 font-medium">
                         ⭐ {doc.rating_avg.toFixed(1)} ({doc.review_count})
                       </div>
                     </div>
@@ -594,20 +594,20 @@ export default function ConsultancyDiscoveryPage() {
       {/* ── BOOKING MODAL (WITH EMBEDDED AUTH FOR UNREGISTERED USERS) ─────────────── */}
       {activeBookingDoctor && (
         <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fadeIn">
+          <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden animate-fadeIn">
             {/* Modal Header */}
-            <div className="p-6 bg-slate-50 border-b border-slate-200 flex items-start justify-between">
+            <div className="p-6 bg-slate-50 dark:bg-slate-850 border-b border-slate-200 dark:border-slate-800 flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <img
                   src={activeBookingDoctor.avatar_url || '/images/avatars/dr_chidi_okafor.jpg'}
                   alt={activeBookingDoctor.display_name}
-                  className="w-12 h-12 rounded-xl object-cover border border-slate-200"
+                  className="w-12 h-12 rounded-xl object-cover border border-slate-200 dark:border-slate-700"
                 />
                 <div>
-                  <h3 className="text-base font-extrabold text-slate-900">
+                  <h3 className="text-base font-extrabold text-slate-900 dark:text-white">
                     Book with {activeBookingDoctor.display_name}
                   </h3>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     {activeBookingDoctor.title} · {formatNgn(activeBookingDoctor.fee)}
                   </p>
                 </div>
@@ -615,7 +615,7 @@ export default function ConsultancyDiscoveryPage() {
               <button
                 type="button"
                 onClick={() => setActiveBookingDoctor(null)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
               >
                 <span className="material-symbols-outlined">close</span>
               </button>
@@ -625,18 +625,18 @@ export default function ConsultancyDiscoveryPage() {
             <div className="p-6 space-y-5">
               {bookingSuccess ? (
                 <div className="text-center py-6 space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-3xl">
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto text-3xl">
                     <span className="material-symbols-outlined text-3xl">check_circle</span>
                   </div>
-                  <h4 className="text-lg font-bold text-slate-900">Encounter Confirmed!</h4>
-                  <p className="text-xs text-slate-600 max-w-xs mx-auto">
+                  <h4 className="text-lg font-bold text-slate-900 dark:text-white">Encounter Confirmed!</h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 max-w-xs mx-auto">
                     Your appointment with {activeBookingDoctor.display_name} is scheduled. An SMS confirmation and calendar invite have been sent.
                   </p>
                   <div className="pt-2 flex items-center justify-center gap-3">
                     <button
                       type="button"
                       onClick={() => setActiveBookingDoctor(null)}
-                      className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold"
+                      className="px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold"
                     >
                       Done
                     </button>
@@ -652,19 +652,19 @@ export default function ConsultancyDiscoveryPage() {
               ) : !isAuthenticated ? (
                 /* In-modal Patient Sign In / Register Prompt */
                 <div className="space-y-4">
-                  <div className="p-3 bg-sky-50 border border-sky-200 rounded-xl text-xs text-sky-800 flex items-center gap-2">
-                    <span className="material-symbols-outlined text-sky-600 text-lg">info</span>
+                  <div className="p-3 bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800 rounded-xl text-xs text-sky-800 dark:text-sky-300 flex items-center gap-2">
+                    <span className="material-symbols-outlined text-sky-600 dark:text-sky-400 text-lg">info</span>
                     <span>Sign in or create an account to finalize your booking and encrypted video room.</span>
                   </div>
 
-                  <div className="flex border-b border-slate-200">
+                  <div className="flex border-b border-slate-200 dark:border-slate-700">
                     <button
                       type="button"
                       onClick={() => setAuthMode('signin')}
                       className={`flex-1 py-2 text-xs font-bold text-center border-b-2 transition-colors ${
                         authMode === 'signin'
-                          ? 'border-primary text-primary'
-                          : 'border-transparent text-slate-500 hover:text-slate-800'
+                          ? 'border-primary text-primary dark:text-blue-400'
+                          : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
                       }`}
                     >
                       Sign In
@@ -674,8 +674,8 @@ export default function ConsultancyDiscoveryPage() {
                       onClick={() => setAuthMode('register')}
                       className={`flex-1 py-2 text-xs font-bold text-center border-b-2 transition-colors ${
                         authMode === 'register'
-                          ? 'border-primary text-primary'
-                          : 'border-transparent text-slate-500 hover:text-slate-800'
+                          ? 'border-primary text-primary dark:text-blue-400'
+                          : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
                       }`}
                     >
                       New Patient Registration
@@ -683,7 +683,7 @@ export default function ConsultancyDiscoveryPage() {
                   </div>
 
                   {authError && (
-                    <p className="text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded-lg p-2.5">
+                    <p className="text-xs text-rose-600 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 rounded-lg p-2.5">
                       {authError}
                     </p>
                   )}
@@ -692,63 +692,63 @@ export default function ConsultancyDiscoveryPage() {
                     {authMode === 'register' && (
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <label className="block text-[11px] font-bold text-slate-600 mb-1">First Name</label>
+                          <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">First Name</label>
                           <input
                             type="text"
                             required
                             value={authFirstName}
                             onChange={(e) => setAuthFirstName(e.target.value)}
                             placeholder="Chioma"
-                            className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-primary"
+                            className="w-full px-3 py-2 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:outline-none focus:border-primary"
                           />
                         </div>
                         <div>
-                          <label className="block text-[11px] font-bold text-slate-600 mb-1">Last Name</label>
+                          <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">Last Name</label>
                           <input
                             type="text"
                             required
                             value={authLastName}
                             onChange={(e) => setAuthLastName(e.target.value)}
                             placeholder="Eze"
-                            className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-primary"
+                            className="w-full px-3 py-2 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:outline-none focus:border-primary"
                           />
                         </div>
                       </div>
                     )}
 
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 mb-1">Email Address</label>
+                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">Email Address</label>
                       <input
                         type="email"
                         required
                         value={authEmail}
                         onChange={(e) => setAuthEmail(e.target.value)}
                         placeholder="patient@example.com"
-                        className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-primary"
+                        className="w-full px-3 py-2 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:outline-none focus:border-primary"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 mb-1">Password</label>
+                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">Password</label>
                       <input
                         type="password"
                         required
                         value={authPassword}
                         onChange={(e) => setAuthPassword(e.target.value)}
                         placeholder="••••••••"
-                        className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-primary"
+                        className="w-full px-3 py-2 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:outline-none focus:border-primary"
                       />
                     </div>
 
                     {authMode === 'register' && (
                       <div>
-                        <label className="block text-[11px] font-bold text-slate-600 mb-1">Phone Number (Nigeria)</label>
+                        <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">Phone Number (Nigeria)</label>
                         <input
                           type="tel"
                           value={authPhone}
                           onChange={(e) => setAuthPhone(e.target.value)}
                           placeholder="0803 123 4567"
-                          className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-primary"
+                          className="w-full px-3 py-2 text-xs border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:outline-none focus:border-primary"
                         />
                       </div>
                     )}
@@ -766,14 +766,14 @@ export default function ConsultancyDiscoveryPage() {
                 /* Authenticated Booking Form */
                 <div className="space-y-4">
                   {bookingError && (
-                    <p className="text-xs text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-3">
+                    <p className="text-xs text-rose-600 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 rounded-xl p-3">
                       {bookingError}
                     </p>
                   )}
 
                   {/* Day Picker */}
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-2">Select Date</label>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Select Date</label>
                     <div className="grid grid-cols-3 gap-2">
                       {dayLabels.map((lbl, idx) => (
                         <button
@@ -783,7 +783,7 @@ export default function ConsultancyDiscoveryPage() {
                           className={`py-2 text-xs font-bold rounded-xl border transition-all ${
                             dayOffset === idx
                               ? 'bg-primary text-white border-primary shadow-xs'
-                              : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                              : 'bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
                           }`}
                         >
                           {lbl}
@@ -794,11 +794,11 @@ export default function ConsultancyDiscoveryPage() {
 
                   {/* Slot Selector */}
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-2">Available Slots (WAT)</label>
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Available Slots (WAT)</label>
                     {slotsLoading ? (
                       <div className="text-center py-4 text-xs text-slate-400">Loading slots…</div>
                     ) : slots.length === 0 ? (
-                      <div className="text-center py-4 text-xs text-slate-400 bg-slate-50 rounded-xl border border-slate-200">
+                      <div className="text-center py-4 text-xs text-slate-400 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
                         No open slots for this day. Please select another date.
                       </div>
                     ) : (
@@ -811,7 +811,7 @@ export default function ConsultancyDiscoveryPage() {
                             className={`py-2 px-3 text-xs font-mono font-bold rounded-xl border transition-all ${
                               selectedSlotStart === s.start
                                 ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
-                                : 'bg-slate-50 text-slate-800 border-slate-200 hover:bg-slate-100'
+                                : 'bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
                             }`}
                           >
                             {new Date(s.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -823,7 +823,7 @@ export default function ConsultancyDiscoveryPage() {
 
                   {/* Reason for consultation */}
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                       Chief Complaint / Clinical Concern (Optional)
                     </label>
                     <textarea
@@ -831,12 +831,12 @@ export default function ConsultancyDiscoveryPage() {
                       onChange={(e) => setChiefComplaint(e.target.value)}
                       rows={2}
                       placeholder="e.g. Palpitations detected on VitalsWatch, elevated resting BP, or second opinion..."
-                      className="w-full p-2.5 text-xs rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:border-primary"
+                      className="w-full p-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-primary"
                     />
                   </div>
 
                   {/* Consent checkbox */}
-                  <label className="flex items-start gap-2 text-xs text-slate-600 cursor-pointer">
+                  <label className="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-400 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={telemetryConsent}
@@ -853,7 +853,7 @@ export default function ConsultancyDiscoveryPage() {
                     <button
                       type="button"
                       onClick={() => setActiveBookingDoctor(null)}
-                      className="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50"
+                      className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
                     >
                       Cancel
                     </button>
