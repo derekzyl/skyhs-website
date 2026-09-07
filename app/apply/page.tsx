@@ -16,19 +16,18 @@ export default function ClinicianApplyPage() {
   // Form State
   const [formData, setFormData] = useState({
     fullName: '',
-    npiNumber: '',
+    councilType: 'MDCN',
+    registrationNumber: '',
     email: '',
     phone: '',
     medicalSchool: '',
-    primaryState: '',
-    licenseNumber: '',
-    deaNumber: '',
-    specialty: 'Cardiology',
+    graduationYear: '',
+    primaryState: 'Lagos',
+    currentHospital: '',
+    specialty: 'General Practice',
     subSpecialty: '',
-    bankName: '',
-    nuban: '',
     agreedToProtocols: true,
-    fee: '140',
+    fee: '5000',
     bio: '',
   });
 
@@ -38,7 +37,7 @@ export default function ClinicianApplyPage() {
       return;
     }
     setSubmitError(null);
-    if (currentStep < 4) {
+    if (currentStep < 3) {
       setCurrentStep(currentStep + 1);
       return;
     }
@@ -54,16 +53,17 @@ export default function ClinicianApplyPage() {
         title: 'Consultant',
         specialty: formData.specialty,
         sub_specialty: formData.subSpecialty || undefined,
-        hospital: formData.primaryState || undefined,
+        hospital: formData.currentHospital || formData.primaryState || undefined,
         bio: formData.bio || undefined,
-        npi_number: formData.npiNumber || undefined,
+        npi_number: formData.registrationNumber || undefined,
         fee: parseFloat(formData.fee) || 0,
-        experience_years: 0,
+        experience_years: formData.graduationYear ? (new Date().getFullYear() - parseInt(formData.graduationYear)) : 0,
         languages: ['English'],
         credentials: [
-          formData.medicalSchool,
-          formData.licenseNumber ? `License ${formData.licenseNumber}` : '',
-          formData.deaNumber ? `DEA ${formData.deaNumber}` : '',
+          formData.councilType ? `Council: ${formData.councilType}` : '',
+          formData.medicalSchool ? `Institution: ${formData.medicalSchool}` : '',
+          formData.graduationYear ? `Class of ${formData.graduationYear}` : '',
+          formData.primaryState ? `State: ${formData.primaryState}` : '',
         ].filter(Boolean),
         accepts_telemetry: formData.agreedToProtocols,
       });
@@ -114,12 +114,11 @@ export default function ClinicianApplyPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full">
         {/* Step Indicator Bar */}
         <div className="max-w-4xl mx-auto mb-10">
-          <div className="grid grid-cols-4 gap-2 text-center">
+          <div className="grid grid-cols-3 gap-2 text-center">
             {[
-              { num: 1, title: 'Identity & MDCN' },
-              { num: 2, title: 'State Licenses' },
+              { num: 1, title: 'Identity & Council' },
+              { num: 2, title: 'Qualifications' },
               { num: 3, title: 'Clinical Protocols' },
-              { num: 4, title: 'Payout & EHR' },
             ].map((s) => (
               <div
                 key={s.num}
@@ -151,7 +150,7 @@ export default function ClinicianApplyPage() {
                 Credentialing Packet Submitted!
               </h3>
               <p className="text-xs text-text-secondary mt-2 leading-relaxed">
-                Thank you, <span className="font-bold">{formData.fullName}</span>. Your MDCN license ({formData.npiNumber}) has been submitted for Skyline clinician verification.
+                Thank you, <span className="font-bold">{formData.fullName}</span>. Your {formData.councilType} registration ({formData.registrationNumber}) has been submitted for Skyline verification.
               </p>
             </div>
 
@@ -162,11 +161,11 @@ export default function ClinicianApplyPage() {
               </div>
               <div className="flex items-center gap-2 text-text-secondary">
                 <span className="material-symbols-outlined text-sm text-emerald-500">check_circle</span>
-                NPPES Registry Match: Dr. Julian Vance (Active)
+                Council Register Match: Verified
               </div>
               <div className="flex items-center gap-2 text-text-secondary">
                 <span className="material-symbols-outlined text-sm text-emerald-500">check_circle</span>
-                OIG & SAM Exclusion List: Cleared (Zero sanctions)
+                Disciplinary Committee Clearance: Cleared (Zero sanctions)
               </div>
               <div className="flex items-center gap-2 text-text-secondary">
                 <span className="material-symbols-outlined text-sm text-emerald-500">check_circle</span>
@@ -189,31 +188,47 @@ export default function ClinicianApplyPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
             {/* Form Section */}
             <div className="lg:col-span-8 bg-white rounded-2xl border border-border-subtle p-6 sm:p-8 shadow-sm">
-              {/* Step 1: Identity & MDCN */}
+              {/* Step 1: Identity & Council */}
               {currentStep === 1 && (
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-lg font-bold text-text-primary">
-                      1. Professional Identity & MDCN License Check
+                      1. Professional Identity & Council Registration
                     </h3>
                     <p className="text-xs text-text-muted mt-0.5">
-                      Enter your Medical and Dental Council of Nigeria (MDCN) folio / license number for clinician verification.
+                      Enter your professional council details (e.g., MDCN, PCN) for verification.
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                     <div>
                       <label className="text-xs font-bold text-text-secondary block mb-1">
-                        MDCN License / Folio Number
+                        Council Type
+                      </label>
+                      <select
+                        value={formData.councilType}
+                        onChange={(e) => setFormData({ ...formData, councilType: e.target.value })}
+                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs bg-white"
+                      >
+                        <option value="MDCN">MDCN (Medical & Dental)</option>
+                        <option value="PCN">PCN (Pharmacy)</option>
+                        <option value="NMCN">NMCN (Nursing & Midwifery)</option>
+                        <option value="MRTB">MRTB (Medical Rehab)</option>
+                        <option value="ODTRBN">ODTRBN (Optometrists & Dispensing Opticians)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-text-secondary block mb-1">
+                        Registration / Folio Number
                       </label>
                       <input
                         type="text"
-                        value={formData.npiNumber}
-                        onChange={(e) => setFormData({ ...formData, npiNumber: e.target.value })}
+                        value={formData.registrationNumber}
+                        onChange={(e) => setFormData({ ...formData, registrationNumber: e.target.value })}
                         className="w-full p-2.5 rounded-lg border border-border-subtle text-xs font-mono font-bold"
                       />
                     </div>
-                    <div>
+                    <div className="sm:col-span-2">
                       <label className="text-xs font-bold text-text-secondary block mb-1">
                         Full Legal Name & Title
                       </label>
@@ -247,9 +262,59 @@ export default function ClinicianApplyPage() {
                         className="w-full p-2.5 rounded-lg border border-border-subtle text-xs font-mono"
                       />
                     </div>
-                    <div className="sm:col-span-2">
+                  </div>
+                </div>
+              )}
+
+              {/* Step 2: Qualifications & Current Practice */}
+              {currentStep === 2 && (
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-bold text-text-primary">
+                      2. Qualifications & Current Practice
+                    </h3>
+                    <p className="text-xs text-text-muted mt-0.5">
+                      Provide details about your training and current place of practice.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <div>
                       <label className="text-xs font-bold text-text-secondary block mb-1">
-                        Medical School / Residency Institution
+                        Primary State of Practice
+                      </label>
+                      <select
+                        value={formData.primaryState}
+                        onChange={(e) => setFormData({ ...formData, primaryState: e.target.value })}
+                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs bg-white"
+                      >
+                        <option>Lagos</option>
+                        <option>FCT Abuja</option>
+                        <option>Rivers</option>
+                        <option>Kano</option>
+                        <option>Oyo</option>
+                        <option>Enugu</option>
+                        <option>Edo</option>
+                        <option>Kaduna</option>
+                        <option>Delta</option>
+                        <option>Ogun</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-text-secondary block mb-1">
+                        Current Hospital / Place of Work
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.currentHospital}
+                        onChange={(e) => setFormData({ ...formData, currentHospital: e.target.value })}
+                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-text-secondary block mb-1">
+                        Medical School / Training Institution
                       </label>
                       <input
                         type="text"
@@ -258,58 +323,16 @@ export default function ClinicianApplyPage() {
                         className="w-full p-2.5 rounded-lg border border-border-subtle text-xs"
                       />
                     </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Step 2: State Licensure & Compacts */}
-              {currentStep === 2 && (
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-bold text-text-primary">
-                      2. State Licensure & IMLC Compacts
-                    </h3>
-                    <p className="text-xs text-text-muted mt-0.5">
-                      Declare your active medical licenses. Physicians holding Interstate Medical Licensure Compact (IMLC) certificates are prioritized for multi-state patient routing.
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                     <div>
                       <label className="text-xs font-bold text-text-secondary block mb-1">
-                        Primary Licensure State
-                      </label>
-                      <select
-                        value={formData.primaryState}
-                        onChange={(e) => setFormData({ ...formData, primaryState: e.target.value })}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs bg-white"
-                      >
-                        <option>California (CA)</option>
-                        <option>New York (NY)</option>
-                        <option>Texas (TX)</option>
-                        <option>Florida (FL)</option>
-                        <option>Illinois (IL)</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-xs font-bold text-text-secondary block mb-1">
-                        Medical License Number
+                        Year of Graduation
                       </label>
                       <input
                         type="text"
-                        value={formData.licenseNumber}
-                        onChange={(e) => setFormData({ ...formData, licenseNumber: e.target.value })}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs font-mono"
-                      />
-                    </div>
-                    <div className="sm:col-span-2">
-                      <label className="text-xs font-bold text-text-secondary block mb-1">
-                        DEA Registration Number
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.deaNumber}
-                        onChange={(e) => setFormData({ ...formData, deaNumber: e.target.value })}
+                        value={formData.graduationYear}
+                        onChange={(e) => setFormData({ ...formData, graduationYear: e.target.value })}
+                        placeholder="YYYY"
+                        maxLength={4}
                         className="w-full p-2.5 rounded-lg border border-border-subtle text-xs font-mono"
                       />
                     </div>
@@ -318,7 +341,7 @@ export default function ClinicianApplyPage() {
                   <div className="p-3 bg-sky-50 rounded-xl border border-sky-200 text-xs text-sky-900 flex items-center gap-2">
                     <span className="material-symbols-outlined text-base text-sky-600">info</span>
                     <span>
-                      Skyline provides complimentary group malpractice insurance ($1M/$3M coverage) for all platform clinical consultations.
+                      Skyline provides complimentary group medical liability cover for all platform clinical consultations.
                     </span>
                   </div>
                 </div>
@@ -329,10 +352,10 @@ export default function ClinicianApplyPage() {
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-lg font-bold text-text-primary">
-                      3. Clinical Practice & Wearable Telemetry Protocol
+                      3. Clinical Specialty & Protocols
                     </h3>
                     <p className="text-xs text-text-muted mt-0.5">
-                      Review Skyline's sensor interpretation standards and remote patient management guidelines.
+                      Review Skyline's remote patient management guidelines and specify your specialty.
                     </p>
                   </div>
 
@@ -346,11 +369,15 @@ export default function ClinicianApplyPage() {
                         onChange={(e) => setFormData({ ...formData, specialty: e.target.value })}
                         className="w-full p-2.5 rounded-lg border border-border-subtle text-xs bg-white"
                       >
+                        <option>General Practice</option>
                         <option>Cardiology</option>
                         <option>Endocrinology</option>
-                        <option>General Health</option>
+                        <option>Pediatrics</option>
+                        <option>Obstetrics & Gynecology</option>
+                        <option>Internal Medicine</option>
                         <option>Neurology</option>
-                        <option>Pulmonology</option>
+                        <option>Pharmacy</option>
+                        <option>Nursing</option>
                       </select>
                     </div>
                     <div>
@@ -368,11 +395,11 @@ export default function ClinicianApplyPage() {
 
                   <div className="p-4 bg-surface-subtle rounded-xl border border-border-subtle space-y-3">
                     <h4 className="text-xs font-bold text-text-primary">
-                      Telemetry Competency Agreement
+                      Telehealth Competency Agreement
                     </h4>
                     <ul className="text-[11px] text-text-secondary space-y-1.5 list-disc pl-4">
-                      <li>I understand that single-lead ECG is for screening and ambulatory rhythm assessment, not a complete replacement for a diagnostic 12-lead ECG in acute MI suspicion.</li>
                       <li>I will review patient baseline vitals prior to initiating synchronous video encounters.</li>
+                      <li>I understand that single-lead ECG is for screening and ambulatory rhythm assessment, not a complete replacement for a diagnostic 12-lead ECG in acute MI suspicion.</li>
                       <li>I will electronically finalize SOAP encounter documentation within 24 hours of visit conclusion.</li>
                     </ul>
                     <label className="flex items-center gap-2 pt-2 border-t border-border-subtle cursor-pointer">
@@ -383,59 +410,9 @@ export default function ClinicianApplyPage() {
                         className="w-4 h-4 rounded text-primary accent-primary"
                       />
                       <span className="text-xs font-bold text-text-primary">
-                        I agree to Skyline Telehealth Clinical Telemetry Protocols
+                        I agree to Skyline Telehealth Clinical Protocols
                       </span>
                     </label>
-                  </div>
-                </div>
-              )}
-
-              {/* Step 4: Payout & EHR Integration */}
-              {currentStep === 4 && (
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-bold text-text-primary">
-                      4. Payout Account & Institutional EHR Bridge
-                    </h3>
-                    <p className="text-xs text-text-muted mt-0.5">
-                      Direct deposit setup for weekly CPT reimbursements (CPT 99213, 99214, 99453, 99454).
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                    <div>
-                      <label className="text-xs font-bold text-text-secondary block mb-1">
-                        Bank Name
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.bankName}
-                        onChange={(e) => setFormData({ ...formData, bankName: e.target.value })}
-                        placeholder="e.g. Access Bank, GTBank"
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs font-bold text-text-secondary block mb-1">
-                        Account Number (NUBAN)
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.nuban}
-                        onChange={(e) => setFormData({ ...formData, nuban: e.target.value })}
-                        placeholder="10-digit NUBAN"
-                        maxLength={10}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs font-mono"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-900 flex items-center gap-2">
-                    <span className="material-symbols-outlined text-base text-emerald-600">lock</span>
-                    <span>
-                      Nigerian bank details stay on this form for now (local state). Payout wiring
-                      will use NUBAN + bank name when disbursements go live.
-                    </span>
                   </div>
                 </div>
               )}
@@ -472,7 +449,7 @@ export default function ClinicianApplyPage() {
                     <span>
                       {submitting
                         ? 'Submitting…'
-                        : currentStep === 4
+                        : currentStep === 3
                           ? 'Complete Credentialing'
                           : 'Continue to Next Step'}
                     </span>
@@ -496,7 +473,7 @@ export default function ClinicianApplyPage() {
                     </span>
                     <div>
                       <span className="font-bold text-text-primary block">High-Earning Telehealth</span>
-                      Average physician earnings range from $165k to $320k annually with flexible on-call scheduling.
+                      Average consultant earnings range from ₦5M to ₦15M annually with flexible on-call scheduling.
                     </div>
                   </div>
                   <div className="flex items-start gap-2.5">
@@ -523,7 +500,7 @@ export default function ClinicianApplyPage() {
               <div className="p-4 rounded-xl bg-slate-900 text-white text-xs space-y-2">
                 <div className="font-bold text-sky-300">Need Credentialing Assistance?</div>
                 <div className="text-slate-400 text-[11px] leading-relaxed">
-                  Our clinical coordinator concierge is available 24/7 to assist with state compact filings and CAQH profile synchronizations.
+                  Our clinical coordinator concierge is available 24/7 to assist with council verification and profile setup.
                 </div>
                 <div className="text-sky-400 font-mono font-bold pt-1">
                   support@skylinehealth.org
