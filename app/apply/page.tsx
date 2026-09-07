@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Link from 'next/link';
-import { apiPost, errorMessage, getAccessToken } from '../../lib/api';
+import { apiPost, errorMessage, getAccessToken, login } from '../../lib/api';
 import { isValidNgPhone } from '../../lib/phone';
 
 export default function ClinicianApplyPage() {
@@ -20,6 +20,7 @@ export default function ClinicianApplyPage() {
     registrationNumber: '',
     email: '',
     phone: '',
+    password: '',
     medicalSchool: '',
     graduationYear: '',
     primaryState: 'Lagos',
@@ -42,12 +43,36 @@ export default function ClinicianApplyPage() {
       return;
     }
     setSubmitError(null);
-    if (!getAccessToken()) {
-      setSubmitError('Please sign in before submitting a credentialing application.');
-      return;
-    }
     setSubmitting(true);
+    
     try {
+      if (!getAccessToken()) {
+        if (!formData.password || formData.password.length < 8) {
+          throw new Error('Please provide a valid password (min 8 characters) to create your account.');
+        }
+        if (!formData.email) {
+          throw new Error('Please provide an email address to create your account.');
+        }
+
+        const names = (formData.fullName || '').trim().split(' ');
+        const first_name = names[0] || 'Consultant';
+        const last_name = names.slice(1).join(' ') || 'Unknown';
+        
+        // Register the user
+        await apiPost('/api/v1/auth/register', {
+          first_name,
+          last_name,
+          email: formData.email,
+          password: formData.password,
+          user_type: 'consultant',
+          phone: formData.phone,
+          privacy_policy_accepted: formData.agreedToProtocols
+        }, { auth: false });
+        
+        // Log them in to get the access token
+        await login(formData.email, formData.password);
+      }
+
       await apiPost('/api/v1/consultancy/consultants/apply', {
         display_name: formData.fullName || 'Consultant',
         title: 'Consultant',
@@ -68,8 +93,8 @@ export default function ClinicianApplyPage() {
         accepts_telemetry: formData.agreedToProtocols,
       });
       setIsSubmitted(true);
-    } catch (err) {
-      setSubmitError(errorMessage(err, 'Application submission failed.'));
+    } catch (err: any) {
+      setSubmitError(err.message && !err.status ? err.message : errorMessage(err, 'Application submission failed.'));
     } finally {
       setSubmitting(false);
     }
@@ -245,13 +270,28 @@ export default function ClinicianApplyPage() {
                       </label>
                       <input
                         type="email"
+                        required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full p-2.5 rounded-lg border border-border-subtle text-xs"
+                        placeholder="e.g. dr.name@hospital.com"
+                        className="w-full px-4 py-2.5 rounded-lg border border-border-subtle bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 text-xs text-text-primary transition-shadow"
                       />
                     </div>
                     <div>
-                      <label className="text-xs font-bold text-text-secondary block mb-1">
+                      <label className="block text-xs font-bold text-text-secondary mb-1.5 uppercase tracking-wide">
+                        Account Password <span className="text-rose-500">*</span>
+                      </label>
+                      <input
+                        type="password"
+                        required={!getAccessToken()}
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        placeholder="Min. 8 characters"
+                        className="w-full px-4 py-2.5 rounded-lg border border-border-subtle bg-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 text-xs text-text-primary transition-shadow"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-text-secondary mb-1.5 uppercase tracking-wide">
                         Mobile Phone (+234)
                       </label>
                       <input
