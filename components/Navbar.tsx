@@ -13,11 +13,10 @@ import type { AuthUser } from '../lib/types';
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [hardwareOpen, setHardwareOpen] = useState(false);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
 
+  // Fetch authenticated user
   useEffect(() => {
     const token = getAccessToken();
     if (!token) return;
@@ -40,10 +39,35 @@ export default function Navbar() {
     };
   }, [pathname]);
 
+  // Auto-close drawer on route change
+  useEffect(() => {
+    setDrawerOpen(false);
+  }, [pathname]);
+
+  // Scroll lock and ESC key listener for Side Drawer
+  useEffect(() => {
+    if (!drawerOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setDrawerOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [drawerOpen]);
+
   const handleLogout = () => {
     clearAuthTokens();
     setUser(null);
-    setUserDropdownOpen(false);
+    setDrawerOpen(false);
     router.push('/login');
   };
 
@@ -57,32 +81,45 @@ export default function Navbar() {
   );
 
   return (
-    <div className="w-full sticky top-0 z-50">
-      {/* ── TOP ANNOUNCEMENT BAR ────────────────────────────────────────────────── */}
-      <div className="bg-slate-950 text-white py-1.5 px-4 text-center text-xs font-semibold flex items-center justify-center gap-2 border-b border-slate-800 shadow-xs">
-        <div className="flex items-center gap-1.5">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-          </span>
-          <span className="font-bold tracking-wider uppercase text-[10px] text-sky-400">
-            24/7 Telehealth Active in Nigeria:
-          </span>
+    <div className="w-full sticky top-0 z-40">
+      {/* ── TOP SLIM ANNOUNCEMENT BAR ───────────────────────────────────────────── */}
+      <div className="bg-slate-950 text-white py-1 px-4 text-xs border-b border-slate-800 shadow-xs">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span className="font-bold tracking-wider uppercase text-[10px] text-sky-400">
+              24/7 MDCN Telehealth Active:
+            </span>
+            <span className="hidden sm:inline text-slate-300 text-[11px]">
+              Continuous Telemetry & Instant Consultations across Nigeria
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="hidden md:inline-block bg-primary/40 px-2 py-0.5 rounded text-[10px] font-mono font-bold border border-sky-500/30 text-sky-200">
+              PAYSTACK · NGN
+            </span>
+            <button
+              type="button"
+              onClick={() => setDrawerOpen(true)}
+              className="text-[11px] font-bold text-sky-300 hover:text-white flex items-center gap-1 cursor-pointer transition-colors"
+            >
+              <span>Explore Platform</span>
+              <span className="material-symbols-outlined text-xs">arrow_forward</span>
+            </button>
+          </div>
         </div>
-        <span className="hidden sm:inline text-slate-300 text-[11px]">
-          Lagos · Abuja · Port Harcourt · MDCN-Certified Teleconsultations & Electronic Prescriptions
-        </span>
-        <span className="bg-primary/40 px-2 py-0.5 rounded text-[10px] font-mono font-bold border border-sky-500/30 text-sky-200">
-          PAYSTACK · NGN
-        </span>
       </div>
 
-      {/* ── MAIN NAVIGATION HEADER ──────────────────────────────────────────────── */}
-      <header className="w-full bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 shadow-xs transition-all duration-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
+      {/* ── CLEAN STREAMLINED APP BAR ───────────────────────────────────────────── */}
+      <header className="w-full bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 shadow-xs transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           {/* Brand Identity */}
           <Link href="/" className="flex items-center gap-3 group shrink-0">
-            <div className="w-10 h-10 rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center p-1.5 shadow-md group-hover:scale-105 border border-slate-800 transition-all">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center p-1.5 shadow-md group-hover:scale-105 border border-slate-800 transition-all">
               <Image
                 src="/logo.png"
                 alt="Skyline Health Logo"
@@ -98,94 +135,24 @@ export default function Navbar() {
                   SKYLINE <span className="text-secondary dark:text-sky-200 font-semibold">HEALTH</span>
                 </span>
                 <span className="bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/50 hidden xs:inline-block">
-                  TELEHEALTH
+                  VITALSBAND™
                 </span>
               </div>
               <p className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                Medical Biometrics & MDCN Network
+                Continuous Medical Telemetry
               </p>
             </div>
           </Link>
 
-          {/* Desktop Links */}
-          <nav className="hidden lg:flex items-center space-x-6 text-xs font-bold text-slate-700 dark:text-slate-200">
-            {/* Hardware Dropdown */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setHardwareOpen(!hardwareOpen)}
-                onMouseEnter={() => setHardwareOpen(true)}
-                className="hover:text-primary dark:hover:text-sky-400 py-2 flex items-center gap-1 focus:outline-none transition-colors"
-              >
-                <span>Hardware Fleet</span>
-                <span className="material-symbols-outlined text-sm">expand_more</span>
-              </button>
-
-              {hardwareOpen && (
-                <div
-                  onMouseLeave={() => setHardwareOpen(false)}
-                  className="absolute left-0 top-full w-72 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-2.5 z-50 animate-fadeIn"
-                >
-                  <Link
-                    href="/#hardware-lineup"
-                    onClick={() => setHardwareOpen(false)}
-                    className="block p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                  >
-                    <div className="font-bold text-xs text-primary dark:text-sky-400 flex items-center justify-between">
-                      <span>VitalsBand™ Ultra</span>
-                      <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/60">
-                        FLAGSHIP
-                      </span>
-                    </div>
-                    <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                      Titanium Band · Lead II ECG · {formatNgn(HARDWARE_PRICES.ultra)}
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/#hardware-lineup"
-                    onClick={() => setHardwareOpen(false)}
-                    className="block p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                  >
-                    <div className="font-bold text-xs text-slate-900 dark:text-white">PulseBand Pro</div>
-                    <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                      Continuous Optical SpO2 · {formatNgn(HARDWARE_PRICES.band)}
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/#hardware-lineup"
-                    onClick={() => setHardwareOpen(false)}
-                    className="block p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                  >
-                    <div className="font-bold text-xs text-slate-900 dark:text-white">Clinical Biosensor Suite</div>
-                    <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                      Band + Ring + Cellular Base Hub · {formatNgn(HARDWARE_PRICES.suite)}
-                    </div>
-                  </Link>
-
-                  <div className="mt-1 pt-1.5 border-t border-slate-100 dark:border-slate-800">
-                    <Link
-                      href="/smartwatch"
-                      onClick={() => setHardwareOpen(false)}
-                      className="text-[11px] text-secondary dark:text-sky-400 font-bold hover:underline flex items-center justify-between p-1"
-                    >
-                      <span>Explore Technical Specifications</span>
-                      <span className="material-symbols-outlined text-xs">arrow_forward</span>
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-
+          {/* Minimal Center Links (Clean & Spacious) */}
+          <nav className="hidden md:flex items-center space-x-7 text-xs font-bold text-slate-700 dark:text-slate-200">
             <Link
-              href="/#biometric-breakdown"
+              href="/#hardware-lineup"
               className="hover:text-primary dark:hover:text-sky-400 transition-colors"
             >
-              Continuous Biometrics
+              VitalsBand™ Fleet
             </Link>
-
             <Link
               href="/consultancy"
               className="hover:text-primary dark:hover:text-sky-400 transition-colors flex items-center gap-1.5"
@@ -193,105 +160,17 @@ export default function Navbar() {
               <span className="w-2 h-2 rounded-full bg-emerald-500 live-pulse" />
               Specialist Directory
             </Link>
-
             <Link
-              href="/apply"
-              className="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-sky-400 transition-colors flex items-center gap-1"
+              href="/smartwatch"
+              className="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-sky-400 transition-colors"
             >
-              <span className="material-symbols-outlined text-sm text-sky-600 dark:text-sky-400">verified_user</span>
-              Join as Doctor
+              Tech Specs
             </Link>
-
-            {isPlatformAdmin && (
-              <Link
-                href="/admin"
-                className="px-2.5 py-1 rounded-full bg-slate-900 dark:bg-slate-800 text-sky-300 hover:bg-slate-800 text-[11px] font-mono font-bold flex items-center gap-1 border border-slate-700 transition-all shadow-xs"
-              >
-                <span className="material-symbols-outlined text-xs text-amber-400">admin_panel_settings</span>
-                Admin Console
-              </Link>
-            )}
           </nav>
 
-          {/* Trailing Actions */}
+          {/* Right Controls: Order CTA, Theme Toggle, and Side Drawer Trigger */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Theme Toggle Button */}
-            <ThemeToggle />
-
-            {/* User Account / Sign In State */}
-            {user ? (
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 py-1.5 px-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-900 text-xs font-bold text-slate-800 dark:text-slate-100 shadow-xs focus:outline-none transition-all"
-                >
-                  <div className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold">
-                    {displayName.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="hidden md:inline max-w-[120px] truncate">{displayName}</span>
-                  <span className="material-symbols-outlined text-xs text-slate-400">expand_more</span>
-                </button>
-
-                {userDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-1.5 w-60 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-2 z-50 animate-fadeIn text-xs">
-                    <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800">
-                      <div className="font-bold text-slate-900 dark:text-white truncate">{displayName}</div>
-                      <div className="text-[11px] text-slate-500 dark:text-slate-400 truncate">{user.email}</div>
-                    </div>
-
-                    <div className="py-1">
-                      {isPlatformAdmin && (
-                        <Link
-                          href="/admin"
-                          onClick={() => setUserDropdownOpen(false)}
-                          className="flex items-center gap-2 px-3 py-2 rounded-lg text-primary dark:text-sky-400 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                        >
-                          <span className="material-symbols-outlined text-base text-amber-500">admin_panel_settings</span>
-                          <span>Admin Console</span>
-                        </Link>
-                      )}
-                      <Link
-                        href="/portal/dashboard"
-                        onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                      >
-                        <span className="material-symbols-outlined text-base text-sky-600 dark:text-sky-400">stethoscope</span>
-                        <span>Clinician Portal</span>
-                      </Link>
-                      <Link
-                        href="/patient/records"
-                        onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                      >
-                        <span className="material-symbols-outlined text-base text-slate-500">clinical_notes</span>
-                        <span>Patient Records</span>
-                      </Link>
-                    </div>
-
-                    <div className="pt-1 border-t border-slate-100 dark:border-slate-800">
-                      <button
-                        type="button"
-                        onClick={handleLogout}
-                        className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors text-left font-semibold cursor-pointer"
-                      >
-                        <span className="material-symbols-outlined text-base">logout</span>
-                        <span>Sign Out</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Link
-                href="/login"
-                className="hidden xs:inline-flex text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-sky-400 px-3 py-2 transition-colors"
-              >
-                Sign In
-              </Link>
-            )}
-
-            {/* Order Band CTA */}
+            {/* Quick Order Band CTA */}
             <Link
               href="/checkout"
               className="bg-primary hover:bg-primary-container text-white text-xs font-bold px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-xs hover:shadow transition-all duration-150 flex items-center gap-1.5 shrink-0"
@@ -301,123 +180,415 @@ export default function Navbar() {
               <span className="sm:hidden">Order</span>
             </Link>
 
-            {/* Mobile Hamburger Toggle */}
+            {/* Theme Toggle Button */}
+            <ThemeToggle />
+
+            {/* SIDE DRAWER TRIGGER BUTTON */}
             <button
               type="button"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2 text-slate-700 dark:text-slate-200 hover:text-primary rounded-xl border border-slate-200 dark:border-slate-800 focus:outline-none"
-              aria-label="Toggle Navigation Menu"
+              onClick={() => setDrawerOpen(true)}
+              className="flex items-center gap-2 py-2 px-3 sm:px-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary/50 dark:hover:border-sky-500/50 bg-slate-50/80 dark:bg-slate-900/80 hover:bg-primary/5 dark:hover:bg-sky-500/10 text-slate-800 dark:text-slate-100 transition-all duration-150 cursor-pointer shadow-xs group"
+              aria-label="Open Navigation Menu Drawer"
             >
-              <span className="material-symbols-outlined text-xl">
-                {mobileOpen ? 'close' : 'menu'}
+              {user ? (
+                <div className="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold ring-2 ring-emerald-500/50">
+                  {displayName.charAt(0).toUpperCase()}
+                </div>
+              ) : (
+                <div className="flex flex-col gap-1 w-4">
+                  <span className="h-0.5 w-full bg-slate-700 dark:bg-slate-200 rounded-full group-hover:bg-primary dark:group-hover:bg-sky-400 transition-colors" />
+                  <span className="h-0.5 w-3/4 bg-slate-700 dark:bg-slate-200 rounded-full group-hover:w-full group-hover:bg-primary dark:group-hover:bg-sky-400 transition-all" />
+                  <span className="h-0.5 w-full bg-slate-700 dark:bg-slate-200 rounded-full group-hover:bg-primary dark:group-hover:bg-sky-400 transition-colors" />
+                </div>
+              )}
+              <span className="text-xs font-bold tracking-tight text-slate-800 dark:text-slate-200 group-hover:text-primary dark:group-hover:text-sky-400">
+                Menu
               </span>
             </button>
           </div>
         </div>
+      </header>
 
-        {/* ── MOBILE MENU DRAWER ──────────────────────────────────────────────────── */}
-        {mobileOpen && (
-          <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl px-4 pt-3 pb-6 space-y-4 shadow-2xl max-h-[calc(100vh-100px)] overflow-y-auto animate-fadeIn">
-            {/* Quick Actions */}
-            <div className="grid grid-cols-2 gap-2 pb-3 border-b border-slate-200 dark:border-slate-800">
-              <Link
-                href="/checkout"
-                onClick={() => setMobileOpen(false)}
-                className="py-2.5 px-3 text-center text-xs font-bold text-white bg-primary rounded-xl flex items-center justify-center gap-1.5 shadow-xs"
-              >
-                <span className="material-symbols-outlined text-sm">shopping_cart</span>
-                Order Band
-              </Link>
-              <Link
-                href="/consultancy"
-                onClick={() => setMobileOpen(false)}
-                className="py-2.5 px-3 text-center text-xs font-bold text-primary dark:text-sky-400 border border-primary/30 dark:border-sky-500/30 rounded-xl flex items-center justify-center gap-1.5"
-              >
-                <span className="material-symbols-outlined text-sm">video_call</span>
-                Find Specialist
-              </Link>
+      {/* ── SIDE DRAWER BACKDROP OVERLAY ────────────────────────────────────────── */}
+      <div
+        role="presentation"
+        onClick={() => setDrawerOpen(false)}
+        className={`fixed inset-0 bg-slate-950/65 backdrop-blur-xs z-50 transition-opacity duration-300 ${
+          drawerOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      />
+
+      {/* ── SIDE DRAWER PANEL ───────────────────────────────────────────────────── */}
+      <aside
+        aria-label="Skyline Platform Navigation"
+        aria-hidden={!drawerOpen}
+        className={`fixed top-0 right-0 bottom-0 w-full sm:w-[460px] max-w-[95vw] bg-white dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800 shadow-2xl z-50 flex flex-col transition-transform duration-300 ease-out transform ${
+          drawerOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        {/* Drawer Header */}
+        <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 bg-slate-50/50 dark:bg-slate-900/50">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg overflow-hidden bg-slate-950 flex items-center justify-center p-1 border border-slate-800">
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={32}
+                height={32}
+                className="w-full h-full object-contain"
+              />
             </div>
-
-            <div className="space-y-1 text-sm font-semibold text-slate-800 dark:text-slate-200">
-              <Link
-                href="/#hardware-lineup"
-                onClick={() => setMobileOpen(false)}
-                className="block px-3 py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
-              >
-                Hardware Lineup & Sensors
-              </Link>
-              <Link
-                href="/#biometric-breakdown"
-                onClick={() => setMobileOpen(false)}
-                className="block px-3 py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
-              >
-                Continuous ECG Telemetry
-              </Link>
-              <Link
-                href="/consultancy"
-                onClick={() => setMobileOpen(false)}
-                className="block px-3 py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors text-primary dark:text-sky-400 font-bold"
-              >
-                Specialist Network (MDCN Verified)
-              </Link>
-              <Link
-                href="/apply"
-                onClick={() => setMobileOpen(false)}
-                className="block px-3 py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
-              >
-                Join Doctor Network
-              </Link>
-              <Link
-                href="/portal/dashboard"
-                onClick={() => setMobileOpen(false)}
-                className="block px-3 py-2.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
-              >
-                Clinician Portal
-              </Link>
-              {isPlatformAdmin && (
-                <Link
-                  href="/admin"
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-3 py-2.5 rounded-lg bg-slate-900 dark:bg-slate-800 text-sky-300 font-mono font-bold"
-                >
-                  ⚡ Admin Command Center
-                </Link>
-              )}
+            <div>
+              <div className="font-extrabold text-sm text-primary dark:text-sky-400 tracking-tight">
+                SKYLINE <span className="text-secondary dark:text-sky-200 font-semibold">HEALTH</span>
+              </div>
+              <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                Clinical Telehealth & Biometrics
+              </p>
             </div>
+          </div>
 
-            <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
-              <span className="text-xs text-slate-500 font-medium">Interface Appearance</span>
-              <ThemeToggle showLabel />
-            </div>
+          <div className="flex items-center gap-2">
+            <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono font-bold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
+              ESC
+            </kbd>
+            <button
+              type="button"
+              onClick={() => setDrawerOpen(false)}
+              className="p-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+              aria-label="Close menu"
+            >
+              <span className="material-symbols-outlined text-xl">close</span>
+            </button>
+          </div>
+        </div>
 
-            <div className="pt-3 border-t border-slate-200 dark:border-slate-800">
-              {user ? (
-                <div className="flex items-center justify-between px-2">
-                  <div className="text-xs">
-                    <p className="font-bold text-slate-900 dark:text-white">{displayName}</p>
-                    <p className="text-slate-500 dark:text-slate-400 text-[11px]">{user.email}</p>
+        {/* Drawer Scrollable Content */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+          {/* User Account / Sign In Card */}
+          <div className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100/80 dark:from-slate-900 dark:to-slate-800/60 border border-slate-200 dark:border-slate-800">
+            {user ? (
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary text-white font-bold flex items-center justify-center text-sm shadow-xs ring-2 ring-emerald-500/50 shrink-0">
+                    {displayName.charAt(0).toUpperCase()}
                   </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                        {displayName}
+                      </p>
+                      {isPlatformAdmin && (
+                        <span className="bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border border-amber-300 dark:border-amber-700">
+                          ADMIN
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
+                      {user.email}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-200/80 dark:border-slate-700/60">
+                  <Link
+                    href="/portal/dashboard"
+                    onClick={() => setDrawerOpen(false)}
+                    className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-white dark:bg-slate-900 text-xs font-bold text-slate-800 dark:text-slate-200 hover:text-primary dark:hover:text-sky-400 border border-slate-200 dark:border-slate-700 shadow-xs transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-sm text-sky-500">stethoscope</span>
+                    <span>Clinician Portal</span>
+                  </Link>
+
+                  <Link
+                    href="/patient/records"
+                    onClick={() => setDrawerOpen(false)}
+                    className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-white dark:bg-slate-900 text-xs font-bold text-slate-800 dark:text-slate-200 hover:text-primary dark:hover:text-sky-400 border border-slate-200 dark:border-slate-700 shadow-xs transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-sm text-emerald-500">clinical_notes</span>
+                    <span>EHR Records</span>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between pt-1">
+                  {isPlatformAdmin && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setDrawerOpen(false)}
+                      className="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1"
+                    >
+                      <span className="material-symbols-outlined text-sm">admin_panel_settings</span>
+                      Admin Command Console
+                    </Link>
+                  )}
                   <button
                     type="button"
                     onClick={handleLogout}
-                    className="text-xs font-bold text-rose-600 dark:text-rose-400 px-3 py-1.5 rounded-lg border border-rose-200 dark:border-rose-900/50 hover:bg-rose-50 dark:hover:bg-rose-950/40 cursor-pointer"
+                    className="text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline ml-auto flex items-center gap-1 cursor-pointer"
                   >
-                    Logout
+                    <span className="material-symbols-outlined text-sm">logout</span>
+                    Sign Out
                   </button>
                 </div>
-              ) : (
+              </div>
+            ) : (
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-bold text-slate-900 dark:text-white">
+                    Patient & Clinician Portal
+                  </p>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                    Sign in to view live ECG streams & consults
+                  </p>
+                </div>
                 <Link
                   href="/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="block w-full py-2.5 text-center text-xs font-bold text-slate-800 dark:text-slate-100 bg-slate-100 dark:bg-slate-800 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                  onClick={() => setDrawerOpen(false)}
+                  className="bg-primary hover:bg-primary-container text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-xs transition-colors shrink-0"
                 >
-                  Sign In to Portal
+                  Sign In
                 </Link>
-              )}
+              </div>
+            )}
+          </div>
+
+          {/* Section 1: Hardware Fleet & Wearables */}
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold tracking-wider uppercase text-slate-400 dark:text-slate-500">
+                Hardware Fleet & Wearables
+              </span>
+              <Link
+                href="/smartwatch"
+                onClick={() => setDrawerOpen(false)}
+                className="text-[11px] font-bold text-secondary dark:text-sky-400 hover:underline flex items-center gap-0.5"
+              >
+                <span>Tech Specs</span>
+                <span className="material-symbols-outlined text-xs">arrow_forward</span>
+              </Link>
+            </div>
+
+            <div className="space-y-2">
+              <Link
+                href="/#hardware-lineup"
+                onClick={() => setDrawerOpen(false)}
+                className="block p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary/40 dark:hover:border-sky-500/40 bg-white dark:bg-slate-900 hover:bg-slate-50/80 dark:hover:bg-slate-850 transition-all group"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-xs text-primary dark:text-sky-400 group-hover:translate-x-0.5 transition-transform">
+                    Skyline VitalsBand™ Ultra
+                  </span>
+                  <span className="text-[9px] font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/60">
+                    FLAGSHIP · {formatNgn(HARDWARE_PRICES.ultra)}
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                  Aerospace Titanium Curved Band · Continuous Lead II ECG · 7-Day Battery
+                </p>
+              </Link>
+
+              <Link
+                href="/#hardware-lineup"
+                onClick={() => setDrawerOpen(false)}
+                className="block p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary/40 dark:hover:border-sky-500/40 bg-white dark:bg-slate-900 hover:bg-slate-50/80 dark:hover:bg-slate-850 transition-all group"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-sky-400 group-hover:translate-x-0.5 transition-all">
+                    Skyline PulseBand Pro
+                  </span>
+                  <span className="text-[10px] font-mono font-bold text-slate-700 dark:text-slate-300">
+                    {formatNgn(HARDWARE_PRICES.band)}
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                  Screenless Daily Band · Continuous Optical SpO2 & HRV Tracking
+                </p>
+              </Link>
+
+              <Link
+                href="/#hardware-lineup"
+                onClick={() => setDrawerOpen(false)}
+                className="block p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary/40 dark:hover:border-sky-500/40 bg-white dark:bg-slate-900 hover:bg-slate-50/80 dark:hover:bg-slate-850 transition-all group"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-sky-400 group-hover:translate-x-0.5 transition-all">
+                    Clinical Biosensor Suite
+                  </span>
+                  <span className="text-[10px] font-mono font-bold text-slate-700 dark:text-slate-300">
+                    {formatNgn(HARDWARE_PRICES.suite)}
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                  VitalsBand + Sleep Tracking Ring + Home Cellular Base Hub
+                </p>
+              </Link>
             </div>
           </div>
-        )}
-      </header>
+
+          {/* Section 2: Clinical Care & Telehealth */}
+          <div className="space-y-2.5">
+            <span className="text-[11px] font-bold tracking-wider uppercase text-slate-400 dark:text-slate-500">
+              Clinical Care & Telehealth
+            </span>
+
+            <div className="space-y-1.5">
+              <Link
+                href="/consultancy"
+                onClick={() => setDrawerOpen(false)}
+                className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 border border-transparent hover:border-slate-200 dark:hover:border-slate-800 transition-all group"
+              >
+                <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-lg">medical_services</span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-sky-400">
+                      Specialist Directory
+                    </span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 live-pulse" />
+                  </div>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    MDCN-certified Cardiologists, GPs, & Neurologists across Nigeria
+                  </p>
+                </div>
+                <span className="material-symbols-outlined text-slate-400 group-hover:translate-x-1 transition-transform text-sm">
+                  chevron_right
+                </span>
+              </Link>
+
+              <Link
+                href="/#biometric-breakdown"
+                onClick={() => setDrawerOpen(false)}
+                className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 border border-transparent hover:border-slate-200 dark:hover:border-slate-800 transition-all group"
+              >
+                <div className="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-lg">ecg</span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <span className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-sky-400">
+                    Continuous ECG Telemetry
+                  </span>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    Real-time arrhythmia detection & vital alerts
+                  </p>
+                </div>
+                <span className="material-symbols-outlined text-slate-400 group-hover:translate-x-1 transition-transform text-sm">
+                  chevron_right
+                </span>
+              </Link>
+
+              <Link
+                href="/patient/records"
+                onClick={() => setDrawerOpen(false)}
+                className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 border border-transparent hover:border-slate-200 dark:hover:border-slate-800 transition-all group"
+              >
+                <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-lg">clinical_notes</span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <span className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-sky-400">
+                    Patient EHR Records
+                  </span>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    Digital prescriptions, lab orders, and historical trends
+                  </p>
+                </div>
+                <span className="material-symbols-outlined text-slate-400 group-hover:translate-x-1 transition-transform text-sm">
+                  chevron_right
+                </span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Section 3: Healthcare Professionals & Infrastructure */}
+          <div className="space-y-2.5">
+            <span className="text-[11px] font-bold tracking-wider uppercase text-slate-400 dark:text-slate-500">
+              Healthcare Professionals & Network
+            </span>
+
+            <div className="space-y-1.5">
+              <Link
+                href="/apply"
+                onClick={() => setDrawerOpen(false)}
+                className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 border border-transparent hover:border-slate-200 dark:hover:border-slate-800 transition-all group"
+              >
+                <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-lg">verified_user</span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <span className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-sky-400">
+                    Join as Doctor / Specialist
+                  </span>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    MDCN physician onboarding, licensing & tele-consult hours
+                  </p>
+                </div>
+                <span className="material-symbols-outlined text-slate-400 group-hover:translate-x-1 transition-transform text-sm">
+                  chevron_right
+                </span>
+              </Link>
+
+              <Link
+                href="/portal/dashboard"
+                onClick={() => setDrawerOpen(false)}
+                className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 border border-transparent hover:border-slate-200 dark:hover:border-slate-800 transition-all group"
+              >
+                <div className="w-8 h-8 rounded-lg bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-lg">stethoscope</span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <span className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-sky-400">
+                    Clinician Portal Dashboard
+                  </span>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    Active tele-encounter queue and real-time patient ECG HUD
+                  </p>
+                </div>
+                <span className="material-symbols-outlined text-slate-400 group-hover:translate-x-1 transition-transform text-sm">
+                  chevron_right
+                </span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Quick Checkout CTA Card in Drawer */}
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white shadow-md">
+            <div className="flex items-center justify-between gap-2">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-sky-200">
+                  Ready for Medical Telemetry?
+                </p>
+                <p className="text-sm font-extrabold mt-0.5">
+                  Order Skyline VitalsBand™
+                </p>
+              </div>
+              <Link
+                href="/checkout"
+                onClick={() => setDrawerOpen(false)}
+                className="bg-white hover:bg-slate-100 text-primary text-xs font-extrabold px-3.5 py-2 rounded-xl shadow-xs transition-transform active:scale-95 shrink-0"
+              >
+                Checkout
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Drawer Footer: Theme & Compliance Info */}
+        <div className="p-4 sm:p-5 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/70 space-y-3 shrink-0">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+              Appearance
+            </span>
+            <ThemeToggle showLabel />
+          </div>
+
+          <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-500">
+            <span>MDCN Verified Platform</span>
+            <span>Paystack 256-Bit SSL</span>
+            <span>24/7 Clinical Support</span>
+          </div>
+        </div>
+      </aside>
     </div>
   );
 }
